@@ -42,9 +42,20 @@ function escapeHtml(s) {
 }
 
 function scorePlayer(p) {
-  const w = state.formula.weights;
-  const rhofScore = (w.careerWAR * p.war) + (w.war7 * p.war7) + (w.war3 * p.war3);
-  return { ...p, rhofScore };
+  const c = state.formula.constants;
+  if (p.role === 'pitcher') {
+    const { wins, losses, era, so } = p.stats;
+    const decisions = wins + losses;
+    const inningsProxy = decisions * c.inningsPerDecision;
+    const rhofScore = (c.replacementEra - era) * inningsProxy
+      + (c.soBonus * so)
+      + (c.decisionBonus * (wins - losses));
+    return { ...p, rhofScore, inningsProxy };
+  }
+  const { avg, hits, hr } = p.stats;
+  const ab = hits / avg;
+  const rhofScore = ((avg - c.replacementAvg) * ab) + (c.hrBonus * hr);
+  return { ...p, rhofScore, ab };
 }
 
 function renderHeroStrip() {
@@ -59,16 +70,23 @@ function renderHeroStrip() {
 }
 
 function renderFormula() {
-  const w = state.formula.weights;
+  const c = state.formula.constants;
   formulaBox.innerHTML = `
     <div class="formula-row">
-      <span class="formula-term">RHOF Score</span>
+      <span class="formula-term">Hitters</span>
       <span class="formula-eq">=</span>
-      <span class="formula-term">${(w.careerWAR * 100).toFixed(0)}% career WAR</span>
+      <span class="formula-term">(AVG − ${c.replacementAvg.toFixed(3)}) × AB</span>
       <span class="formula-plus">+</span>
-      <span class="formula-term">${(w.war7 * 100).toFixed(0)}% WAR7 (best 7 seasons)</span>
+      <span class="formula-term">${c.hrBonus} × HR</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-term">Pitchers</span>
+      <span class="formula-eq">=</span>
+      <span class="formula-term">(${c.replacementEra.toFixed(2)} − ERA) × ${c.inningsPerDecision} × Decisions</span>
       <span class="formula-plus">+</span>
-      <span class="formula-term">${(w.war3 * 100).toFixed(0)}% WAR3 (best 3 seasons)</span>
+      <span class="formula-term">${c.soBonus} × SO</span>
+      <span class="formula-plus">+</span>
+      <span class="formula-term">${c.decisionBonus} × (W − L)</span>
     </div>
     <p class="formula-desc">${escapeHtml(state.formula.description)}</p>
   `;
@@ -82,8 +100,6 @@ function applySort(players) {
   const arr = [...players];
   switch (state.sort) {
     case 'scoreDesc': return arr.sort((a, b) => b.rhofScore - a.rhofScore);
-    case 'warDesc': return arr.sort((a, b) => b.war - a.war);
-    case 'war3Desc': return arr.sort((a, b) => b.war3 - a.war3);
     case 'name': return arr.sort((a, b) => a.name.localeCompare(b.name));
     default: return arr;
   }
@@ -121,7 +137,9 @@ function plaqueCard(p) {
       <div class="plaque__bar-track">
         <div class="plaque__bar-fill above" style="width:${pct}%"></div>
       </div>
-      <p class="plaque__bar-caption">WAR ${p.war.toFixed(1)} &nbsp;·&nbsp; WAR7 ${p.war7.toFixed(1)} &nbsp;·&nbsp; WAR3 ${p.war3.toFixed(1)}</p>
+      <p class="plaque__bar-caption">${p.role === 'pitcher'
+        ? `IP≈${Math.round(p.inningsProxy).toLocaleString()} &nbsp;·&nbsp; ERA edge ${(state.formula.constants.replacementEra - p.stats.era).toFixed(2)}`
+        : `AB≈${Math.round(p.ab).toLocaleString()} &nbsp;·&nbsp; AVG edge +${(p.stats.avg - state.formula.constants.replacementAvg).toFixed(3).replace('+-', '-')}`}</p>
 
       <div class="plaque__statline">
         ${statLine(p)}

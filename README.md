@@ -2,16 +2,21 @@
 
 A single, merit-ranked list of the 500 greatest players ever to play — hitters and
 pitchers together, no position quotas, no reference to the actual Cooperstown Hall.
-Every player is scored with the **RHOF Score**:
+Every player is scored with the **RHOF Custom Score**, a formula built entirely from
+career counting stats — no WAR involved:
 
 ```
-RHOF Score = (0.50 × Career WAR) + (0.35 × WAR7) + (0.15 × WAR3)
+Hitters  = (AVG − 0.230) × AB + 2 × HR          (AB = Hits / AVG)
+Pitchers = (4.20 − ERA) × 3 × (Wins + Losses) + 0.1 × SO + 2 × (Wins − Losses)
 ```
 
-Career WAR rewards a long, valuable career. WAR7 (best 7 seasons) rewards a genuinely
-great prime. WAR3 (best 3 seasons) rewards peak dominance even if it was brief. Because
-WAR is already computed on one shared scale for hitters and pitchers, nothing needs
-position-adjusting — everyone is ranked on the same ladder.
+Hitters earn value for batting above a replacement-level .230 average, scaled by
+career at-bats (so a long career at a good clip outscores a short one), plus a flat
+bonus per home run. Pitchers earn value for an ERA below a replacement-level 4.20,
+scaled by an innings estimate built off career decisions, plus bonuses for strikeouts
+and net wins. Both branches land in a comparable range so hitters and pitchers can
+share one ladder, but — unlike WAR — there's no defense, baserunning, park, or era
+adjustment baked in, so treat cross-era and cross-role comparisons as rough.
 
 ## Running it locally
 
@@ -40,8 +45,15 @@ real-hof-site/
 ```json
 {
   "formula": {
-    "name": "RHOF Score",
-    "weights": { "careerWAR": 0.50, "war7": 0.35, "war3": 0.15 },
+    "name": "RHOF Custom Score",
+    "constants": {
+      "replacementAvg": 0.230,
+      "replacementEra": 4.20,
+      "hrBonus": 2,
+      "soBonus": 0.1,
+      "decisionBonus": 2,
+      "inningsPerDecision": 3
+    },
     "description": "..."
   },
   "capacity": 500,
@@ -53,9 +65,6 @@ real-hof-site/
       "position": "2B" | "P" | etc,
       "years": "1977–1995",
       "team": "Team Name",
-      "war": 75.0,
-      "war7": 37.9,
-      "war3": 18.9,
       "stats": { "avg": 0.276, "hits": 2369, "hr": 244 }
                 // or, for role: "pitcher" -> { "wins": 417, "losses": 279, "era": 2.17, "so": 3509 }
     }
@@ -63,21 +72,21 @@ real-hof-site/
 }
 ```
 
-The front end computes each player's RHOF Score and rank at load time from `war`,
-`war7`, `war3`, and the `formula.weights` — nothing is pre-baked, so re-sorting or
-re-weighting only requires editing the `weights` object.
+The front end computes each player's RHOF Custom Score and rank at load time from
+`stats` and `formula.constants` — nothing is pre-baked, so re-tuning the formula only
+requires editing the `constants` object.
 
-**To regenerate this file from the Lahman database:** write a script that computes
-`war` (career WAR), `war7` (sum of a player's best 7 WAR seasons), and `war3` (sum of
-their best 3 WAR seasons) per player, for both hitters and pitchers, and dumps the
-result in the shape above, capped at (or trimmed to) the top 500 by RHOF Score. As
-long as the field names match, the front end needs no changes.
+**To regenerate this file from the Lahman database:** write a script that pulls each
+player's career `avg`, `hits`, `hr` (hitters) or `wins`, `losses`, `era`, `so`
+(pitchers) from the Lahman Batting/Pitching tables and dumps the result in the shape
+above, capped at (or trimmed to) the top 500 by RHOF Custom Score. As long as the
+field names match, the front end needs no changes.
 
 ## Extending the site
 
-- **Add players:** append to the `players` array with `role`, `position`, `war`,
-  `war7`, `war3`, and a `stats` object shaped for their role. No code changes needed.
-- **Change the formula:** edit `formula.weights` in the JSON. The site recomputes
+- **Add players:** append to the `players` array with `role`, `position`, and a
+  `stats` object shaped for their role. No code changes needed.
+- **Change the formula:** edit `formula.constants` in the JSON. The site recomputes
   every score and re-ranks automatically.
 
 ## Deploying
