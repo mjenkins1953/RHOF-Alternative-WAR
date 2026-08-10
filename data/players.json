@@ -1,0 +1,71 @@
+{
+  "_schema_notes": "One flat, cross-position ranking. Score = RHOF Score = 0.50*careerWAR + 0.35*war7 + 0.15*war3. No positional averaging, no induction status -- rank is purely earned by the formula. Regenerate this file from Lahman by computing careerWAR / war7 (best 7 seasons, sum) / war3 (best 3 seasons, sum) per player and keeping these exact field names.",
+  "formula": {
+    "name": "RHOF Score",
+    "weights": { "careerWAR": 0.50, "war7": 0.35, "war3": 0.15 },
+    "description": "Career WAR rewards sustained value. WAR7 rewards a genuinely great prime. WAR3 rewards peak dominance, even if brief. Works identically for hitters and pitchers since WAR is already on one shared replacement-level scale."
+  },
+  "capacity": 500,
+  "players": [
+    {
+      "id": "johnson-walter",
+      "name": "Walter Johnson",
+      "role": "pitcher",
+      "position": "P",
+      "years": "1907–1927",
+      "team": "Washington Senators",
+      "war": 155.1,
+      "war7": 85.1,
+      "war3": 41.5,
+      "stats": { "wins": 417, "losses": 279, "era": 2.17, "so": 3509 }
+    },
+    {
+      "id": "aaron-hank",
+      "name": "Hank Aaron",
+      "role": "hitter",
+      "position": "RF",
+      "years": "1954–1976",
+      "team": "Milwaukee / Atlanta Braves",
+      "war": 143.1,
+      "war7": 60.1,
+      "war3": 27.1,
+      "stats": { "avg": 0.305, "hits": 3771, "hr": 755 }
+    },
+    {
+      "id": "grich-bobby",
+      "name": "Bobby Grich",
+      "role": "hitter",
+      "position": "2B",
+      "years": "1970–1986",
+      "team": "Baltimore Orioles / California Angels",
+      "war": 71.4,
+      "war7": 46.5,
+      "war3": 22.9,
+      "stats": { "avg": 0.266, "hits": 1833, "hr": 224 }
+    },
+    {
+      "id": "whitaker-lou",
+      "name": "Lou Whitaker",
+      "role": "hitter",
+      "position": "2B",
+      "years": "1977–1995",
+      "team": "Detroit Tigers",
+      "war": 75.0,
+      "war7": 37.9,
+      "war3": 18.9,
+      "stats": { "avg": 0.276, "hits": 2369, "hr": 244 }
+    },
+    {
+      "id": "mazeroski-bill",
+      "name": "Bill Mazeroski",
+      "role": "hitter",
+      "position": "2B",
+      "years": "1956–1972",
+      "team": "Pittsburgh Pirates",
+      "war": 36.6,
+      "war7": 26.1,
+      "war3": 13.2,
+      "stats": { "avg": 0.260, "hits": 2016, "hr": 138 }
+    }
+  ]
+}
