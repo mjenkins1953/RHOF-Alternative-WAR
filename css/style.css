@@ -521,6 +521,60 @@ a { color: var(--brass-lt); }
   border-radius: 2px;
 }
 
+/* ---------------- About dialog ---------------- */
+.about-modal {
+  border: 1px solid var(--brass-dk);
+  border-radius: 4px;
+  background: var(--bg-deep);
+  color: var(--paper);
+  padding: 0;
+  max-width: 340px;
+  width: calc(100% - 32px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.about-modal::backdrop {
+  background: rgba(7,16,13,0.66);
+}
+.about-modal__inner {
+  position: relative;
+  padding: 28px 30px 26px;
+}
+.about-modal__close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--paper-dim);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+.about-modal__close:hover { color: var(--brass-lt); }
+.about-modal__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin: 0 0 10px;
+}
+.about-modal__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--brass-lt);
+  margin: 0 0 14px;
+}
+.about-modal__line {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--paper-dim);
+  margin: 0 0 4px;
+}
+.about-modal__line span { color: var(--paper); }
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 640px) {
   .site-head__tag { text-align: left; }
