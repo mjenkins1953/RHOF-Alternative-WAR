@@ -141,7 +141,7 @@ a { color: var(--brass-lt); }
 /* ---------------- Hero ---------------- */
 .hero {
   position: relative;
-  padding: 120px 0 56px;
+  padding: 36px 0 56px;
   border-bottom: 1px solid var(--green-line);
   overflow: hidden;
   isolation: isolate;
