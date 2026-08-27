@@ -1,7 +1,7 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The REAL Hall of Fame</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
@@ -1058,7 +1058,7 @@ a { color: var(--brass-lt); }
   <div class="wrap site-head__inner">
     <div class="site-head__left">
       <div class="mark">
-        <span class="mark__stitch">&#9918;</span>
+        <span class="mark__stitch">⚾</span>
         <span class="mark__text">THE REAL<br>HALL OF FAME</span>
       </div>
       <nav class="site-head__nav" aria-label="Position lists">
@@ -1080,11 +1080,11 @@ a { color: var(--brass-lt); }
     <h1 class="hero__headline">Ranked on the field.<br>Not in a meeting room.</h1>
     <p class="hero__body">
       One ranked list for hitters, one for pitchers. A hitter qualifies with a full
-      career on the field &mdash; 5,000 plate appearances, or, for Negro Leagues players
+      career on the field — 5,000 plate appearances, or, for Negro Leagues players
       whose league seasons ran far shorter, the equivalent of nine full ones. Pitchers
       clear a comparable career workload on their own list. Every player who qualifies
       is scored the same way: measured only against the league they actually played in,
-      distilled to one number &mdash; the <strong>RHOF Score</strong>. No position quotas,
+      distilled to one number — the <strong>RHOF Score</strong>. No position quotas,
       no era adjustments handed down by a committee.
     </p>
   </div>
@@ -1095,14 +1095,14 @@ a { color: var(--brass-lt); }
   <div class="wrap">
 
     <header class="board">
-      <div class="eyebrow">RHOF Alternative War &mdash; hitters, part one of two</div>
+      <div class="eyebrow">RHOF Alternative War — hitters, part one of two</div>
       <h1>Top 200 Hitters by <em>Stat Above Average</em></h1>
       <p class="dek">
-        This isn't trying to reproduce the actual Baseball Hall of Fame's membership &mdash; it's this
+        This isn't trying to reproduce who's actually in Cooperstown — it's this
         project's own answer to who belongs. No linear-weight run values, no replacement-level
         constant: every player is scored only against <b>the actual league average and spread of
         their own season</b>, using five genuinely separate things you can point to directly in a
-        box score &mdash; batting average, isolated power, walk rate, stolen-base rate, and defensive
+        box score — batting average, isolated power, walk rate, stolen-base rate, and defensive
         value.
       </p>
       <div class="stat-row">
@@ -1113,39 +1113,39 @@ a { color: var(--brass-lt); }
       </div>
       <p class="explainer">
         <b>What's a Stat Above Average?</b> Each player-season is compared only to that season's own
-        league average and spread &mdash; a 1927 season is judged against 1927, a 2021 season against
+        league average and spread — a 1927 season is judged against 1927, a 2021 season against
         2021, nothing crosses eras. The five stats above are each converted to a z-score (standard
         deviations above or below that year's league mean, computed from qualifying hitters only),
-        averaged into one composite for the season, then <b>summed &mdash; not averaged &mdash; across every
+        averaged into one composite for the season, then <b>summed — not averaged — across every
         qualifying season</b> of a 5,000+ PA career. Summing instead of averaging is deliberate: a
         short, dominant peak and a long, steady compiling career should both be able to add up to
-        a real Hall of Fame case, not just the peak.
+        a genuine Hall of Fame case, not just the peak.
       </p>
       <p class="explainer">
-        <b>Negro Leagues players qualify on a separate standard,</b> not the 5,000 PA floor &mdash; their
+        <b>Negro Leagues players qualify on a separate standard,</b> not the 5,000 PA floor — their
         official league schedules were far shorter than MLB's, and the surviving record undercounts
         them further still. They qualify instead by accumulating the equivalent of 9 seasons at
-        their own league's typical season size &mdash; the standard that gets Josh Gibson, Willie Wells,
+        their own league's typical season size — the standard that gets Josh Gibson, Willie Wells,
         and Turkey Stearnes onto this list.
       </p>
       <p class="explainer">
-        Runs scored and RBI were deliberately left out &mdash; both depend heavily on who's on base ahead
+        Runs scored and RBI were deliberately left out — both depend heavily on who's on base ahead
         of you and where you hit in the order, not just your own output. The <b>HOF</b> column marks
-        players already inducted into the real Hall of Fame, so you can see at a glance where this
-        list agrees with Cooperstown and where it doesn't.
+        players the writers and veterans committees have already voted into Cooperstown, so you can
+        see at a glance where this list and the official one agree and where they don't.
       </p>
     </header>
 
     <div class="controls">
       <div class="search">
-        <input id="saaQ" type="text" placeholder="Find a player&hellip;" autocomplete="off">
+        <input id="saaQ" type="text" placeholder="Find a player…" autocomplete="off">
       </div>
       <label class="toggle">
         <input type="checkbox" id="saaHofOnly">
         Hall of Famers only
       </label>
       <div class="legend">
-        <span><span class="hof-star">&#9733;</span> already in Cooperstown</span>
+        <span><span class="hof-star">★</span> already in Cooperstown</span>
       </div>
     </div>
 
@@ -1155,17 +1155,17 @@ a { color: var(--brass-lt); }
       <table>
         <thead>
           <tr>
-            <th data-key="rank" class="sorted">Rank<span class="arrow">&#9650;</span></th>
-            <th data-key="name" class="name-col">Player<span class="arrow">&#9650;</span></th>
-            <th data-key="pa">PA<span class="arrow">&#9650;</span></th>
-            <th data-key="seasons">Seasons<span class="arrow">&#9650;</span></th>
-            <th data-key="saa">SAA<span class="arrow">&#9650;</span></th>
-            <th data-key="avg">AVG z<span class="arrow">&#9650;</span></th>
-            <th data-key="iso">ISO z<span class="arrow">&#9650;</span></th>
-            <th data-key="bb">BB z<span class="arrow">&#9650;</span></th>
-            <th data-key="sb">SB z<span class="arrow">&#9650;</span></th>
-            <th data-key="def">DEF z<span class="arrow">&#9650;</span></th>
-            <th data-key="hof">HOF<span class="arrow">&#9650;</span></th>
+            <th data-key="rank" class="sorted">Rank<span class="arrow">▲</span></th>
+            <th data-key="name" class="name-col">Player<span class="arrow">▲</span></th>
+            <th data-key="pa">PA<span class="arrow">▲</span></th>
+            <th data-key="seasons">Seasons<span class="arrow">▲</span></th>
+            <th data-key="saa">SAA<span class="arrow">▲</span></th>
+            <th data-key="avg">AVG z<span class="arrow">▲</span></th>
+            <th data-key="iso">ISO z<span class="arrow">▲</span></th>
+            <th data-key="bb">BB z<span class="arrow">▲</span></th>
+            <th data-key="sb">SB z<span class="arrow">▲</span></th>
+            <th data-key="def">DEF z<span class="arrow">▲</span></th>
+            <th data-key="hof">HOF<span class="arrow">▲</span></th>
           </tr>
         </thead>
         <tbody id="saaRows"></tbody>
@@ -1257,10 +1257,10 @@ a { color: var(--brass-lt); }
 
 <section class="view-soon" id="view-pitchers" hidden>
   <div class="wrap">
-    <p class="view-soon__eyebrow">Pitchers list &mdash; under construction</p>
+    <p class="view-soon__eyebrow">Pitchers list — under construction</p>
     <h2 class="view-soon__headline">The mound gets its own ledger next.</h2>
     <p class="view-soon__body">
-      The hitters list is built the same way this one will be &mdash; every pitcher scored only
+      The hitters list is built the same way this one will be — every pitcher scored only
       against the league they actually pitched in, no era-crossing shortcuts. It isn't ready
       yet, so there's nothing to rank prematurely.
     </p>
@@ -1279,12 +1279,12 @@ a { color: var(--brass-lt); }
 <section class="dossier">
   <div class="wrap dossier__inner">
     <h2 class="section-title">Why not WAR?</h2>
-    <p>Wins Above Replacement measures every player against one universal "replacement level" &mdash;
+    <p>Wins Above Replacement measures every player against one universal "replacement level" —
       a theoretical bench player, calibrated once from decades of injury-substitution data and then
       applied identically to a dead-ball-era outfielder and a modern closer. It's the industry
       standard for good reason, but that one number was never derived for either of them specifically.</p>
     <p class="dossier__punch">The RHOF Score measures every player against their own competition
-      instead &mdash; the actual league average, in the actual years and at the actual position they
+      instead — the actual league average, in the actual years and at the actual position they
       played, blended across whichever eras their career spans.</p>
     <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
       Just each player's rate stats, held up against the players who were actually on the field
@@ -1295,7 +1295,7 @@ a { color: var(--brass-lt); }
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
     <p>Career AVG / HR / hits and W-L / ERA / SO figures sourced from Lahman-derived data. Data lives in
-      <code>data/players.json</code> &mdash; extend it by hand or regenerate it from the Lahman Baseball Database.
+      <code>data/players.json</code> — extend it by hand or regenerate it from the Lahman Baseball Database.
       Roster capped at 500; this build shows a starter set.</p>
   </div>
 </footer>
