@@ -67,10 +67,14 @@ a { color: var(--brass-lt); }
   gap: 16px;
 }
 .mark {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 14px;
 }
+.mark,
+.mark:hover,
+.mark:focus,
+.mark:visited { text-decoration: none; }
 
 /* ---------------- Menu bar ---------------- */
 .site-menu {
@@ -125,7 +129,8 @@ a { color: var(--brass-lt); }
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.14em;
-  line-height: 1.35;
+  line-height: 1.2;
+  white-space: nowrap;
   color: var(--brass-lt);
 }
 .site-head__tag {
