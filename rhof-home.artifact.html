@@ -192,17 +192,24 @@ a { color: var(--brass-lt); }
   color: var(--paper);
   text-shadow: 0 2px 18px rgba(0,0,0,0.55);
 }
+/* Welcome panel — the same light "ledger" box as the embedded SAA table:
+   pale ground, brass-dark rule, cream-dark ink (mirrors .saa-embed). */
 .hero__copy {
-  font-size: 18px;
+  background: #eef1ea;
+  color: #16211d;
+  border: 1px solid var(--brass-dk);
+  border-radius: 4px;
+  padding: 2rem 2.25rem 1.75rem;
+  font-size: 1.02rem;
+  line-height: 1.6;
   max-width: none;
-  color: var(--paper-dim);
 }
 .hero__copy p {
   max-width: none;
-  margin: 0 0 18px;
+  margin: 0 0 1.1rem;
 }
 .hero__copy p:last-child { margin-bottom: 0; }
-.hero__copy strong { color: var(--brass-lt); font-weight: 600; }
+.hero__copy strong { color: #a8660a; font-weight: 600; }
 
 /* ---------------- Controls ---------------- */
 .ledger-controls {
@@ -498,6 +505,7 @@ a { color: var(--brass-lt); }
 /* ---------------- Responsive ---------------- */
 @media (max-width: 640px) {
   .site-head__tag { text-align: left; }
+  .hero__copy { padding: 1.5rem 1.25rem; }
   .standards__row {
     grid-template-columns: 1fr 1fr;
     row-gap: 8px;
