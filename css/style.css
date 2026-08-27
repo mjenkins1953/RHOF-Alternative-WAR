@@ -188,6 +188,28 @@ a { color: var(--brass-lt); }
 /* same accent as the SAA table's "Stat Above Average" (--saa-accent) */
 .hero__headline-em { color: #a8660a; }
 
+/* dotted eyebrow, matching the SAA table's .eyebrow */
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a8660a;
+}
+.hero__eyebrow::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #a8660a;
+}
+
 /* Welcome panel — the same light "ledger" box as the embedded SAA table:
    pale ground, brass-dark rule, cream-dark ink (mirrors .saa-embed). */
 .hero__copy {
