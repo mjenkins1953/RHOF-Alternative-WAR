@@ -1,7 +1,7 @@
 // Hitters/Pitchers nav toggle -- swaps which view section is visible;
 // the page never navigates away from index.html.
 
-const navButtons = document.querySelectorAll('.site-head__nav button[data-view]');
+const navButtons = document.querySelectorAll('.site-menu button[data-view]');
 const views = {
   hitters: document.getElementById('view-hitters'),
   pitchers: document.getElementById('view-pitchers'),

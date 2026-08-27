@@ -66,22 +66,26 @@ a { color: var(--brass-lt); }
   flex-wrap: wrap;
   gap: 16px;
 }
-.site-head__left {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
-}
 .mark {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-.site-head__nav {
-  display: flex;
-  gap: 20px;
+
+/* ---------------- Menu bar ---------------- */
+.site-menu {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--green-line);
 }
-.site-head__nav button {
+.site-menu__inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+.site-menu__link {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
@@ -92,20 +96,20 @@ a { color: var(--brass-lt); }
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 0 0 2px;
+  padding: 3px 0;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
 }
-.site-head__nav button:hover,
-.site-head__nav button:focus-visible {
+.site-menu__link:hover,
+.site-menu__link:focus-visible,
+.site-menu__link.is-active {
   color: var(--brass-lt);
   border-color: var(--brass-lt);
 }
-.site-head__nav button.is-active {
-  color: var(--brass-lt);
-  border-color: var(--brass-lt);
+.site-menu__link--right {
+  margin-left: auto;
 }
-.site-head__soon {
+.site-menu__soon {
   font-size: 9px;
   color: var(--brass);
   opacity: 0.75;

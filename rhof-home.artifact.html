@@ -72,22 +72,26 @@ a { color: var(--brass-lt); }
   flex-wrap: wrap;
   gap: 16px;
 }
-.site-head__left {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
-}
 .mark {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-.site-head__nav {
-  display: flex;
-  gap: 20px;
+
+/* ---------------- Menu bar ---------------- */
+.site-menu {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--green-line);
 }
-.site-head__nav button {
+.site-menu__inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+.site-menu__link {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
@@ -98,20 +102,20 @@ a { color: var(--brass-lt); }
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 0 0 2px;
+  padding: 3px 0;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
 }
-.site-head__nav button:hover,
-.site-head__nav button:focus-visible {
+.site-menu__link:hover,
+.site-menu__link:focus-visible,
+.site-menu__link.is-active {
   color: var(--brass-lt);
   border-color: var(--brass-lt);
 }
-.site-head__nav button.is-active {
-  color: var(--brass-lt);
-  border-color: var(--brass-lt);
+.site-menu__link--right {
+  margin-left: auto;
 }
-.site-head__soon {
+.site-menu__soon {
   font-size: 9px;
   color: var(--brass);
   opacity: 0.75;
@@ -1056,19 +1060,22 @@ a { color: var(--brass-lt); }
 
 <header class="site-head">
   <div class="wrap site-head__inner">
-    <div class="site-head__left">
-      <div class="mark">
-        <span class="mark__stitch">⚾</span>
-        <span class="mark__text">THE REAL<br>HALL OF FAME</span>
-      </div>
-      <nav class="site-head__nav" aria-label="Position lists">
-        <button type="button" data-view="hitters" class="is-active">Hitters</button>
-        <button type="button" data-view="pitchers">Pitchers <span class="site-head__soon">soon</span></button>
-      </nav>
+    <div class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE REAL<br>HALL OF FAME</span>
     </div>
     <p class="site-head__tag">Real stats. One formula.<br>No ballots. No committees.</p>
   </div>
 </header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <button type="button" data-view="hitters" class="site-menu__link is-active">Hitters</button>
+    <button type="button" data-view="pitchers" class="site-menu__link">Pitchers <span class="site-menu__soon">soon</span></button>
+    <a href="#methodology" class="site-menu__link">Methodology</a>
+    <a href="#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
 
 <section class="hero">
   <div class="hero__bg">
@@ -1268,7 +1275,7 @@ a { color: var(--brass-lt); }
 </section>
 </main>
 
-<section class="standards">
+<section class="standards" id="methodology">
   <div class="wrap">
     <h2 class="section-title">How the RHOF Score works</h2>
     <p class="section-lede">One formula, applied identically whether you struck people out or drove them in.</p>
@@ -1661,7 +1668,7 @@ saaRender();
 // Hitters/Pitchers nav toggle -- swaps which view section is visible;
 // the page never navigates away from index.html.
 
-const navButtons = document.querySelectorAll('.site-head__nav button[data-view]');
+const navButtons = document.querySelectorAll('.site-menu button[data-view]');
 const views = {
   hitters: document.getElementById('view-hitters'),
   pitchers: document.getElementById('view-pitchers'),

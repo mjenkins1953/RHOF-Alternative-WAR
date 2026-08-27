@@ -13,19 +13,22 @@
 
 <header class="site-head">
   <div class="wrap site-head__inner">
-    <div class="site-head__left">
-      <div class="mark">
-        <span class="mark__stitch">⚾</span>
-        <span class="mark__text">THE REAL<br>HALL OF FAME</span>
-      </div>
-      <nav class="site-head__nav" aria-label="Position lists">
-        <button type="button" data-view="hitters" class="is-active">Hitters</button>
-        <button type="button" data-view="pitchers">Pitchers <span class="site-head__soon">soon</span></button>
-      </nav>
+    <div class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE REAL<br>HALL OF FAME</span>
     </div>
     <p class="site-head__tag">Real stats. One formula.<br>No ballots. No committees.</p>
   </div>
 </header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <button type="button" data-view="hitters" class="site-menu__link is-active">Hitters</button>
+    <button type="button" data-view="pitchers" class="site-menu__link">Pitchers <span class="site-menu__soon">soon</span></button>
+    <a href="#methodology" class="site-menu__link">Methodology</a>
+    <a href="#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
 
 <section class="hero">
   <div class="hero__bg">
@@ -225,7 +228,7 @@
 </section>
 </main>
 
-<section class="standards">
+<section class="standards" id="methodology">
   <div class="wrap">
     <h2 class="section-title">How the RHOF Score works</h2>
     <p class="section-lede">One formula, applied identically whether you struck people out or drove them in.</p>
