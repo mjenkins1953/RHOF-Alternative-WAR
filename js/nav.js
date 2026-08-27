@@ -1,18 +1,16 @@
-// Hitters/Pitchers nav toggle -- swaps which view section is visible;
-// the page never navigates away from index.html.
+// Home page view toggle: the Pitchers button swaps the embedded hitters
+// list for the "coming soon" placeholder and back. Hitters has its own
+// page (hitters.html), so it's a plain link, not a toggle.
 
-const navButtons = document.querySelectorAll('.site-menu button[data-view]');
-const views = {
-  hitters: document.getElementById('view-hitters'),
-  pitchers: document.getElementById('view-pitchers'),
-};
+const pitchersBtn = document.querySelector('.site-menu [data-view="pitchers"]');
+const hittersView = document.getElementById('view-hitters');
+const pitchersView = document.getElementById('view-pitchers');
 
-navButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.view;
-    navButtons.forEach(b => b.classList.toggle('is-active', b === btn));
-    Object.entries(views).forEach(([key, section]) => {
-      if (section) section.hidden = key !== target;
-    });
+if (pitchersBtn && hittersView && pitchersView) {
+  pitchersBtn.addEventListener('click', () => {
+    const showPitchers = pitchersView.hidden;
+    pitchersView.hidden = !showPitchers;
+    hittersView.hidden = showPitchers;
+    pitchersBtn.classList.toggle('is-active', showPitchers);
   });
-});
+}
