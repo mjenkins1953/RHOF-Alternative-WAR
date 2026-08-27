@@ -1,1 +1,11 @@
+# Raw third-party source data -- large, re-fetched fresh by build_formula.py,
+# not something to version-control.
+Batting.csv
+People.csv
+Fielding.csv
+HallOfFame.csv
+war_daily_bat.txt
+war_daily_pitch.txt
+*.mdb
+__pycache__/
 .DS_Store

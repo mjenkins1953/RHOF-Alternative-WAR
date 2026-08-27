@@ -41,21 +41,103 @@ function escapeHtml(s) {
   }[c]));
 }
 
+function parseYears(yearsStr) {
+  const [start, end] = yearsStr.split(/[–-]/).map(s => parseInt(s.trim(), 10));
+  return { start, end };
+}
+
+function eraBaseline(start, end) {
+  let totalYears = 0;
+  const sums = { era: 0, whip: 0, k9: 0, saves: 0, obp: 0, iso: 0, sbValue: 0 };
+  state.formula.eraBaselines.forEach(b => {
+    const overlapStart = Math.max(start, b.start);
+    const overlapEnd = Math.min(end, b.end);
+    const years = overlapEnd - overlapStart + 1;
+    if (years > 0) {
+      totalYears += years;
+      sums.era += b.era * years;
+      sums.whip += b.whip * years;
+      sums.k9 += b.k9 * years;
+      sums.saves += b.saves * years;
+      sums.obp += b.obp * years;
+      sums.iso += b.iso * years;
+      sums.sbValue += b.sbValue * years;
+    }
+  });
+  return {
+    era: sums.era / totalYears,
+    whip: sums.whip / totalYears,
+    k9: sums.k9 / totalYears,
+    saves: sums.saves / totalYears,
+    obp: sums.obp / totalYears,
+    iso: sums.iso / totalYears,
+    sbValue: sums.sbValue / totalYears,
+  };
+}
+
+function positionGroup(position) {
+  if (position === '1B') return '1B';
+  if (position === 'C') return 'C';
+  if (position === '2B' || position === '3B' || position === 'SS') return 'IF';
+  return 'OF'; // LF, CF, RF
+}
+
+function fieldingBaseline(group, start, end) {
+  let totalYears = 0;
+  let sum = 0;
+  state.formula.fieldingBaselines
+    .filter(b => b.position === group)
+    .forEach(b => {
+      const overlapStart = Math.max(start, b.start);
+      const overlapEnd = Math.min(end, b.end);
+      const years = overlapEnd - overlapStart + 1;
+      if (years > 0) {
+        totalYears += years;
+        sum += b.fieldingPct * years;
+      }
+    });
+  return sum / totalYears;
+}
+
 function scorePlayer(p) {
-  const c = state.formula.constants;
   if (p.role === 'pitcher') {
-    const { wins, losses, era, so } = p.stats;
-    const decisions = wins + losses;
-    const inningsProxy = decisions * c.inningsPerDecision;
-    const rhofScore = (c.replacementEra - era) * inningsProxy
-      + (c.soBonus * so)
-      + (c.decisionBonus * (wins - losses));
-    return { ...p, rhofScore, inningsProxy };
+    const w = state.formula.pitcherWeights;
+    const { wins, losses, era, so, ip, bb, hitsAllowed, saves } = p.stats;
+    const { start, end } = parseYears(p.years);
+    const league = eraBaseline(start, end);
+
+    const whip = (bb + hitsAllowed) / ip;
+    const k9 = (so * 9) / ip;
+    const eraScore = (league.era / era) * 100;
+    const whipScore = (league.whip / whip) * 100;
+    const k9Score = (k9 / league.k9) * 100;
+    const winsIndex = (wins / (wins + losses)) * 100;
+    const savesIndex = (saves / league.saves) * 100;
+
+    const rhofScore = (w.era * eraScore) + (w.whip * whipScore) + (w.k9 * k9Score)
+      + (w.wins * winsIndex) + (w.saves * savesIndex);
+
+    return { ...p, rhofScore, whip, k9, league, eraScore, whipScore, k9Score, winsIndex, savesIndex };
   }
-  const { avg, hits, hr } = p.stats;
-  const ab = hits / avg;
-  const rhofScore = ((avg - c.replacementAvg) * ab) + (c.hrBonus * hr);
-  return { ...p, rhofScore, ab };
+  const sbv = state.formula.sbRunValues;
+  const hw = state.formula.hitterWeights;
+  const { avg, slg, obp, sb, cs, pa, fieldingPct } = p.stats;
+  const { start, end } = parseYears(p.years);
+  const league = eraBaseline(start, end);
+  const group = positionGroup(p.position);
+  const posBaseline = fieldingBaseline(group, start, end);
+
+  const iso = slg - avg;
+  const netSbValue = ((sb * sbv.sb) + (cs * sbv.cs)) / pa;
+
+  const hitScore = (obp / league.obp) * 100;
+  const powerScore = (iso / league.iso) * 100;
+  const fieldScore = (fieldingPct / posBaseline) * 100;
+  const runScore = 100 + ((netSbValue - league.sbValue) * state.formula.sbValueScale);
+
+  const rhofScore = (hw.hit * hitScore) + (hw.power * powerScore)
+    + (hw.field * fieldScore) + (hw.run * runScore);
+  return { ...p, rhofScore, iso, netSbValue, league, posBaseline, hitScore, powerScore, fieldScore, runScore };
 }
 
 function renderHeroStrip() {
@@ -70,23 +152,32 @@ function renderHeroStrip() {
 }
 
 function renderFormula() {
-  const c = state.formula.constants;
+  const pw = state.formula.pitcherWeights;
+  const hw = state.formula.hitterWeights;
   formulaBox.innerHTML = `
     <div class="formula-row">
       <span class="formula-term">Hitters</span>
       <span class="formula-eq">=</span>
-      <span class="formula-term">(AVG − ${c.replacementAvg.toFixed(3)}) × AB</span>
+      <span class="formula-term">${(hw.hit * 100).toFixed(0)}% OBP vs league</span>
       <span class="formula-plus">+</span>
-      <span class="formula-term">${c.hrBonus} × HR</span>
+      <span class="formula-term">${(hw.power * 100).toFixed(0)}% ISO vs league</span>
+      <span class="formula-plus">+</span>
+      <span class="formula-term">${(hw.field * 100).toFixed(0)}% Fielding% vs position</span>
+      <span class="formula-plus">+</span>
+      <span class="formula-term">${(hw.run * 100).toFixed(0)}% Net SB value vs league</span>
     </div>
     <div class="formula-row">
       <span class="formula-term">Pitchers</span>
       <span class="formula-eq">=</span>
-      <span class="formula-term">(${c.replacementEra.toFixed(2)} − ERA) × ${c.inningsPerDecision} × Decisions</span>
+      <span class="formula-term">${(pw.era * 100).toFixed(0)}% ERA vs league</span>
       <span class="formula-plus">+</span>
-      <span class="formula-term">${c.soBonus} × SO</span>
+      <span class="formula-term">${(pw.whip * 100).toFixed(0)}% WHIP vs league</span>
       <span class="formula-plus">+</span>
-      <span class="formula-term">${c.decisionBonus} × (W − L)</span>
+      <span class="formula-term">${(pw.k9 * 100).toFixed(0)}% K/9 vs league</span>
+      <span class="formula-plus">+</span>
+      <span class="formula-term">${(pw.wins * 100).toFixed(0)}% Win%</span>
+      <span class="formula-plus">+</span>
+      <span class="formula-term">${(pw.saves * 100).toFixed(0)}% Saves vs league</span>
     </div>
     <p class="formula-desc">${escapeHtml(state.formula.description)}</p>
   `;
@@ -114,9 +205,9 @@ function statLine(p) {
     `;
   }
   return `
-    <span><b>${p.stats.avg.toFixed(3).replace(/^0/, '')}</b>AVG</span>
-    <span><b>${p.stats.hits.toLocaleString()}</b>H</span>
-    <span><b>${p.stats.hr}</b>HR</span>
+    <span><b>${p.stats.obp.toFixed(3).replace(/^0/, '')}</b>OBP</span>
+    <span><b>${p.stats.slg.toFixed(3).replace(/^0/, '')}</b>SLG</span>
+    <span><b>${p.stats.sb}</b>SB</span>
   `;
 }
 
@@ -138,8 +229,8 @@ function plaqueCard(p) {
         <div class="plaque__bar-fill above" style="width:${pct}%"></div>
       </div>
       <p class="plaque__bar-caption">${p.role === 'pitcher'
-        ? `IP≈${Math.round(p.inningsProxy).toLocaleString()} &nbsp;·&nbsp; ERA edge ${(state.formula.constants.replacementEra - p.stats.era).toFixed(2)}`
-        : `AB≈${Math.round(p.ab).toLocaleString()} &nbsp;·&nbsp; AVG edge +${(p.stats.avg - state.formula.constants.replacementAvg).toFixed(3).replace('+-', '-')}`}</p>
+        ? `WHIP ${p.whip.toFixed(2)} &nbsp;·&nbsp; K/9 ${p.k9.toFixed(1)} &nbsp;·&nbsp; vs league ERA ${p.league.era.toFixed(2)}/WHIP ${p.league.whip.toFixed(2)}`
+        : `Hit ${p.hitScore.toFixed(0)} &nbsp;·&nbsp; Pwr ${p.powerScore.toFixed(0)} &nbsp;·&nbsp; Fld ${p.fieldScore.toFixed(0)} &nbsp;·&nbsp; Run ${p.runScore.toFixed(0)}`}</p>
 
       <div class="plaque__statline">
         ${statLine(p)}
