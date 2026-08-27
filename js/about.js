@@ -1,9 +1,10 @@
 // About dialog — opened from the "About" menu link on every page.
-// Bump RHOF_VERSION on a release; RHOF_BUILD is the build stamp
-// (the Artifact build script overwrites it with the git hash + date).
+// Bump both counters by .001 on every commit + push:
+//   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
+//   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.0.0';
-const RHOF_BUILD = '2026.08.27';
+const RHOF_VERSION = '1.001';
+const RHOF_BUILD = '2026.08.27.001';
 
 (function () {
   const modal = document.getElementById('aboutModal');
