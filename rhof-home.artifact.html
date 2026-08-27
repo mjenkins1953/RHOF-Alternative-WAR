@@ -183,19 +183,21 @@ a { color: var(--brass-lt); }
 .hero__headline {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(17px, 5.32vw, 60px);
+  font-size: clamp(15px, 4.75vw, 53px);
   line-height: 1.06;
   letter-spacing: -0.01em;
-  margin: 0 0 28px;
+  margin: 0 0 24px;
   max-width: none;
   white-space: nowrap;
-  color: var(--paper);
-  text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+  color: #000;
 }
+/* same accent as the SAA table's "Stat Above Average" (--saa-accent) */
+.hero__headline-em { color: #a8660a; }
+
 /* Welcome panel — the same light "ledger" box as the embedded SAA table:
    pale ground, brass-dark rule, cream-dark ink (mirrors .saa-embed). */
 .hero__copy {
-  background: #eef1ea;
+  background: #ffffff;
   color: #16211d;
   border: 1px solid var(--brass-dk);
   border-radius: 4px;
@@ -1097,8 +1099,8 @@ a { color: var(--brass-lt); }
   </div>
   <div class="hero__scrim"></div>
   <div class="wrap hero__inner">
-    <h1 class="hero__headline">Ranked on the field, not on ballots.</h1>
     <div class="hero__copy">
+      <h1 class="hero__headline">Ranked on the field, <span class="hero__headline-em">not on ballots.</span></h1>
       <p>
         Welcome to The Real Hall Of Fame, the virtual Hall that includes MLB players who
         are worthy and deserving of being recognized for their exceptional talents on the
