@@ -79,6 +79,7 @@ function positionGroup(position) {
   if (position === '1B') return '1B';
   if (position === 'C') return 'C';
   if (position === '2B' || position === '3B' || position === 'SS') return 'IF';
+  if (position === 'DH') return 'DH';
   return 'OF'; // LF, CF, RF
 }
 
@@ -111,7 +112,7 @@ function scorePlayer(p) {
     const eraScore = (league.era / era) * 100;
     const whipScore = (league.whip / whip) * 100;
     const k9Score = (k9 / league.k9) * 100;
-    const winsIndex = (wins / (wins + losses)) * 100;
+    const winsIndex = (wins + losses) > 0 ? (wins / (wins + losses)) * 100 : 0;
     const savesIndex = (saves / league.saves) * 100;
 
     const rhofScore = (w.era * eraScore) + (w.whip * whipScore) + (w.k9 * k9Score)
@@ -125,14 +126,17 @@ function scorePlayer(p) {
   const { start, end } = parseYears(p.years);
   const league = eraBaseline(start, end);
   const group = positionGroup(p.position);
-  const posBaseline = fieldingBaseline(group, start, end);
+  // DH doesn't field at all -- there's no positional fielding baseline to
+  // compare against, so DH gets a flat 0 (no defensive value), not a
+  // crash or a silent NaN from dividing by an undefined baseline.
+  const posBaseline = group === 'DH' ? null : fieldingBaseline(group, start, end);
 
   const iso = slg - avg;
   const netSbValue = ((sb * sbv.sb) + (cs * sbv.cs)) / pa;
 
   const hitScore = (obp / league.obp) * 100;
   const powerScore = (iso / league.iso) * 100;
-  const fieldScore = (fieldingPct / posBaseline) * 100;
+  const fieldScore = group === 'DH' ? 0 : (fieldingPct / posBaseline) * 100;
   const runScore = 100 + ((netSbValue - league.sbValue) * state.formula.sbValueScale);
 
   const rhofScore = (hw.hit * hitScore) + (hw.power * powerScore)

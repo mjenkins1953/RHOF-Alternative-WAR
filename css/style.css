@@ -66,10 +66,44 @@ a { color: var(--brass-lt); }
   flex-wrap: wrap;
   gap: 16px;
 }
+.site-head__left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
 .mark {
   display: flex;
   align-items: center;
   gap: 14px;
+}
+.site-head__nav {
+  display: flex;
+  gap: 20px;
+}
+.site-head__nav a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--paper-dim);
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.site-head__nav a:hover,
+.site-head__nav a:focus-visible {
+  color: var(--brass-lt);
+  border-color: var(--brass-lt);
+}
+.site-head__soon {
+  font-size: 9px;
+  color: var(--brass);
+  opacity: 0.75;
+  letter-spacing: 0.06em;
+  margin-left: 2px;
 }
 .mark__stitch {
   font-size: 30px;

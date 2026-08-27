@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitchers — Coming Soon | The REAL Hall of Fame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .soon {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 64px 0;
+  }
+  .soon__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 18px;
+  }
+  .soon__headline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 4.5vw, 46px);
+    line-height: 1.08;
+    margin: 0 0 20px;
+    max-width: 16ch;
+    color: var(--paper);
+  }
+  .soon__body {
+    font-size: 17px;
+    max-width: 58ch;
+    color: var(--paper-dim);
+    margin: 0 0 32px;
+  }
+  .soon__back {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <div class="site-head__left">
+      <div class="mark">
+        <span class="mark__stitch">⚾</span>
+        <span class="mark__text">THE REAL<br>HALL OF FAME</span>
+      </div>
+      <nav class="site-head__nav" aria-label="Position lists">
+        <a href="hitters.html">Hitters</a>
+        <a href="pitchers.html">Pitchers <span class="site-head__soon">soon</span></a>
+      </nav>
+    </div>
+    <p class="site-head__tag">500 players. One formula.<br>No ballots, no committees.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="soon">
+    <p class="soon__eyebrow">Pitchers list — under construction</p>
+    <h1 class="soon__headline">The mound gets its own ledger next.</h1>
+    <p class="soon__body">
+      The hitters list is built the same way this one will be — every pitcher scored only
+      against the league they actually pitched in, no era-crossing shortcuts. It isn't ready
+      yet, so there's nothing to rank prematurely.
+    </p>
+    <p class="soon__back"><a href="index.html">&larr; Back to The REAL Hall of Fame</a></p>
+  </section>
+</main>
+
+</body>
+</html>
