@@ -1,16 +1,14 @@
-// Home page view toggle: the Pitchers button swaps the embedded hitters
-// list for the "coming soon" placeholder and back. Hitters has its own
-// page (hitters.html), so it's a plain link, not a toggle.
+// Home page: the Pitchers button reveals or hides the "coming soon" panel.
+// Hitters has its own page (hitters.html), reached via the menu link.
 
 const pitchersBtn = document.querySelector('.site-menu [data-view="pitchers"]');
-const hittersView = document.getElementById('view-hitters');
 const pitchersView = document.getElementById('view-pitchers');
 
-if (pitchersBtn && hittersView && pitchersView) {
+if (pitchersBtn && pitchersView) {
   pitchersBtn.addEventListener('click', () => {
-    const showPitchers = pitchersView.hidden;
-    pitchersView.hidden = !showPitchers;
-    hittersView.hidden = showPitchers;
-    pitchersBtn.classList.toggle('is-active', showPitchers);
+    const show = pitchersView.hidden;
+    pitchersView.hidden = !show;
+    pitchersBtn.classList.toggle('is-active', show);
+    if (show) pitchersView.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }

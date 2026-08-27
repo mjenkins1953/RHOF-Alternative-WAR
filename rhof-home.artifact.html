@@ -1444,8 +1444,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.002</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.002</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.003</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.003</span></p>
   </div>
 </dialog>
 
@@ -1807,20 +1807,18 @@ saaRender();
 
 </script>
 <script>
-// Home page view toggle: the Pitchers button swaps the embedded hitters
-// list for the "coming soon" placeholder and back. Hitters has its own
-// page (hitters.html), so it's a plain link, not a toggle.
+// Home page: the Pitchers button reveals or hides the "coming soon" panel.
+// Hitters has its own page (hitters.html), reached via the menu link.
 
 const pitchersBtn = document.querySelector('.site-menu [data-view="pitchers"]');
-const hittersView = document.getElementById('view-hitters');
 const pitchersView = document.getElementById('view-pitchers');
 
-if (pitchersBtn && hittersView && pitchersView) {
+if (pitchersBtn && pitchersView) {
   pitchersBtn.addEventListener('click', () => {
-    const showPitchers = pitchersView.hidden;
-    pitchersView.hidden = !showPitchers;
-    hittersView.hidden = showPitchers;
-    pitchersBtn.classList.toggle('is-active', showPitchers);
+    const show = pitchersView.hidden;
+    pitchersView.hidden = !show;
+    pitchersBtn.classList.toggle('is-active', show);
+    if (show) pitchersView.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }
 
@@ -1831,8 +1829,8 @@ if (pitchersBtn && hittersView && pitchersView) {
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.002';
-const RHOF_BUILD = '2026.08.27.002';
+const RHOF_VERSION = '1.003';
+const RHOF_BUILD = '2026.08.27.003';
 
 (function () {
   const modal = document.getElementById('aboutModal');

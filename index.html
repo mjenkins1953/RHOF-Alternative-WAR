@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/hitters-embed.css">
 </head>
 <body>
 
@@ -86,170 +85,6 @@
 </section>
 
 <main>
-<section class="saa-embed" id="view-hitters">
-  <div class="wrap">
-
-    <header class="board">
-      <div class="eyebrow">RHOF Alternative War — hitters, part one of two</div>
-      <h1>Top 200 Hitters by <em>Stat Above Average</em></h1>
-      <p class="dek">
-        This isn't trying to reproduce who's actually in Cooperstown — it's this
-        project's own answer to who belongs. No linear-weight run values, no replacement-level
-        constant: every player is scored only against <b>the actual league average and spread of
-        their own season</b>, using five genuinely separate things you can point to directly in a
-        box score — batting average, isolated power, walk rate, stolen-base rate, and defensive
-        value.
-      </p>
-      <div class="stat-row">
-        <div class="stat"><span class="num">1,065</span><span class="lbl">qualifying pool</span></div>
-        <div class="stat"><span class="num">200</span><span class="lbl">shown here</span></div>
-        <div class="stat"><span class="num">5,000+</span><span class="lbl">career PA minimum</span></div>
-        <div class="stat"><span class="num">101 / 200</span><span class="lbl">also in Cooperstown</span></div>
-      </div>
-      <p class="explainer">
-        <b>What's a Stat Above Average?</b> Each player-season is compared only to that season's own
-        league average and spread — a 1927 season is judged against 1927, a 2021 season against
-        2021, nothing crosses eras. The five stats above are each converted to a z-score (standard
-        deviations above or below that year's league mean, computed from qualifying hitters only),
-        averaged into one composite for the season, then <b>summed — not averaged — across every
-        qualifying season</b> of a 5,000+ PA career. Summing instead of averaging is deliberate: a
-        short, dominant peak and a long, steady compiling career should both be able to add up to
-        a genuine Hall of Fame case, not just the peak.
-      </p>
-      <p class="explainer">
-        <b>Negro Leagues players qualify on a separate standard,</b> not the 5,000 PA floor — their
-        official league schedules were far shorter than MLB's, and the surviving record undercounts
-        them further still. They qualify instead by accumulating the equivalent of 9 seasons at
-        their own league's typical season size — the standard that gets Josh Gibson, Willie Wells,
-        and Turkey Stearnes onto this list.
-      </p>
-      <p class="explainer">
-        Runs scored and RBI were deliberately left out — both depend heavily on who's on base ahead
-        of you and where you hit in the order, not just your own output. The <b>HOF</b> column marks
-        players the writers and veterans committees have already voted into Cooperstown, so you can
-        see at a glance where this list and the official one agree and where they don't.
-      </p>
-    </header>
-
-    <div class="controls">
-      <div class="search">
-        <input id="saaQ" type="text" placeholder="Find a player…" autocomplete="off">
-      </div>
-      <label class="toggle">
-        <input type="checkbox" id="saaHofOnly">
-        Hall of Famers only
-      </label>
-      <div class="legend">
-        <span><span class="hof-star">★</span> already in Cooperstown</span>
-      </div>
-    </div>
-
-    <div class="count" id="saaCount"></div>
-
-    <div class="table-shell">
-      <table>
-        <thead>
-          <tr>
-            <th data-key="rank" class="sorted">Rank<span class="arrow">▲</span></th>
-            <th data-key="name" class="name-col">Player<span class="arrow">▲</span></th>
-            <th data-key="pa">PA<span class="arrow">▲</span></th>
-            <th data-key="seasons">Seasons<span class="arrow">▲</span></th>
-            <th data-key="saa">SAA<span class="arrow">▲</span></th>
-            <th data-key="avg">AVG z<span class="arrow">▲</span></th>
-            <th data-key="iso">ISO z<span class="arrow">▲</span></th>
-            <th data-key="bb">BB z<span class="arrow">▲</span></th>
-            <th data-key="sb">SB z<span class="arrow">▲</span></th>
-            <th data-key="def">DEF z<span class="arrow">▲</span></th>
-            <th data-key="hof">HOF<span class="arrow">▲</span></th>
-          </tr>
-        </thead>
-        <tbody id="saaRows"></tbody>
-      </table>
-      <div class="empty" id="saaEmpty" style="display:none;">No players match "<span id="saaQEcho"></span>".</div>
-    </div>
-
-    <section class="missing" aria-labelledby="missing-h">
-      <p class="eyebrow">Where the list and your gut disagree</p>
-      <h2 id="missing-h">Two it leaves out</h2>
-      <p class="missing__lede">
-        Ichiro Suzuki and Sammy Sosa both cleared the 5,000-PA bar without trouble, and to most
-        fans both are obvious. Neither is in the top 200 &mdash; the list runs out at 200, and Ichiro
-        finishes 211th, Sosa 217th. That isn't a glitch. It's the direct cost of scoring every
-        player on the same five equally-weighted skills: a career built on maxing one or two of
-        them and skipping the rest doesn't add up here the way it does in memory.
-      </p>
-
-      <div class="missing__grid">
-        <article class="miss-card">
-          <div class="miss-card__head">
-            <span class="miss-card__rank">#211</span>
-            <span class="miss-card__name">Ichiro Suzuki</span>
-            <span class="miss-card__meta">RF &middot; 2001&ndash;2019 &middot; SEA</span>
-          </div>
-          <p class="miss-card__hl"><b>.311</b> AVG &middot; <b>106</b> OPS+ &middot; <b>3,089</b> H &middot; <b>509</b> SB &middot; <b>117</b> HR &middot; <b>60.0</b> bWAR</p>
-          <div class="miss-card__z">
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:18.5%"></span></span><span class="saa-card__zval pos">+1.48</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:15%"></span></span><span class="saa-card__zval neg">-1.20</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:10.5%"></span></span><span class="saa-card__zval neg">-0.84</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:22%"></span></span><span class="saa-card__zval pos">+1.76</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:2.3%"></span></span><span class="saa-card__zval pos">+0.18</span></div>
-          </div>
-          <p class="miss-card__diag">
-            The best pure contact hitter of his era, and the score sees it &mdash; batting average
-            and steals both near the top of the pool. But he hit for almost no power and almost
-            never walked, two whole categories deep in the red, and his real defensive value was
-            arm and range, which fielding percentage barely registers. His nine seasons in Japan
-            aren't in this data at all: his record here begins at age 27.
-          </p>
-        </article>
-
-        <article class="miss-card">
-          <div class="miss-card__head">
-            <span class="miss-card__rank">#217</span>
-            <span class="miss-card__name">Sammy Sosa</span>
-            <span class="miss-card__meta">RF &middot; 1989&ndash;2007 &middot; CHC</span>
-          </div>
-          <p class="miss-card__hl"><b>.273</b> AVG &middot; <b>128</b> OPS+ &middot; <b>609</b> HR &middot; <b>2,408</b> H &middot; <b>234</b> SB &middot; <b>58.6</b> bWAR</p>
-          <div class="miss-card__z">
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="left:50%;width:0.6%"></span></span><span class="saa-card__zval flat">+0.05</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:20%"></span></span><span class="saa-card__zval pos">+1.60</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="left:50%;width:0.6%"></span></span><span class="saa-card__zval flat">+0.05</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:2.1%"></span></span><span class="saa-card__zval pos">+0.17</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:5.3%"></span></span><span class="saa-card__zval neg">-0.42</span></div>
-          </div>
-          <p class="miss-card__diag">
-            Elite power (ISO +1.60) and nothing else above the line. League-average bat-to-ball,
-            league-average plate discipline, a below-average glove. The 609 home runs are a
-            counting stat; SAA only sees power <i>rate</i> against a high-offense era, so one
-            great category out of five nets out to a hair above average.
-          </p>
-        </article>
-      </div>
-
-      <p class="missing__close">
-        The contrast is <b>Lou Whitaker, 166th</b> &mdash; a second baseman a little above average
-        at all five things and never great at any. A formula that averages five categories rewards
-        exactly that shape and punishes the specialist, whether the specialty is power (Sosa) or
-        contact and speed (Ichiro). It's a deliberate trade: this list measures all-around value
-        against your league, not fame or a single towering skill. Ichiro and Sosa are where you
-        can feel the edge of it.
-      </p>
-    </section>
-
-    <footer>
-      SAA = average of five per-season z-scores (batting average [H/AB], isolated power
-      [SLG&minus;AVG], walk rate [BB/PA], stolen-base rate [SB/PA], and defensive value [range runs
-      + positional credit, same shape as this project's original fielding formula]) against that
-      season's league mean and standard deviation among qualifying hitters, summed across every
-      200+ PA season of a 5,000+ career-PA hitter (or, for Negro Leagues players, 9+ seasons
-      normalized to their own league's typical season size). Source: Lahman database
-      hitting/fielding (2025 release, including Negro Leagues statistics); Hall of Fame membership
-      from the same release, current through the 2026 induction class.
-    </footer>
-
-  </div>
-</section>
-
 <section class="view-soon" id="view-pitchers" hidden>
   <div class="wrap">
     <p class="view-soon__eyebrow">Pitchers list — under construction</p>
@@ -300,14 +135,12 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.002</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.002</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.003</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.003</span></p>
   </div>
 </dialog>
 
 <script src="js/app.js"></script>
-<script src="js/saa-career.js"></script>
-<script src="js/hitters-embed.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/about.js"></script>
 </body>
