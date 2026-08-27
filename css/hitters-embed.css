@@ -4,21 +4,23 @@
    (.wrap, .eyebrow, bare h1/table/footer) that collide with style.css's
    own rules for those selectors, so every single one is namespaced here
    rather than relying on specificity to sort it out.
-   Fonts are shared with the rest of the site (same three families);
-   colors are scoped locally since this section keeps its own ledger/
-   scoreboard palette rather than being re-themed to brass/dugout green.
+   Fonts are shared with the rest of the site (same three families).
+   Colors are the original light ledger palette (cream page, white rows,
+   pale-green header/hover) -- kept light rather than re-themed to
+   brass/dugout green deliberately, matching the site's own pattern of
+   light cream cards (the plaques) sitting on the dark green page.
    ============================================================ */
 
 .saa-embed {
-  --saa-bg: #0f1614;
-  --saa-surface: #161f1c;
-  --saa-surface-2: #1c2622;
-  --saa-line: #2b3a34;
-  --saa-ink: #ece5d6;
-  --saa-ink-dim: #93a49a;
-  --saa-accent: #f2a63c;
-  --saa-over: #f2a63c;
-  --saa-under: #5fb8cf;
+  --saa-bg: #eef1ea;
+  --saa-surface: #ffffff;
+  --saa-surface-2: #e6ebdd;
+  --saa-line: #d1d8c6;
+  --saa-ink: #16211d;
+  --saa-ink-dim: #5c6d61;
+  --saa-accent: #a8660a;
+  --saa-over: #a8660a;
+  --saa-under: #1f7a8c;
 
   background: var(--saa-bg);
   color: var(--saa-ink);
