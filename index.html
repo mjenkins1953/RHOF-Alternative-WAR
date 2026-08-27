@@ -23,7 +23,7 @@
         <button type="button" data-view="pitchers">Pitchers <span class="site-head__soon">soon</span></button>
       </nav>
     </div>
-    <p class="site-head__tag">500 players. One formula.<br>No ballots, no committees.</p>
+    <p class="site-head__tag">Real stats. One formula.<br>No ballots. No committees.</p>
   </div>
 </header>
 
@@ -33,15 +33,17 @@
   </div>
   <div class="hero__scrim"></div>
   <div class="wrap hero__inner">
-    <p class="eyebrow">One list. Every position.</p>
+    <p class="eyebrow">Two lists. One standard.</p>
     <h1 class="hero__headline">Ranked on the field.<br>Not in a meeting room.</h1>
     <p class="hero__body">
-      500 spots. Every player who ever took the field is eligible for the same 500 —
-      pitchers, shortstops, catchers, all of it. No quota. No "best pitcher" bucket
-      separate from "best hitter" bucket. Just one number, the <strong>RHOF Score</strong>,
-      and a single ranked list.
+      One ranked list for hitters, one for pitchers. A hitter qualifies with a full
+      career on the field — 5,000 plate appearances, or, for Negro Leagues players
+      whose league seasons ran far shorter, the equivalent of nine full ones. Pitchers
+      clear a comparable career workload on their own list. Every player who qualifies
+      is scored the same way: measured only against the league they actually played in,
+      distilled to one number — the <strong>RHOF Score</strong>. No position quotas,
+      no era adjustments handed down by a committee.
     </p>
-    <div class="hero__stat-strip" id="heroStrip" aria-hidden="true"></div>
   </div>
 </section>
 
@@ -128,6 +130,74 @@
       <div class="empty" id="saaEmpty" style="display:none;">No players match "<span id="saaQEcho"></span>".</div>
     </div>
 
+    <section class="missing" aria-labelledby="missing-h">
+      <p class="eyebrow">Where the list and your gut disagree</p>
+      <h2 id="missing-h">Two it leaves out</h2>
+      <p class="missing__lede">
+        Ichiro Suzuki and Sammy Sosa both cleared the 5,000-PA bar without trouble, and to most
+        fans both are obvious. Neither is in the top 200 &mdash; the list runs out at 200, and Ichiro
+        finishes 211th, Sosa 217th. That isn't a glitch. It's the direct cost of scoring every
+        player on the same five equally-weighted skills: a career built on maxing one or two of
+        them and skipping the rest doesn't add up here the way it does in memory.
+      </p>
+
+      <div class="missing__grid">
+        <article class="miss-card">
+          <div class="miss-card__head">
+            <span class="miss-card__rank">#211</span>
+            <span class="miss-card__name">Ichiro Suzuki</span>
+            <span class="miss-card__meta">RF &middot; 2001&ndash;2019 &middot; SEA</span>
+          </div>
+          <p class="miss-card__hl"><b>.311</b> AVG &middot; <b>106</b> OPS+ &middot; <b>3,089</b> H &middot; <b>509</b> SB &middot; <b>117</b> HR &middot; <b>60.0</b> bWAR</p>
+          <div class="miss-card__z">
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:18.5%"></span></span><span class="saa-card__zval pos">+1.48</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:15%"></span></span><span class="saa-card__zval neg">-1.20</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:10.5%"></span></span><span class="saa-card__zval neg">-0.84</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:22%"></span></span><span class="saa-card__zval pos">+1.76</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:2.3%"></span></span><span class="saa-card__zval pos">+0.18</span></div>
+          </div>
+          <p class="miss-card__diag">
+            The best pure contact hitter of his era, and the score sees it &mdash; batting average
+            and steals both near the top of the pool. But he hit for almost no power and almost
+            never walked, two whole categories deep in the red, and his real defensive value was
+            arm and range, which fielding percentage barely registers. His nine seasons in Japan
+            aren't in this data at all: his record here begins at age 27.
+          </p>
+        </article>
+
+        <article class="miss-card">
+          <div class="miss-card__head">
+            <span class="miss-card__rank">#217</span>
+            <span class="miss-card__name">Sammy Sosa</span>
+            <span class="miss-card__meta">RF &middot; 1989&ndash;2007 &middot; CHC</span>
+          </div>
+          <p class="miss-card__hl"><b>.273</b> AVG &middot; <b>128</b> OPS+ &middot; <b>609</b> HR &middot; <b>2,408</b> H &middot; <b>234</b> SB &middot; <b>58.6</b> bWAR</p>
+          <div class="miss-card__z">
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="left:50%;width:0.6%"></span></span><span class="saa-card__zval flat">+0.05</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:20%"></span></span><span class="saa-card__zval pos">+1.60</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="left:50%;width:0.6%"></span></span><span class="saa-card__zval flat">+0.05</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:2.1%"></span></span><span class="saa-card__zval pos">+0.17</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:5.3%"></span></span><span class="saa-card__zval neg">-0.42</span></div>
+          </div>
+          <p class="miss-card__diag">
+            Elite power (ISO +1.60) and nothing else above the line. League-average bat-to-ball,
+            league-average plate discipline, a below-average glove. The 609 home runs are a
+            counting stat; SAA only sees power <i>rate</i> against a high-offense era, so one
+            great category out of five nets out to a hair above average.
+          </p>
+        </article>
+      </div>
+
+      <p class="missing__close">
+        The contrast is <b>Lou Whitaker, 166th</b> &mdash; a second baseman a little above average
+        at all five things and never great at any. A formula that averages five categories rewards
+        exactly that shape and punishes the specialist, whether the specialty is power (Sosa) or
+        contact and speed (Ichiro). It's a deliberate trade: this list measures all-around value
+        against your league, not fame or a single towering skill. Ichiro and Sosa are where you
+        can feel the edge of it.
+      </p>
+    </section>
+
     <footer>
       SAA = average of five per-season z-scores (batting average [H/AB], isolated power
       [SLG&minus;AVG], walk rate [BB/PA], stolen-base rate [SB/PA], and defensive value [range runs
@@ -188,6 +258,7 @@
 </footer>
 
 <script src="js/app.js"></script>
+<script src="js/saa-career.js"></script>
 <script src="js/hitters-embed.js"></script>
 <script src="js/nav.js"></script>
 </body>

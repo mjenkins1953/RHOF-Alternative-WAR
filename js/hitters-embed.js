@@ -16,11 +16,65 @@ const saaHeaders = Array.from(document.querySelectorAll('.saa-embed th[data-key]
 let saaSortKey = 'rank';
 let saaSortDir = 1; // 1 asc, -1 desc
 let saaQuery = '';
+const saaExpanded = new Set(); // SAA ranks whose career card is open
 
 function saaFmtZ(z) {
   const cls = z > 0.15 ? 'z-pos' : (z < -0.15 ? 'z-neg' : 'z-flat');
   const txt = (z > 0 ? '+' : '') + z.toFixed(2);
   return `<td class="${cls}">${txt}</td>`;
+}
+
+// One diverging bar in the expanded card: z-score vs. league, origin at 0,
+// magnitude clamped to +/-4 SD for the bar width (the number is exact).
+function saaZBar(label, z) {
+  const cls = z > 0.15 ? 'pos' : (z < -0.15 ? 'neg' : 'flat');
+  const mag = (Math.min(Math.abs(z), 4) / 4) * 50;
+  const side = z >= 0 ? 'left' : 'right';
+  return `<div class="saa-card__zrow">
+      <span class="saa-card__zlabel">${label}</span>
+      <span class="saa-card__ztrack"><span class="saa-card__zfill ${cls}" style="${side}:50%;width:${mag}%"></span></span>
+      <span class="saa-card__zval ${cls}">${z > 0 ? '+' : ''}${z.toFixed(2)}</span>
+    </div>`;
+}
+
+function saaCard(d) {
+  const c = SAA_CAREER[d.rank] || {};
+  const dec = v => (v == null ? '—' : v.toFixed(3).replace(/^0/, ''));
+  const int = v => (v == null ? '—' : v.toLocaleString('en-US'));
+  const slash = [
+    ['AVG', dec(c.avg)], ['OBP', dec(c.obp)], ['SLG', dec(c.slg)], ['OPS', dec(c.ops)],
+    ['OPS+', c.opsPlus == null ? '—' : c.opsPlus],
+    ['bWAR', c.war == null ? '—' : c.war.toFixed(1)],
+  ].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join('');
+  const counting = [
+    ['G', c.g], ['H', c.h], ['HR', c.hr], ['RBI', c.rbi],
+    ['R', c.r], ['SB', c.sb], ['BB', c.bb], ['SO', c.so],
+  ].map(([k, v]) => `<span><b>${int(v)}</b> ${k}</span>`).join('');
+  const meta = [c.pos, c.yrs, c.team].filter(Boolean).join(' · ');
+  const nelNote = d.nel
+    ? '<p class="saa-card__note">Recorded Negro Leagues totals. Official league schedules ran far shorter than in the majors and the surviving record is incomplete, so the counting stats read low — SAA qualifies these players on a season-length-normalized standard instead of the 5,000-PA floor.</p>'
+    : '';
+  return `<div class="saa-card">
+      <div class="saa-card__head">
+        <span class="saa-card__rank">#${d.rank}</span>
+        <span class="saa-card__name">${d.name}${d.hof ? ' <span class="hof-star">★</span>' : ''}</span>
+        <span class="saa-card__meta">${meta}</span>
+      </div>
+      <div class="saa-card__slash">${slash}</div>
+      <div class="saa-card__counting">${counting}</div>
+      <div class="saa-card__z">
+        <div class="saa-card__z-head">
+          <span class="saa-card__z-score">Stat Above Average <b>${d.saa > 0 ? '+' : ''}${d.saa.toFixed(2)}</b></span>
+          ${c.qpa ? `<span class="saa-card__z-math">= five-z average (${d.rate > 0 ? '+' : ''}${d.rate.toFixed(3)} per 600 PA) &times; ${c.qpa.toLocaleString('en-US')} qualifying PA &divide; 600</span>` : ''}
+        </div>
+        ${saaZBar('AVG', d.avg)}${saaZBar('ISO', d.iso)}${saaZBar('BB', d.bb)}${saaZBar('SB', d.sb)}${saaZBar('DEF', d.def)}
+      </div>
+      ${nelNote}
+    </div>`;
+}
+
+function saaDetailRow(d) {
+  return `<tr class="saa-detail"><td colspan="11">${saaCard(d)}</td></tr>`;
 }
 
 function saaRender() {
@@ -52,9 +106,10 @@ function saaRender() {
   }
   saaEmptyEl.style.display = 'none';
 
-  saaTbody.innerHTML = sorted.map(d => `
-    <tr>
-      <td class="rank">${d.rank}</td>
+  saaTbody.innerHTML = sorted.map(d => {
+    const open = saaExpanded.has(d.rank);
+    return `<tr class="saa-row${open ? ' is-open' : ''}" data-rank="${d.rank}" tabindex="0" aria-expanded="${open}">
+      <td class="rank"><span class="saa-caret">${open ? '▾' : '▸'}</span>${d.rank}</td>
       <td class="name">${d.name}</td>
       <td>${d.pa.toLocaleString('en-US')}</td>
       <td>${d.seasons}</td>
@@ -65,8 +120,8 @@ function saaRender() {
       ${saaFmtZ(d.sb)}
       ${saaFmtZ(d.def)}
       <td>${d.hof ? '<span class="hof-star">★</span>' : '<span class="hof-dash">—</span>'}</td>
-    </tr>
-  `).join('');
+    </tr>${open ? saaDetailRow(d) : ''}`;
+  }).join('');
 }
 
 saaHeaders.forEach(th => {
@@ -92,5 +147,29 @@ saaSearchInput.addEventListener('input', e => {
   saaRender();
 });
 saaHofToggle.addEventListener('change', saaRender);
+
+// Click (or Enter/Space on a focused row) toggles that player's career card.
+function saaToggleRow(tr) {
+  const rank = Number(tr.dataset.rank);
+  if (saaExpanded.has(rank)) saaExpanded.delete(rank);
+  else saaExpanded.add(rank);
+  saaRender();
+  if (saaExpanded.has(rank)) {
+    const again = saaTbody.querySelector(`tr.saa-row[data-rank="${rank}"]`);
+    if (again) again.focus();
+  }
+}
+
+saaTbody.addEventListener('click', e => {
+  const tr = e.target.closest('tr.saa-row');
+  if (tr) saaToggleRow(tr);
+});
+saaTbody.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const tr = e.target.closest('tr.saa-row');
+  if (!tr) return;
+  e.preventDefault();
+  saaToggleRow(tr);
+});
 
 saaRender();

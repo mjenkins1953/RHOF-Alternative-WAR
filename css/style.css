@@ -183,7 +183,7 @@ a { color: var(--brass-lt); }
 }
 .hero__body {
   font-size: 18px;
-  max-width: 62ch;
+  max-width: none;
   color: var(--paper-dim);
   margin: 0 0 8px;
 }
@@ -388,7 +388,7 @@ a { color: var(--brass-lt); }
   margin: 0 0 8px;
   color: var(--paper);
 }
-.section-lede { color: var(--paper-dim); max-width: 60ch; margin: 0 0 28px; }
+.section-lede { color: var(--paper-dim); max-width: none; margin: 0 0 28px; }
 
 .standards__table {
   display: grid;
@@ -423,7 +423,7 @@ a { color: var(--brass-lt); }
 .formula-desc {
   color: var(--paper-dim);
   font-size: 15px;
-  max-width: 68ch;
+  max-width: none;
   margin: 0;
 }
 .standards__row {

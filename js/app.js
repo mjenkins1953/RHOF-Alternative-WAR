@@ -8,7 +8,6 @@ const state = {
 };
 
 const formulaBox = document.getElementById('formulaBox');
-const heroStrip = document.getElementById('heroStrip');
 
 async function loadData() {
   try {
@@ -21,13 +20,8 @@ async function loadData() {
     state.players.sort((a, b) => b.rhofScore - a.rhofScore);
     state.players.forEach((p, i) => { p.rank = i + 1; });
     renderFormula();
-    renderHeroStrip();
   } catch (err) {
-    heroStrip.innerHTML = `<span>
-      Couldn't load the roster (${escapeHtml(err.message)}).
-      If you're viewing this as a local file, serve it with a local HTTP server
-      (e.g. <code>python3 -m http.server</code>) — browsers block fetch() on file:// URLs.
-    </span>`;
+    console.error('RHOF: could not load player data —', err);
   }
 }
 
@@ -138,17 +132,6 @@ function scorePlayer(p) {
   const rhofScore = (hw.hit * hitScore) + (hw.power * powerScore)
     + (hw.field * fieldScore) + (hw.run * runScore);
   return { ...p, rhofScore, iso, netSbValue, league, posBaseline, hitScore, powerScore, fieldScore, runScore };
-}
-
-function renderHeroStrip() {
-  const total = state.players.length;
-  const pitchers = state.players.filter(p => p.role === 'pitcher').length;
-  const top = state.players[0];
-  heroStrip.innerHTML = `
-    <span><b>${total}</b> players on file (of ${state.capacity} spots)</span>
-    <span><b>${pitchers}</b> pitchers ranked in the same list as hitters</span>
-    <span><b>#1</b> ${escapeHtml(top.name)}, RHOF Score ${top.rhofScore.toFixed(1)}</span>
-  `;
 }
 
 function renderFormula() {
