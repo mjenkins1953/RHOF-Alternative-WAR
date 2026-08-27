@@ -81,7 +81,7 @@ a { color: var(--brass-lt); }
   display: flex;
   gap: 20px;
 }
-.site-head__nav a {
+.site-head__nav button {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
@@ -89,12 +89,19 @@ a { color: var(--brass-lt); }
   text-transform: uppercase;
   text-decoration: none;
   color: var(--paper-dim);
+  background: none;
+  border: none;
   border-bottom: 2px solid transparent;
-  padding-bottom: 2px;
+  padding: 0 0 2px;
+  cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
 }
-.site-head__nav a:hover,
-.site-head__nav a:focus-visible {
+.site-head__nav button:hover,
+.site-head__nav button:focus-visible {
+  color: var(--brass-lt);
+  border-color: var(--brass-lt);
+}
+.site-head__nav button.is-active {
   color: var(--brass-lt);
   border-color: var(--brass-lt);
 }
@@ -338,6 +345,38 @@ a { color: var(--brass-lt); }
   color: var(--paper-dim);
   border: 1px dashed var(--green-line);
   border-radius: 4px;
+}
+
+/* ---------------- Pitchers placeholder view ---------------- */
+.view-soon {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  padding: 56px 0;
+}
+.view-soon[hidden] { display: none; }
+.view-soon__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin: 0 0 18px;
+}
+.view-soon__headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(26px, 4vw, 40px);
+  line-height: 1.1;
+  margin: 0 0 20px;
+  max-width: 16ch;
+  color: var(--paper);
+}
+.view-soon__body {
+  font-size: 16px;
+  max-width: 58ch;
+  color: var(--paper-dim);
+  margin: 0;
 }
 
 /* ---------------- Standards section ---------------- */

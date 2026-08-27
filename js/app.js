@@ -5,11 +5,8 @@ const state = {
   players: [],
   formula: null,
   capacity: 500,
-  role: 'all',
-  sort: 'scoreDesc',
 };
 
-const grid = document.getElementById('plaqueGrid');
 const formulaBox = document.getElementById('formulaBox');
 const heroStrip = document.getElementById('heroStrip');
 
@@ -25,13 +22,12 @@ async function loadData() {
     state.players.forEach((p, i) => { p.rank = i + 1; });
     renderFormula();
     renderHeroStrip();
-    render();
   } catch (err) {
-    grid.innerHTML = `<div class="empty-state">
-      Couldn't load the roster (${escapeHtml(err.message)}).<br>
+    heroStrip.innerHTML = `<span>
+      Couldn't load the roster (${escapeHtml(err.message)}).
       If you're viewing this as a local file, serve it with a local HTTP server
       (e.g. <code>python3 -m http.server</code>) — browsers block fetch() on file:// URLs.
-    </div>`;
+    </span>`;
   }
 }
 
@@ -186,80 +182,5 @@ function renderFormula() {
     <p class="formula-desc">${escapeHtml(state.formula.description)}</p>
   `;
 }
-
-function applyFilters(players) {
-  return players.filter(p => state.role === 'all' || p.role === state.role);
-}
-
-function applySort(players) {
-  const arr = [...players];
-  switch (state.sort) {
-    case 'scoreDesc': return arr.sort((a, b) => b.rhofScore - a.rhofScore);
-    case 'name': return arr.sort((a, b) => a.name.localeCompare(b.name));
-    default: return arr;
-  }
-}
-
-function statLine(p) {
-  if (p.role === 'pitcher') {
-    return `
-      <span><b>${p.stats.wins}-${p.stats.losses}</b>W-L</span>
-      <span><b>${p.stats.era.toFixed(2)}</b>ERA</span>
-      <span><b>${p.stats.so.toLocaleString()}</b>SO</span>
-    `;
-  }
-  return `
-    <span><b>${p.stats.obp.toFixed(3).replace(/^0/, '')}</b>OBP</span>
-    <span><b>${p.stats.slg.toFixed(3).replace(/^0/, '')}</b>SLG</span>
-    <span><b>${p.stats.sb}</b>SB</span>
-  `;
-}
-
-function plaqueCard(p) {
-  const maxScore = state.players[0].rhofScore;
-  const pct = Math.max(4, Math.round((p.rhofScore / maxScore) * 100));
-
-  return `
-    <article class="plaque" data-role="${p.role}">
-      <span class="plaque__flag">#${p.rank}</span>
-      <h3 class="plaque__name">${escapeHtml(p.name)}</h3>
-      <p class="plaque__meta">${escapeHtml(p.position)} · ${escapeHtml(p.team)} · ${escapeHtml(p.years)}</p>
-
-      <div class="plaque__jaws">
-        <span class="plaque__jaws-num">${p.rhofScore.toFixed(1)}</span>
-        <span class="plaque__jaws-label">RHOF Score</span>
-      </div>
-      <div class="plaque__bar-track">
-        <div class="plaque__bar-fill above" style="width:${pct}%"></div>
-      </div>
-      <p class="plaque__bar-caption">${p.role === 'pitcher'
-        ? `WHIP ${p.whip.toFixed(2)} &nbsp;·&nbsp; K/9 ${p.k9.toFixed(1)} &nbsp;·&nbsp; vs league ERA ${p.league.era.toFixed(2)}/WHIP ${p.league.whip.toFixed(2)}`
-        : `Hit ${p.hitScore.toFixed(0)} &nbsp;·&nbsp; Pwr ${p.powerScore.toFixed(0)} &nbsp;·&nbsp; Fld ${p.fieldScore.toFixed(0)} &nbsp;·&nbsp; Run ${p.runScore.toFixed(0)}`}</p>
-
-      <div class="plaque__statline">
-        ${statLine(p)}
-      </div>
-    </article>
-  `;
-}
-
-function render() {
-  const filtered = applyFilters(state.players);
-  const sorted = applySort(filtered);
-  if (sorted.length === 0) {
-    grid.innerHTML = `<div class="empty-state">No one on file matches those filters.</div>`;
-    return;
-  }
-  grid.innerHTML = sorted.map(plaqueCard).join('');
-}
-
-document.getElementById('roleFilter').addEventListener('change', e => {
-  state.role = e.target.value;
-  render();
-});
-document.getElementById('sortBy').addEventListener('change', e => {
-  state.sort = e.target.value;
-  render();
-});
 
 loadData();
