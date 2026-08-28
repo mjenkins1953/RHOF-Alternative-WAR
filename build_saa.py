@@ -51,6 +51,21 @@ HERE = Path(__file__).parent
 SEASON_PA_FLOOR = 200
 SEASON_GAMES_FLOOR = 50
 CAREER_PA_FLOOR = 5000
+
+# --- SAA scoring knobs -------------------------------------------------
+# The five categories were equal-weight (0.20 each) through the first
+# builds. Walks are now dialed back: a walks-only bat (Gene Tenace) could
+# ride that one category into the list while all-around 18-year regulars
+# (Tony Gwynn) fell just short.
+SAA_WEIGHTS = {"z_AVG": 0.22, "z_ISO": 0.22, "z_BB": 0.12, "z_SB": 0.22, "z_DEF": 0.22}
+
+# Peak: a player's best PEAK_N single seasons of SAA value. The ranking
+# metric is JAWS-style -- the average of career total and peak total -- so
+# a short, dominant career (Kiner, Greenberg, a banned Joe Jackson) is
+# scored on its best years instead of being buried under compilers, and a
+# thin-but-long career (Tenace, Figgins) gets no rescue because its best
+# seven seasons ARE basically its whole career.
+PEAK_N = 7
 SHRINK_K_SEASON = 1200  # ~133 innings; regresses partial-season defensive
                         # samples toward zero without crushing a full season
                         # (Bat & Glove WAR uses 8000 for CAREER totals --
@@ -243,7 +258,16 @@ def main():
     # noisy z score.
     qseason = hseason[hseason["PA"] >= SEASON_PA_FLOOR].copy()
     qseason.loc[qseason["G"] < SEASON_GAMES_FLOOR, "z_DEF"] = np.nan
-    qseason["z_composite"] = qseason[["z_AVG", "z_ISO", "z_BB", "z_SB", "z_DEF"]].mean(axis=1, skipna=True)
+    # weighted composite, renormalised over whichever categories that season
+    # actually has (a handful of 19th-c seasons have no SB spread, a
+    # part-time fielder has no z_DEF)
+    _zc = list(SAA_WEIGHTS)
+    _w = pd.Series(SAA_WEIGHTS)
+    qseason["z_composite"] = (
+        qseason[_zc].mul(_w).sum(axis=1, min_count=1)
+        / qseason[_zc].notna().mul(_w).sum(axis=1).replace(0, np.nan)
+    )
+    qseason["season_saa"] = qseason["z_composite"] * qseason["PA"] / 600.0
 
     def wavg_skipna(vals, w):
         # A handful of 19th-century seasons have no defined league spread
@@ -258,17 +282,17 @@ def main():
 
     def weighted(d):
         w = d["PA"]
+        s = d["season_saa"].dropna()
+        total = s.sum()                                   # career total (compiler-friendly)
+        peak = s.sort_values(ascending=False).head(PEAK_N).sum()   # best PEAK_N seasons
         return pd.Series({
-            # SAA_total: a career TOTAL, not an average -- each qualifying
-            # season adds z_composite scaled to "per 600 PA" to the career
-            # sum. Rewards accumulating many above-average seasons (a
-            # compiling, long-career Hall case), the same way real WAR/RAA
-            # totals do, without borrowing any run-value currency -- just
-            # addition instead of averaging. This is the ranking metric.
-            "SAA_total": (d["z_composite"] * d["PA"] / 600.0).sum(),
-            # SAA_rate: the old PA-weighted AVERAGE -- quality per PA,
-            # kept only as context (peak vs. compiler at a glance), not
-            # used for ranking.
+            # SAA_final: the ranking metric. JAWS-style blend of the career
+            # total and the peak total, so length and dominance both count.
+            "SAA_final": (total + peak) / 2.0,
+            "SAA_total": total,
+            "SAA_peak": peak,
+            # SAA_rate: PA-weighted average season composite -- quality per
+            # PA, kept as context only.
             "SAA_rate": wavg_skipna(d["z_composite"], w),
             "z_AVG_career": wavg_skipna(d["z_AVG"], w),
             "z_ISO_career": wavg_skipna(d["z_ISO"], w),
@@ -293,10 +317,11 @@ def main():
         career["is_negro_leaguer"] & (career["season_equivalents"] >= NEL_SEASON_EQUIV_FLOOR)
     )
     pool = career[qualifies].copy()
-    pool = pool.sort_values("SAA_total", ascending=False).reset_index(drop=True)
+    pool = pool.sort_values("SAA_final", ascending=False).reset_index(drop=True)
     pool["rank_saa"] = pool.index + 1
 
-    out_cols = ["rank_saa", "playerID", "name", "career_PA", "qualifying_seasons", "SAA_total", "SAA_rate",
+    out_cols = ["rank_saa", "playerID", "name", "career_PA", "qualifying_seasons",
+                "SAA_final", "SAA_total", "SAA_peak", "SAA_rate",
                 "z_AVG_career", "z_ISO_career", "z_BB_career", "z_SB_career", "z_DEF_career", "real_WAR",
                 "is_negro_leaguer", "season_equivalents"]
     pool[out_cols].to_csv(HERE / "saa_full.csv", index=False)
@@ -321,7 +346,7 @@ def main():
             r = row.iloc[0]
             via = " [via NeL carve-out]" if (r["is_negro_leaguer"] and r["career_PA"] < CAREER_PA_FLOOR) else ""
             print(f"{name}: rank {int(r['rank_saa'])} of {len(pool)}{via}  "
-                  f"(SAA_total={r['SAA_total']:.2f}, SAA_rate={r['SAA_rate']:.3f}, "
+                  f"(SAA_final={r['SAA_final']:.2f} [total={r['SAA_total']:.2f}, peak={r['SAA_peak']:.2f}], "
                   f"AVG={r['z_AVG_career']:.2f} ISO={r['z_ISO_career']:.2f} BB={r['z_BB_career']:.2f} "
                   f"SB={r['z_SB_career']:.2f} DEF={r['z_DEF_career']:.2f}, seasons={int(r['qualifying_seasons'])})")
 

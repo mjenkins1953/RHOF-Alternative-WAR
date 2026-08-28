@@ -2,12 +2,12 @@
 
 Produces:
   - saa_top_300_hitters.csv         (top 300 slice)
-  - js/hitters-embed.js  SAA_DATA    (300 rows: rank/name/pa/seasons/saa/rate/z*/hof/nel)
+  - js/hitters-embed.js  SAA_DATA    (300 rows: rank/name/pa/seasons/saa/total/peak/z*/hof/nel)
   - js/saa-career.js     SAA_CAREER  (career box-score line per rank, 1..300)
 
-saa_full.csv is the committed full ranked pool from build_saa.py; taking the
-top N from it reproduces the previously-committed numbers exactly (no pipeline
-drift). Bump N here (and build_saa.py's tail) to change the list length.
+saa_full.csv is the ranked pool from build_saa.py (SAA_final = the JAWS-style
+average of career total and best-7-season peak, weighted z's). Bump N here and
+build_saa.py's tail to change the list length.
 """
 import csv
 import json
@@ -43,8 +43,9 @@ for r in top:
         "name": r["name"],
         "pa": int(round(float(r["career_PA"]))),
         "seasons": int(round(float(r["qualifying_seasons"]))),
-        "saa": round(float(r["SAA_total"]), 2),
-        "rate": round(float(r["SAA_rate"]), 3),
+        "saa": round(float(r["SAA_final"]), 2),
+        "total": round(float(r["SAA_total"]), 2),
+        "peak": round(float(r["SAA_peak"]), 2),
         "avg": round(float(r["z_AVG_career"]), 2),
         "iso": round(float(r["z_ISO_career"]), 2),
         "bb": round(float(r["z_BB_career"]), 2),
@@ -94,12 +95,19 @@ posg = fld.groupby(["playerID", "POS"])["G"].sum().reset_index()
 primary = posg.sort_values("G").groupby("playerID").tail(1).set_index("playerID")["POS"]
 fld_games = fld.groupby("playerID")["G"].sum()
 
+# war_daily_bat keys on the BBRef id -- differs from the Lahman playerID for
+# a handful of players (sabatcc01 -> sabatc.01 etc.); People.csv bridges them.
+bbref = pd.read_csv(HERE / "People.csv").set_index("playerID")["bbrefID"].to_dict()
+bbref_ids = {bbref.get(i, i) for i in ids}
+lahman_of = {bbref.get(i, i): i for i in ids}
+
 war = pd.read_csv(HERE / "war_daily_bat.txt")
 war["WAR"] = pd.to_numeric(war["WAR"], errors="coerce").fillna(0)
 war["PA"] = pd.to_numeric(war["PA"], errors="coerce").fillna(0)
 war["G"] = pd.to_numeric(war["G"], errors="coerce").fillna(0)
 war["OPS_plus"] = pd.to_numeric(war["OPS_plus"], errors="coerce")
-w = war[war["player_ID"].isin(ids)]
+w = war[war["player_ID"].isin(bbref_ids)].copy()
+w["player_ID"] = w["player_ID"].map(lambda x: lahman_of.get(x, x))  # back to Lahman ids
 war_tot = w.groupby("player_ID")["WAR"].sum()
 team = (w.groupby(["player_ID", "team_ID"])["G"].sum().reset_index()
         .sort_values("G").groupby("player_ID").tail(1).set_index("player_ID")["team_ID"])
@@ -149,13 +157,22 @@ for _, row in top_df.iterrows():
 print(f"js/saa-career.js: SAA_CAREER -> {len(out)} players")
 
 # ---- career lines for whoever now just misses the cut (the "leaves out" writeup) ----
-just_miss = [r["name"] for r in full[N:N + 12]]
-bb = bat[bat["playerID"].isin({r["playerID"] for r in full if r["name"] in just_miss})]
+just_miss = [r["name"] for r in full[N:N + 20]]
+_jm_ids = {r["playerID"] for r in full if r["name"] in just_miss}
+bb = pd.read_csv(HERE / "Batting.csv")
+for c in num:
+    bb[c] = pd.to_numeric(bb[c], errors="coerce").fillna(0)
+bb = bb[bb["playerID"].isin(_jm_ids)]
+_jm_war = pd.read_csv(HERE / "war_daily_bat.txt")
+_jm_war["WAR"] = pd.to_numeric(_jm_war["WAR"], errors="coerce").fillna(0)
+_jm_war["PA"] = pd.to_numeric(_jm_war["PA"], errors="coerce").fillna(0)
+_jm_war["OPS_plus"] = pd.to_numeric(_jm_war["OPS_plus"], errors="coerce")
+_jm_war["player_ID"] = _jm_war["player_ID"].map({v: k for k, v in bbref.items()}).fillna(_jm_war["player_ID"])
 for name in just_miss:
     prow = next(r for r in full if r["name"] == name)
     d = bb[bb["playerID"] == prow["playerID"]]
     ab, h = d["AB"].sum(), d["H"].sum()
-    ww = war[war["player_ID"] == prow["playerID"]]
+    ww = _jm_war[_jm_war["player_ID"] == prow["playerID"]]
     m = ww["OPS_plus"].notna() & (ww["PA"] > 0)
     op = round(float(np.average(ww.loc[m, "OPS_plus"], weights=ww.loc[m, "PA"]))) if m.any() else None
     print(f"#{prow['rank_saa']:>3} {name:<20} AVG {h/ab:.3f}  OPS+ {op}  H {int(h)}  "

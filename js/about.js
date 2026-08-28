@@ -3,8 +3,8 @@
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.007';
-const RHOF_BUILD = '2026.08.28.007';
+const RHOF_VERSION = '1.008';
+const RHOF_BUILD = '2026.08.28.008';
 
 (function () {
   const modal = document.getElementById('aboutModal');
