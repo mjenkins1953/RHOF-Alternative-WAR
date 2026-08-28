@@ -3,79 +3,212 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pitchers — Coming Soon | The REAL Hall of Fame</title>
+<title>Top 200 Pitchers by Stat Above Average | The REAL Hall of Fame</title>
+<meta name="description" content="The REAL Hall of Fame's pitchers list, ranked by Stat Above Average — every pitcher-season scored against its own league on ERA, WHIP, strikeout rate, winning percentage, and saves.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<style>
-  .soon {
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 64px 0;
-  }
-  .soon__eyebrow {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--brass);
-    margin: 0 0 18px;
-  }
-  .soon__headline {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(28px, 4.5vw, 46px);
-    line-height: 1.08;
-    margin: 0 0 20px;
-    max-width: 16ch;
-    color: var(--paper);
-  }
-  .soon__body {
-    font-size: 17px;
-    max-width: 58ch;
-    color: var(--paper-dim);
-    margin: 0 0 32px;
-  }
-  .soon__back {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    letter-spacing: 0.04em;
-  }
-</style>
+<link rel="stylesheet" href="css/hitters-embed.css">
 </head>
 <body>
 
 <header class="site-head">
   <div class="wrap site-head__inner">
-    <div class="site-head__left">
-      <a href="index.html" class="mark">
-        <span class="mark__stitch">⚾</span>
-        <span class="mark__text">THE REAL HALL OF FAME</span>
-      </a>
-      <nav class="site-head__nav" aria-label="Position lists">
-        <a href="hitters.html">Hitters</a>
-        <a href="pitchers.html">Pitchers <span class="site-head__soon">soon</span></a>
-      </nav>
-    </div>
-    <p class="site-head__tag">500 players. One formula.<br>No ballots, no committees.</p>
+    <a href="index.html" class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE REAL HALL OF FAME</span>
+    </a>
+    <p class="site-head__tag">Real stats. One formula.<br>No ballots. No committees.</p>
   </div>
 </header>
 
-<main class="wrap">
-  <section class="soon">
-    <p class="soon__eyebrow">Pitchers list — under construction</p>
-    <h1 class="soon__headline">The mound gets its own ledger next.</h1>
-    <p class="soon__body">
-      The hitters list is built the same way this one will be — every pitcher scored only
-      against the league they actually pitched in, no era-crossing shortcuts. It isn't ready
-      yet, so there's nothing to rank prematurely.
-    </p>
-    <p class="soon__back"><a href="index.html">&larr; Back to The REAL Hall of Fame</a></p>
-  </section>
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <a href="hitters.html" class="site-menu__link">Hitters</a>
+    <a href="pitchers.html" class="site-menu__link is-active">Pitchers</a>
+    <a href="index.html#methodology" class="site-menu__link">Methodology</a>
+    <a href="index.html#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
+
+<main>
+<section class="saa-embed" id="view-pitchers">
+  <div class="wrap">
+
+    <header class="board">
+      <div class="eyebrow">RHOF Alternative War — pitchers, part two of two</div>
+      <h1>Top 200 Pitchers by <em>Stat Above Average</em></h1>
+      <p class="dek">
+        The mound version of the hitters list. No borrowed run values, no replacement level:
+        every pitcher is scored only against <b>the actual league average and spread of their own
+        season</b>, on five things straight off the back of a baseball card — ERA, WHIP, strikeout
+        rate, winning percentage, and saves.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><span class="num">1,255</span><span class="lbl">qualifying pool</span></div>
+        <div class="stat"><span class="num">200</span><span class="lbl">shown here</span></div>
+        <div class="stat"><span class="num">1,000+</span><span class="lbl">career IP minimum</span></div>
+        <div class="stat"><span class="num">70 / 200</span><span class="lbl">also in Cooperstown</span></div>
+      </div>
+      <p class="explainer">
+        <b>What's a Stat Above Average?</b> Each pitcher-season is compared only to that season's own
+        league average and spread — a 1913 season is judged against 1913, a 2019 season against
+        2019. The five stats are each converted to a z-score, then blended with the weights from
+        this site's <b>RHOF Score</b> — 25% ERA, 25% WHIP, 20% strikeout rate, 20% winning
+        percentage, 10% saves — into one number for the season. (ERA and WHIP are flipped, so a
+        lower-than-league mark is a positive z.) Those season numbers are then <b>summed across
+        every qualifying season</b>, each scaled to a 200-inning workload, so a long steady career
+        and a short dominant one can both add up to a genuine case.
+      </p>
+      <p class="explainer">
+        <b>The five aren't weighted equally</b> — the hitters list does that; this one follows the
+        RHOF formula. ERA and WHIP carry half the score between them because preventing runs and
+        baserunners is the job. Strikeout rate is the one bat-missing skill on every stat sheet.
+        Winning percentage and saves round it out at the lowest weights.
+      </p>
+      <p class="explainer">
+        Winning percentage and saves both lean on the team around the pitcher — run support, the
+        bullpen behind him, whether his manager used him to close. They're in the score because
+        they're in the RHOF formula, but they do the least work: where this list and Cooperstown
+        disagree, it's usually because a pitcher's ERA and WHIP say something his win total
+        doesn't. The <b>HOF</b> column marks pitchers already voted into Cooperstown.
+      </p>
+    </header>
+
+    <div class="controls">
+      <div class="search">
+        <input id="saaQ" type="text" placeholder="Find a pitcher…" autocomplete="off">
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="saaHofOnly">
+        Hall of Famers only
+      </label>
+      <div class="legend">
+        <span><span class="hof-star">★</span> already in Cooperstown</span>
+      </div>
+    </div>
+
+    <div class="count" id="saaCount"></div>
+
+    <div class="table-shell">
+      <table>
+        <thead>
+          <tr>
+            <th data-key="rank" class="sorted">Rank<span class="arrow">▲</span></th>
+            <th data-key="name" class="name-col">Pitcher<span class="arrow">▲</span></th>
+            <th data-key="ip">IP<span class="arrow">▲</span></th>
+            <th data-key="seasons">Seasons<span class="arrow">▲</span></th>
+            <th data-key="saa">SAA<span class="arrow">▲</span></th>
+            <th data-key="era">ERA z<span class="arrow">▲</span></th>
+            <th data-key="whip">WHIP z<span class="arrow">▲</span></th>
+            <th data-key="k9">K/9 z<span class="arrow">▲</span></th>
+            <th data-key="wpct">WIN% z<span class="arrow">▲</span></th>
+            <th data-key="sv">SV z<span class="arrow">▲</span></th>
+            <th data-key="hof">HOF<span class="arrow">▲</span></th>
+          </tr>
+        </thead>
+        <tbody id="saaRows"></tbody>
+      </table>
+      <div class="empty" id="saaEmpty" style="display:none;">No pitchers match "<span id="saaQEcho"></span>".</div>
+    </div>
+
+    <section class="missing" aria-labelledby="missing-h">
+      <p class="eyebrow">Where the list and your gut disagree</p>
+      <h2 id="missing-h">Two it leaves out</h2>
+      <p class="missing__lede">
+        Tom Glavine and Mark Buehrle both have Hall-of-Fame win totals and 3,000-plus innings, and
+        the list leaves out both — Glavine 212th, Buehrle 712th. The score is built almost entirely
+        from rate stats, and it rewards missing bats. Neither of them did.
+      </p>
+
+      <div class="missing__grid">
+        <article class="miss-card">
+          <div class="miss-card__head">
+            <span class="miss-card__rank">#212</span>
+            <span class="miss-card__name">Tom Glavine</span>
+            <span class="miss-card__meta">Starter &middot; 1987&ndash;2008 &middot; ATL</span>
+          </div>
+          <p class="miss-card__hl"><b>305&ndash;203</b> &middot; <b>3.54</b> ERA &middot; <b>1.31</b> WHIP &middot; <b>122</b> ERA+ &middot; <b>74.0</b> bWAR</p>
+          <div class="miss-card__z">
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">ERA</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:6.4%"></span></span><span class="saa-card__zval pos">+0.51</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">WHIP</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:3.0%"></span></span><span class="saa-card__zval pos">+0.24</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">K/9</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:6.6%"></span></span><span class="saa-card__zval neg">-0.53</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">WIN%</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:7.6%"></span></span><span class="saa-card__zval pos">+0.61</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">SV</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:4.8%"></span></span><span class="saa-card__zval neg">-0.38</span></div>
+          </div>
+          <p class="miss-card__diag">
+            Two Cy Youngs and 305 wins, but the profile is "good, never overpowering" — a
+            below-average strikeout rate and a WHIP barely above the line. Winning percentage is his
+            best category and it's the softest input in the formula. Twenty-two seasons of it, and
+            the per-inning edge is still thin: 212th.
+          </p>
+        </article>
+
+        <article class="miss-card">
+          <div class="miss-card__head">
+            <span class="miss-card__rank">#712</span>
+            <span class="miss-card__name">Mark Buehrle</span>
+            <span class="miss-card__meta">Starter &middot; 2000&ndash;2015 &middot; CHW</span>
+          </div>
+          <p class="miss-card__hl"><b>214&ndash;160</b> &middot; <b>3.81</b> ERA &middot; <b>1.28</b> WHIP &middot; <b>118</b> ERA+ &middot; <b>60.0</b> bWAR</p>
+          <div class="miss-card__z">
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">ERA</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:2.6%"></span></span><span class="saa-card__zval pos">+0.21</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">WHIP</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:3.0%"></span></span><span class="saa-card__zval pos">+0.24</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">K/9</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:11.8%"></span></span><span class="saa-card__zval neg">-0.94</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">WIN%</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:5.6%"></span></span><span class="saa-card__zval pos">+0.45</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">SV</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:4.4%"></span></span><span class="saa-card__zval neg">-0.35</span></div>
+          </div>
+          <p class="miss-card__diag">
+            The platonic innings-eater — 200-plus innings a year for over a decade, a perfect game
+            and a no-hitter. But a strikeout rate <b>a full standard deviation</b> below his era, and
+            ERA and WHIP only a hair better than league. Durability the score barely credits;
+            bat-missing it prizes. It nets out just below average: 712th.
+          </p>
+        </article>
+      </div>
+
+      <p class="missing__close">
+        The contrast is <b>Don Sutton, 28th</b> — 324 wins across 23 years, never a Cy Young, never
+        an ERA title, "just" two decades of reliably better-than-average innings that add up. A
+        rate-based score rewards that shape when the volume is there and the rates stay above the
+        line — and drops you fast when they don't, which is where Glavine and Buehrle land.
+      </p>
+    </section>
+
+    <footer>
+      SAA = weighted blend of five per-season z-scores (ERA, WHIP [(H&plus;BB)/IP], strikeout rate
+      [SO&times;9/IP], winning percentage [W/(W&plus;L)], and save count) against that season's
+      league mean and spread among 50+ IP pitchers — weights 25 / 25 / 20 / 20 / 10, ERA and WHIP
+      inverted so lower is a positive z — summed across every 40+ IP season of a 1,000+ career-IP
+      pitcher, each season scaled to a 200-inning workload. Source: Lahman pitching data (through
+      2021); Baseball-Reference WAR and ERA+; Hall of Fame membership current through the 2026
+      induction class.
+    </footer>
+
+  </div>
+</section>
 </main>
 
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Career W-L / ERA / WHIP / SO / SV figures sourced from Lahman pitching data (through 2021);
+      WAR and ERA+ from Baseball-Reference. The pitcher weighting (25% ERA, 25% WHIP, 20% K/9,
+      20% Win%, 10% Saves) is the RHOF Score's own, shown on the home page.</p>
+  </div>
+</footer>
+
+<dialog class="about-modal" id="aboutModal">
+  <div class="about-modal__inner">
+    <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
+    <p class="about-modal__eyebrow">About</p>
+    <h2 class="about-modal__title">The Real Hall of Fame</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.005</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.005</span></p>
+  </div>
+</dialog>
+
+<script src="js/pitchers-career.js"></script>
+<script src="js/pitchers-embed.js"></script>
+<script src="js/about.js"></script>
 </body>
 </html>

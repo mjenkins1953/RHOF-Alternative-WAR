@@ -9,3 +9,6 @@ war_daily_pitch.txt
 *.mdb
 __pycache__/
 .DS_Store
+
+# Lahman pitching (from the same mirror as the others), through 2021
+Pitching.csv

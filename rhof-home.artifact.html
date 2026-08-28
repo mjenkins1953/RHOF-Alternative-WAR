@@ -1168,7 +1168,7 @@ a { color: var(--brass-lt); }
 <nav class="site-menu" aria-label="Site sections">
   <div class="wrap site-menu__inner">
     <a href="#view-hitters" class="site-menu__link">Hitters</a>
-    <button type="button" data-view="pitchers" class="site-menu__link">Pitchers <span class="site-menu__soon">soon</span></button>
+    <a href="#" class="site-menu__link" aria-disabled="true">Pitchers</a>
     <a href="#methodology" class="site-menu__link">Methodology</a>
     <a href="#about" class="site-menu__link site-menu__link--right">About</a>
   </div>
@@ -1393,18 +1393,6 @@ a { color: var(--brass-lt); }
 
   </div>
 </section>
-
-<section class="view-soon" id="view-pitchers" hidden>
-  <div class="wrap">
-    <p class="view-soon__eyebrow">Pitchers list — under construction</p>
-    <h2 class="view-soon__headline">The mound gets its own ledger next.</h2>
-    <p class="view-soon__body">
-      The hitters list is built the same way this one will be — every pitcher scored only
-      against the league they actually pitched in, no era-crossing shortcuts. It isn't ready
-      yet, so there's nothing to rank prematurely.
-    </p>
-  </div>
-</section>
 </main>
 
 <section class="standards" id="methodology">
@@ -1444,8 +1432,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.004</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.004</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.005</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.005</span></p>
   </div>
 </dialog>
 
@@ -1807,30 +1795,13 @@ saaRender();
 
 </script>
 <script>
-// Home page: the Pitchers button reveals or hides the "coming soon" panel.
-// Hitters has its own page (hitters.html), reached via the menu link.
-
-const pitchersBtn = document.querySelector('.site-menu [data-view="pitchers"]');
-const pitchersView = document.getElementById('view-pitchers');
-
-if (pitchersBtn && pitchersView) {
-  pitchersBtn.addEventListener('click', () => {
-    const show = pitchersView.hidden;
-    pitchersView.hidden = !show;
-    pitchersBtn.classList.toggle('is-active', show);
-    if (show) pitchersView.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-}
-
-</script>
-<script>
 // About dialog — opened from the "About" menu link on every page.
 // Bump both counters by .001 on every commit + push:
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.004';
-const RHOF_BUILD = '2026.08.27.004';
+const RHOF_VERSION = '1.005';
+const RHOF_BUILD = '2026.08.27.005';
 
 (function () {
   const modal = document.getElementById('aboutModal');
