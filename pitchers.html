@@ -45,15 +45,15 @@
         rate, winning percentage, and saves.
       </p>
       <div class="stat-row">
-        <div class="stat"><span class="num">1,255</span><span class="lbl">qualifying pool</span></div>
+        <div class="stat"><span class="num">1,319</span><span class="lbl">qualifying pool</span></div>
         <div class="stat"><span class="num">200</span><span class="lbl">shown here</span></div>
         <div class="stat"><span class="num">1,000+</span><span class="lbl">career IP minimum</span></div>
-        <div class="stat"><span class="num">70 / 200</span><span class="lbl">also in Cooperstown</span></div>
+        <div class="stat"><span class="num">73 / 200</span><span class="lbl">also in Cooperstown</span></div>
       </div>
       <p class="explainer">
         <b>What's a Stat Above Average?</b> Each pitcher-season is compared only to that season's own
-        league average and spread — a 1913 season is judged against 1913, a 2019 season against
-        2019. The five stats are each converted to a z-score, then blended with the weights from
+        league average and spread — a 1913 season is judged against 1913, a 2024 season against
+        2024. The five stats are each converted to a z-score, then blended with the weights from
         this site's <b>RHOF Score</b> — 25% ERA, 25% WHIP, 20% strikeout rate, 20% winning
         percentage, 10% saves — into one number for the season. (ERA and WHIP are flipped, so a
         lower-than-league mark is a positive z.) Those season numbers are then <b>summed across
@@ -72,6 +72,12 @@
         they're in the RHOF formula, but they do the least work: where this list and Cooperstown
         disagree, it's usually because a pitcher's ERA and WHIP say something his win total
         doesn't. The <b>HOF</b> column marks pitchers already voted into Cooperstown.
+      </p>
+      <p class="explainer">
+        <b>Negro Leagues pitchers are in the pool</b> and scored the same way — Satchel Paige,
+        Bullet Rogan, and Willie Foster all land inside the top 50. Unlike the hitters list, there's
+        no shortened-schedule carve-out yet, so an arm whose surviving record falls short of 1,000
+        innings (Smokey Joe Williams, Bill Foster) is left out for now.
       </p>
     </header>
 
@@ -117,14 +123,14 @@
       <h2 id="missing-h">Two it leaves out</h2>
       <p class="missing__lede">
         Tom Glavine and Mark Buehrle both have Hall-of-Fame win totals and 3,000-plus innings, and
-        the list leaves out both — Glavine 212th, Buehrle 712th. The score is built almost entirely
+        the list leaves out both — Glavine 215th, Buehrle 750th. The score is built almost entirely
         from rate stats, and it rewards missing bats. Neither of them did.
       </p>
 
       <div class="missing__grid">
         <article class="miss-card">
           <div class="miss-card__head">
-            <span class="miss-card__rank">#212</span>
+            <span class="miss-card__rank">#215</span>
             <span class="miss-card__name">Tom Glavine</span>
             <span class="miss-card__meta">Starter &middot; 1987&ndash;2008 &middot; ATL</span>
           </div>
@@ -140,13 +146,13 @@
             Two Cy Youngs and 305 wins, but the profile is "good, never overpowering" — a
             below-average strikeout rate and a WHIP barely above the line. Winning percentage is his
             best category and it's the softest input in the formula. Twenty-two seasons of it, and
-            the per-inning edge is still thin: 212th.
+            the per-inning edge is still thin: 215th.
           </p>
         </article>
 
         <article class="miss-card">
           <div class="miss-card__head">
-            <span class="miss-card__rank">#712</span>
+            <span class="miss-card__rank">#750</span>
             <span class="miss-card__name">Mark Buehrle</span>
             <span class="miss-card__meta">Starter &middot; 2000&ndash;2015 &middot; CHW</span>
           </div>
@@ -162,7 +168,7 @@
             The platonic innings-eater — 200-plus innings a year for over a decade, a perfect game
             and a no-hitter. But a strikeout rate <b>a full standard deviation</b> below his era, and
             ERA and WHIP only a hair better than league. Durability the score barely credits;
-            bat-missing it prizes. It nets out just below average: 712th.
+            bat-missing it prizes. It nets out just below average: 750th.
           </p>
         </article>
       </div>
@@ -180,9 +186,9 @@
       [SO&times;9/IP], winning percentage [W/(W&plus;L)], and save count) against that season's
       league mean and spread among 50+ IP pitchers — weights 25 / 25 / 20 / 20 / 10, ERA and WHIP
       inverted so lower is a positive z — summed across every 40+ IP season of a 1,000+ career-IP
-      pitcher, each season scaled to a 200-inning workload. Source: Lahman pitching data (through
-      2021); Baseball-Reference WAR and ERA+; Hall of Fame membership current through the 2026
-      induction class.
+      pitcher, each season scaled to a 200-inning workload. Source: the Lahman database's Pitching
+      table (2025 release, majors and Negro Major Leagues); Baseball-Reference WAR and ERA+; Hall
+      of Fame membership current through the 2026 induction class.
     </footer>
 
   </div>
@@ -191,7 +197,7 @@
 
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
-    <p>Career W-L / ERA / WHIP / SO / SV figures sourced from Lahman pitching data (through 2021);
+    <p>Career W-L / ERA / WHIP / SO / SV figures sourced from the Lahman database (2025 release);
       WAR and ERA+ from Baseball-Reference. The pitcher weighting (25% ERA, 25% WHIP, 20% K/9,
       20% Win%, 10% Saves) is the RHOF Score's own, shown on the home page.</p>
   </div>
@@ -202,8 +208,8 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.005</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.005</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.006</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.006</span></p>
   </div>
 </dialog>
 

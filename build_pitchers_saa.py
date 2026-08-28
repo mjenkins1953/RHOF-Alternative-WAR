@@ -21,8 +21,10 @@ Qualifying pool: 1,000+ career IP. Season counts toward the career total
 if it cleared 40 IP; the league spread each year is measured from 50+ IP
 seasons so tiny samples don't inflate it.
 
-Source: Lahman Pitching.csv (through 2021) + Baseball-Reference war_daily_pitch
-for WAR/ERA+. HoF membership from HallOfFame.csv.
+Source: the Pitching table read straight out of lahman_2025.mdb (through
+2025) via access-parser, so it matches the 2025 hitter data. Plus
+Baseball-Reference war_daily_pitch for WAR/ERA+, and HallOfFame.csv.
+Requires: pandas, access-parser  (pip install pandas access-parser)
 """
 import csv
 import numpy as np
@@ -30,6 +32,9 @@ import pandas as pd
 from pathlib import Path
 
 HERE = Path(__file__).parent
+MDB = HERE / "lahman_2025.mdb"
+
+
 SEASON_IP_FLOOR = 40      # a season must clear this to count toward career SAA
 SPREAD_IP_FLOOR = 50      # league SD each year measured from seasons over this
 DECISIONS_FLOOR = 5       # Win% z only counts for seasons with >= this many W+L
@@ -38,12 +43,27 @@ IP_NORM = 200.0           # "one full starter season" -- the per-season scale
 
 WEIGHTS = {"era": 0.25, "whip": 0.25, "k9": 0.20, "wpct": 0.20, "sv": 0.10}
 
+# recognised major leagues + the Negro Major Leagues (MLB, 2020). Everything
+# else in the Lahman file (EAS, WES, IND, INT, NAC) is minor/independent and
+# is dropped so it neither qualifies compilers nor skews the league baselines.
+MAJOR_LGS = {"AL", "NL", "AA", "FL", "PL", "NA", "UA"}
+NEGRO_LGS = {"NN1", "NN2", "NNL", "NAL", "ECL", "EWL", "ANL", "NSL"}
+
+
+def load_pitching() -> pd.DataFrame:
+    """Pitching table out of the Access DB, majors + Negro Majors only."""
+    from access_parser import AccessParser
+    tbl = AccessParser(str(MDB)).parse_table("Pitching")
+    df = pd.DataFrame({k: list(v) for k, v in tbl.items()})
+    return df[df["lgID"].isin(MAJOR_LGS | NEGRO_LGS)].copy()
+
 
 def main():
-    p = pd.read_csv(HERE / "Pitching.csv")
+    p = load_pitching()
     for c in ["W", "L", "G", "GS", "SV", "IPouts", "H", "ER", "BB", "SO"]:
         p[c] = pd.to_numeric(p[c], errors="coerce").fillna(0)
     p["yearID"] = pd.to_numeric(p["yearID"], errors="coerce")
+    p["lgID"] = p["lgID"].fillna("UNK")
 
     # primary league for the season (most outs pitched)
     lg_lookup = (p.groupby(["playerID", "yearID", "lgID"])["IPouts"].sum().reset_index()
@@ -145,12 +165,15 @@ def main():
         return float(np.average(d.loc[m, "ERA_plus"], weights=d.loc[m, "IPouts"]))
     eplus = war.groupby("player_ID").apply(weighted_eraplus).rename("ERA_plus")
 
-    people = pd.read_csv(HERE / "People.csv")[["playerID", "nameFirst", "nameLast"]]
+    # war_daily_pitch keys on the BBRef id, which differs from the Lahman
+    # playerID for a handful of pitchers (sabatcc01 -> sabatc.01, etc.);
+    # People.csv's bbrefID bridges them.
+    people = pd.read_csv(HERE / "People.csv")[["playerID", "nameFirst", "nameLast", "bbrefID"]]
 
     df = (car.merge(tot, on="playerID")
              .merge(people, on="playerID", how="left")
-             .merge(wtot, left_on="playerID", right_index=True, how="left")
-             .merge(eplus, left_on="playerID", right_index=True, how="left"))
+             .merge(wtot, left_on="bbrefID", right_index=True, how="left")
+             .merge(eplus, left_on="bbrefID", right_index=True, how="left"))
     df["name"] = df["nameFirst"] + " " + df["nameLast"]
     df["real_WAR"] = df["real_WAR"].fillna(0)
     df["role"] = np.where(df["GS"] >= 0.5 * df["G"], "SP", "RP")
