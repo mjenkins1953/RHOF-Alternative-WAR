@@ -36,8 +36,10 @@
   <div class="wrap">
 
     <header class="board">
+      <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
       <div class="eyebrow">RHOF Alternative War — hitters, part one of two</div>
       <h1>Top 300 Hitters by <em>Stat Above Average</em></h1>
+      <div class="board__body" id="boardBody">
       <p class="dek">
         This isn't trying to reproduce who's actually in Cooperstown — it's this
         project's own answer to who belongs. No linear-weight run values, no replacement-level
@@ -82,6 +84,7 @@
         players the writers and veterans committees have already voted into Cooperstown, so you can
         see at a glance where this list and the official one agree and where they don't.
       </p>
+      </div>
     </header>
 
     <div class="controls">
@@ -216,13 +219,14 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.008</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.008</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.009</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.009</span></p>
   </div>
 </dialog>
 
 <script src="js/saa-career.js"></script>
 <script src="js/hitters-embed.js"></script>
+<script src="js/board-collapse.js"></script>
 <script src="js/about.js"></script>
 </body>
 </html>

@@ -36,8 +36,10 @@
   <div class="wrap">
 
     <header class="board">
+      <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
       <div class="eyebrow">RHOF Alternative War — pitchers, part two of two</div>
       <h1>Top 200 Pitchers by <em>Stat Above Average</em></h1>
+      <div class="board__body" id="boardBody">
       <p class="dek">
         The mound version of the hitters list. No borrowed run values, no replacement level:
         every pitcher is scored only against <b>the actual league average and spread of their own
@@ -79,6 +81,7 @@
         no shortened-schedule carve-out yet, so an arm whose surviving record falls short of 1,000
         innings (Smokey Joe Williams, Bill Foster) is left out for now.
       </p>
+      </div>
     </header>
 
     <div class="controls">
@@ -206,13 +209,14 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.008</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.008</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.009</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.009</span></p>
   </div>
 </dialog>
 
 <script src="js/pitchers-career.js"></script>
 <script src="js/pitchers-embed.js"></script>
+<script src="js/board-collapse.js"></script>
 <script src="js/about.js"></script>
 </body>
 </html>

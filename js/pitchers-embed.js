@@ -170,4 +170,19 @@ saaTbody.addEventListener('keydown', e => {
   saaToggleRow(tr);
 });
 
+// Size the table window to ~15 data rows (plus the sticky header),
+// so the list scrolls inside a fixed frame instead of running down the page.
+const saaShell = document.querySelector('.saa-embed .table-shell');
+function saaSizeScroll() {
+  if (!saaShell) return;
+  const head = saaShell.querySelector('thead');
+  const row = saaShell.querySelector('tbody tr.saa-row');
+  if (!head || !row) return;
+  const h = head.getBoundingClientRect().height + row.getBoundingClientRect().height * 15;
+  saaShell.style.maxHeight = Math.round(h) + 'px';
+}
+
 saaRender();
+saaSizeScroll();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(saaSizeScroll);
+window.addEventListener('resize', saaSizeScroll);
