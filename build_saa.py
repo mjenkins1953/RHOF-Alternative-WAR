@@ -317,6 +317,13 @@ def main():
     career = career.merge(season_equivalents, on="playerID", how="left")
     career["season_equivalents"] = career["season_equivalents"].fillna(0)
     career["is_negro_leaguer"] = career["playerID"].isin(negro_leaguers)
+    # is_nel_ranked: has at least one QUALIFYING season (200+ PA, i.e. a season
+    # that actually feeds the career total / peak / z-averages) whose primary
+    # league was a Negro Major League. This is the flag the site shows -- it
+    # marks players whose ranking is partly built on Negro Leagues play, not
+    # players who merely appeared in one (Mays' 48-PA 1948, etc.).
+    nel_ranked = set(qseason.loc[qseason["lgID"].isin(NEGRO_LEAGUE_CODES), "playerID"])
+    career["is_nel_ranked"] = career["playerID"].isin(nel_ranked)
 
     qualifies = (career["career_PA"] >= CAREER_PA_FLOOR) | (
         career["is_negro_leaguer"] & (career["season_equivalents"] >= NEL_SEASON_EQUIV_FLOOR)
@@ -328,7 +335,7 @@ def main():
     out_cols = ["rank_saa", "playerID", "name", "career_PA", "qualifying_seasons",
                 "SAA_final", "SAA_total", "SAA_peak", "SAA_rate",
                 "z_AVG_career", "z_ISO_career", "z_BB_career", "z_SB_career", "z_DEF_career", "real_WAR",
-                "is_negro_leaguer", "season_equivalents"]
+                "is_negro_leaguer", "is_nel_ranked", "season_equivalents"]
     pool[out_cols].to_csv(HERE / "saa_full.csv", index=False)
     pool[out_cols].head(200).to_csv(HERE / "saa_top_200_hitters.csv", index=False)
 

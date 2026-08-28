@@ -120,6 +120,10 @@ def main():
     q = q[q["season_score"].notna()].copy()
     q["season_saa"] = q["season_score"] * q["IP"] / IP_NORM
 
+    # is_nel_ranked: has >=1 qualifying season (40+ IP, feeds the career total)
+    # whose primary league was a Negro Major League -- the flag the site shows.
+    nel_ranked = set(q.loc[q["lgID"].isin(NEGRO_LGS), "playerID"])
+
     def career(d):
         w = d["IP"]
         return pd.Series({
@@ -183,6 +187,7 @@ def main():
         if r["inducted"] == "Y" and r["category"] == "Player":
             hof.add(r["playerID"])
     df["hof"] = df["playerID"].isin(hof)
+    df["is_nel_ranked"] = df["playerID"].isin(nel_ranked)
 
     pool = df[df["IP"] >= CAREER_IP_FLOOR].copy()
     pool = pool.sort_values("SAA_total", ascending=False).reset_index(drop=True)
@@ -192,7 +197,7 @@ def main():
             "qualifying_seasons", "W", "L", "SV", "SO", "G", "GS",
             "career_ERA", "career_WHIP", "ERA_plus", "real_WAR",
             "SAA_total", "SAA_rate", "z_era", "z_whip", "z_k9", "z_wpct", "z_sv",
-            "yr_min", "yr_max", "hof"]
+            "yr_min", "yr_max", "hof", "is_nel_ranked"]
     pool[cols].to_csv(HERE / "saa_pitchers_full.csv", index=False)
     pool[cols].head(200).to_csv(HERE / "saa_top_200_pitchers.csv", index=False)
 

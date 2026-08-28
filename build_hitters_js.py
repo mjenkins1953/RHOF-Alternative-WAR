@@ -52,7 +52,10 @@ for r in top:
         "sb": round(float(r["z_SB_career"]), 2),
         "def": round(float(r["z_DEF_career"]), 2),
         "hof": r["playerID"] in hof,
-        "nel": r["is_negro_leaguer"] == "True",
+        # NeL flag = Negro Leagues seasons actually feed this player's ranking
+        # (a 200+ PA qualifying season in a Negro Major League), not merely a
+        # cameo appearance -- see build_saa.py's is_nel_ranked.
+        "nel": r["is_nel_ranked"] == "True",
     })
 
 embed_path = HERE / "js/hitters-embed.js"

@@ -18,14 +18,6 @@ N = 200
 full = list(csv.DictReader(open(HERE / "saa_pitchers_full.csv")))
 top = full[:N]
 
-# Negro Leagues flag: any playerID with a season in a Negro Major League,
-# same league-code set build_saa.py uses for the hitters list.
-NEGRO_LEAGUE_CODES = {"NN2", "NNL", "NAL", "ECL", "EWL", "ANL", "NSL"}
-negro_leaguers = {
-    row["playerID"] for row in csv.DictReader(open(HERE / "Batting.csv"))
-    if row["lgID"] in NEGRO_LEAGUE_CODES
-}
-
 # ---- SAA_DATA ----
 data = []
 for r in top:
@@ -42,7 +34,9 @@ for r in top:
         "wpct": round(float(r["z_wpct"]), 2),
         "sv": round(float(r["z_sv"]), 2),
         "hof": r["hof"] == "True",
-        "nel": r["playerID"] in negro_leaguers,
+        # NeL flag = a Negro Major League season (40+ IP) actually feeds this
+        # pitcher's ranking, not merely a cameo -- see build_pitchers_saa.py.
+        "nel": r["is_nel_ranked"] == "True",
         "role": r["role"],
     })
 
