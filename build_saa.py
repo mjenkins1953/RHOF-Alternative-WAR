@@ -53,11 +53,16 @@ SEASON_GAMES_FLOOR = 50
 CAREER_PA_FLOOR = 5000
 
 # --- SAA scoring knobs -------------------------------------------------
-# The five categories were equal-weight (0.20 each) through the first
-# builds. Walks are now dialed back: a walks-only bat (Gene Tenace) could
-# ride that one category into the list while all-around 18-year regulars
-# (Tony Gwynn) fell just short.
-SAA_WEIGHTS = {"z_AVG": 0.22, "z_ISO": 0.22, "z_BB": 0.12, "z_SB": 0.22, "z_DEF": 0.22}
+# History: the five categories were equal-weight (0.20 each) through the
+# first builds; then walks were dialed back to 0.12 (a walks-only bat like
+# Gene Tenace could ride that one category in). This build re-centres the
+# score on hitting: batting average and isolated power carry 30% each,
+# defense 20%, and walk rate and stolen-base rate 10% each. Steals joined
+# walks as a dialed-back category -- a fifth of the score riding on
+# baserunning was floating pure speed merchants (Brock, Wills, Vince
+# Coleman) onto the list ahead of complete hitters, and neutralising it
+# pulled the list ~5 points closer to the actual Hall of Fame.
+SAA_WEIGHTS = {"z_AVG": 0.30, "z_ISO": 0.30, "z_BB": 0.10, "z_SB": 0.10, "z_DEF": 0.20}
 
 # Peak: a player's best PEAK_N single seasons of SAA value. The ranking
 # metric is JAWS-style -- the average of career total and peak total -- so
@@ -325,14 +330,14 @@ def main():
                 "z_AVG_career", "z_ISO_career", "z_BB_career", "z_SB_career", "z_DEF_career", "real_WAR",
                 "is_negro_leaguer", "season_equivalents"]
     pool[out_cols].to_csv(HERE / "saa_full.csv", index=False)
-    pool[out_cols].head(300).to_csv(HERE / "saa_top_300_hitters.csv", index=False)
+    pool[out_cols].head(200).to_csv(HERE / "saa_top_200_hitters.csv", index=False)
 
     n_nel_via_carveout = ((pool["is_negro_leaguer"]) & (pool["career_PA"] < CAREER_PA_FLOOR)).sum()
     print(f"Qualifying pool: {len(pool)} hitters "
           f"(career PA >= {CAREER_PA_FLOOR}, OR Negro Leagues with "
           f"{NEL_SEASON_EQUIV_FLOOR}+ season-equivalents)")
     print(f"  -> {n_nel_via_carveout} of those qualify ONLY via the Negro Leagues carve-out")
-    print("Wrote saa_full.csv and saa_top_300_hitters.csv")
+    print("Wrote saa_full.csv and saa_top_200_hitters.csv")
 
     print()
     print("--- sanity checks ---")

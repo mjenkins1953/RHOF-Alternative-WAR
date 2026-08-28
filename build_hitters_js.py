@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 
 HERE = Path("/Users/martinjenkins/Personal/Claude Projects/RHOF Alternative War")
-N = 300
+N = 200
 
 # ---- HoF: playerIDs inducted as a Player ----
 hof = set()
