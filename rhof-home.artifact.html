@@ -639,12 +639,45 @@ a { color: var(--brass-lt); }
 }
 
 .saa-embed header.board {
+  position: relative;
   border: 1px solid var(--saa-line);
   background: var(--saa-surface);
   border-radius: 4px;
   padding: 2rem 2.25rem 1.75rem;
   margin-bottom: 1.75rem;
 }
+
+/* Collapse control -- drop-down caret in the box's top-right corner.
+   Collapsed, the box shrinks to just the eyebrow + headline line. */
+.saa-embed .board__toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--saa-surface-2);
+  border: 1px solid var(--saa-line);
+  border-radius: 3px;
+  color: var(--saa-ink-dim);
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.saa-embed .board__toggle:hover { color: var(--saa-ink); }
+.saa-embed .board__toggle:focus-visible {
+  outline: 2px solid var(--saa-accent);
+  outline-offset: 1px;
+}
+.saa-embed header.board.is-collapsed { padding-bottom: 1.4rem; }
+.saa-embed header.board.is-collapsed h1 { margin-bottom: 0; }
+.saa-embed header.board.is-collapsed .board__body { display: none; }
+.saa-embed header.board .eyebrow,
+.saa-embed header.board h1 { padding-right: 2.5rem; }
 
 .saa-embed .eyebrow {
   font-family: var(--font-mono);
@@ -803,7 +836,11 @@ a { color: var(--brass-lt); }
   border: 1px solid var(--saa-line);
   border-radius: 4px;
   background: var(--saa-surface);
-  overflow-x: auto;
+  overflow: auto;
+  /* JS sets an exact max-height for ~15 visible rows once the table renders;
+     this is the pre-JS / fallback window (~15 rows at the mono row height). */
+  max-height: 37rem;
+  overscroll-behavior: contain;
 }
 
 .saa-embed table {
@@ -818,8 +855,10 @@ a { color: var(--brass-lt); }
 .saa-embed thead th {
   position: sticky;
   top: 0;
+  z-index: 3;
   background: var(--saa-surface-2);
   border-bottom: 1px solid var(--saa-line);
+  box-shadow: 0 1px 0 var(--saa-line);
   text-align: right;
   font-family: var(--font-display);
   font-weight: 500;
@@ -1234,8 +1273,10 @@ a { color: var(--brass-lt); }
   <div class="wrap">
 
     <header class="board">
+      <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
       <div class="eyebrow">RHOF Alternative War — hitters, part one of two</div>
       <h1>Top 300 Hitters by <em>Stat Above Average</em></h1>
+      <div class="board__body" id="boardBody">
       <p class="dek">
         This isn't trying to reproduce who's actually in Cooperstown — it's this
         project's own answer to who belongs. No linear-weight run values, no replacement-level
@@ -1280,6 +1321,7 @@ a { color: var(--brass-lt); }
         players the writers and veterans committees have already voted into Cooperstown, so you can
         see at a glance where this list and the official one agree and where they don't.
       </p>
+      </div>
     </header>
 
     <div class="controls">
@@ -1438,8 +1480,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.008</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.008</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.009</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.009</span></p>
   </div>
 </dialog>
 
@@ -1797,7 +1839,51 @@ saaTbody.addEventListener('keydown', e => {
   saaToggleRow(tr);
 });
 
+// Size the table window to ~15 data rows (plus the sticky header),
+// so the list scrolls inside a fixed frame instead of running down the page.
+const saaShell = document.querySelector('.saa-embed .table-shell');
+function saaSizeScroll() {
+  if (!saaShell) return;
+  const head = saaShell.querySelector('thead');
+  const row = saaShell.querySelector('tbody tr.saa-row');
+  if (!head || !row) return;
+  const h = head.getBoundingClientRect().height + row.getBoundingClientRect().height * 15;
+  saaShell.style.maxHeight = Math.round(h) + 'px';
+}
+
 saaRender();
+saaSizeScroll();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(saaSizeScroll);
+window.addEventListener('resize', saaSizeScroll);
+
+</script>
+<script>
+// Collapse toggle for the "Top N … by Stat Above Average" board box.
+// The caret in the box's top-right corner hides everything below the
+// headline (dek, stat row, explainers) and shrinks the box back to just
+// the eyebrow + headline line. Shared by hitters.html and pitchers.html.
+
+(function () {
+  const board = document.querySelector('.saa-embed header.board');
+  if (!board) return;
+
+  const btn = board.querySelector('.board__toggle');
+  const body = board.querySelector('.board__body');
+  if (!btn || !body) return;
+
+  function apply(collapsed) {
+    board.classList.toggle('is-collapsed', collapsed);
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    btn.setAttribute('aria-label', collapsed ? 'Show list details' : 'Hide list details');
+    btn.textContent = collapsed ? '▸' : '▾';
+  }
+
+  btn.addEventListener('click', () => {
+    apply(!board.classList.contains('is-collapsed'));
+  });
+
+  apply(false);
+})();
 
 </script>
 <script>
@@ -1806,8 +1892,8 @@ saaRender();
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.008';
-const RHOF_BUILD = '2026.08.28.008';
+const RHOF_VERSION = '1.009';
+const RHOF_BUILD = '2026.08.28.009';
 
 (function () {
   const modal = document.getElementById('aboutModal');
