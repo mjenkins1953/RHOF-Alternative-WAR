@@ -312,6 +312,27 @@
 }
 .saa-embed .hof-dash { color: var(--saa-line); }
 
+/* Negro Leagues flag, sits between the rank and player columns */
+.saa-embed th.nel-col, .saa-embed td.nel {
+  text-align: center;
+  width: 2.8em;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+}
+.saa-embed .nel-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 0.22em 0.38em;
+  border: 1px solid var(--saa-under);
+  border-radius: 2px;
+  color: var(--saa-under);
+  vertical-align: middle;
+}
+
 .saa-embed .empty {
   padding: 3rem 1rem;
   text-align: center;

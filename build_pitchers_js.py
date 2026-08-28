@@ -18,6 +18,14 @@ N = 200
 full = list(csv.DictReader(open(HERE / "saa_pitchers_full.csv")))
 top = full[:N]
 
+# Negro Leagues flag: any playerID with a season in a Negro Major League,
+# same league-code set build_saa.py uses for the hitters list.
+NEGRO_LEAGUE_CODES = {"NN2", "NNL", "NAL", "ECL", "EWL", "ANL", "NSL"}
+negro_leaguers = {
+    row["playerID"] for row in csv.DictReader(open(HERE / "Batting.csv"))
+    if row["lgID"] in NEGRO_LEAGUE_CODES
+}
+
 # ---- SAA_DATA ----
 data = []
 for r in top:
@@ -34,6 +42,7 @@ for r in top:
         "wpct": round(float(r["z_wpct"]), 2),
         "sv": round(float(r["z_sv"]), 2),
         "hof": r["hof"] == "True",
+        "nel": r["playerID"] in negro_leaguers,
         "role": r["role"],
     })
 
@@ -44,7 +53,8 @@ src, n = re.subn(r"const SAA_DATA = \[.*?\];", lambda _m: line, src, count=1, fl
 assert n == 1, "SAA_DATA line not found in pitchers-embed.js"
 embed.write_text(src)
 print(f"js/pitchers-embed.js: SAA_DATA -> {len(data)} rows "
-      f"({sum(d['hof'] for d in data)} HoF, {sum(d['role'] == 'RP' for d in data)} relievers)")
+      f"({sum(d['hof'] for d in data)} HoF, {sum(d['nel'] for d in data)} NeL, "
+      f"{sum(d['role'] == 'RP' for d in data)} relievers)")
 
 # ---- SAA_CAREER ----
 career = {}

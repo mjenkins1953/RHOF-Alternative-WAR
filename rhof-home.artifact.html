@@ -913,6 +913,27 @@ a { color: var(--brass-lt); }
 }
 .saa-embed .hof-dash { color: var(--saa-line); }
 
+/* Negro Leagues flag, sits between the rank and player columns */
+.saa-embed th.nel-col, .saa-embed td.nel {
+  text-align: center;
+  width: 2.8em;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+}
+.saa-embed .nel-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 0.22em 0.38em;
+  border: 1px solid var(--saa-under);
+  border-radius: 2px;
+  color: var(--saa-under);
+  vertical-align: middle;
+}
+
 .saa-embed .empty {
   padding: 3rem 1rem;
   text-align: center;
@@ -1314,7 +1335,8 @@ a { color: var(--brass-lt); }
         official league schedules were far shorter than MLB's, and the surviving record undercounts
         them further still. They qualify instead by accumulating the equivalent of 9 seasons at
         their own league's typical season size — the standard that gets Josh Gibson, Willie Wells,
-        and Turkey Stearnes onto this list.
+        and Turkey Stearnes onto this list. Anyone with recorded Negro Leagues playing time is
+        flagged <b>NeL</b> beside their rank, whichever standard they qualified under.
       </p>
       <p class="explainer">
         Runs scored and RBI were deliberately left out — both depend heavily on who's on base ahead
@@ -1335,6 +1357,7 @@ a { color: var(--brass-lt); }
       </label>
       <div class="legend">
         <span><span class="hof-star">★</span> already in Cooperstown</span>
+        <span><span class="nel-tag">NeL</span> Negro Leagues player</span>
       </div>
     </div>
 
@@ -1345,6 +1368,7 @@ a { color: var(--brass-lt); }
         <thead>
           <tr>
             <th data-key="rank" class="sorted">Rank<span class="arrow">▲</span></th>
+            <th data-key="nel" class="nel-col">NeL<span class="arrow">▲</span></th>
             <th data-key="name" class="name-col">Player<span class="arrow">▲</span></th>
             <th data-key="pa">PA<span class="arrow">▲</span></th>
             <th data-key="seasons">Seasons<span class="arrow">▲</span></th>
@@ -1483,8 +1507,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.010</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.010</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.011</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.011</span></p>
   </div>
 </dialog>
 
@@ -1744,7 +1768,7 @@ function saaCard(d) {
 }
 
 function saaDetailRow(d) {
-  return `<tr class="saa-detail"><td colspan="11">${saaCard(d)}</td></tr>`;
+  return `<tr class="saa-detail"><td colspan="12">${saaCard(d)}</td></tr>`;
 }
 
 function saaRender() {
@@ -1780,6 +1804,7 @@ function saaRender() {
     const open = saaExpanded.has(d.rank);
     return `<tr class="saa-row${open ? ' is-open' : ''}" data-rank="${d.rank}" tabindex="0" aria-expanded="${open}">
       <td class="rank"><span class="saa-caret">${open ? '▾' : '▸'}</span>${d.rank}</td>
+      <td class="nel">${d.nel ? '<span class="nel-tag">NeL</span>' : ''}</td>
       <td class="name">${d.name}</td>
       <td>${d.pa.toLocaleString('en-US')}</td>
       <td>${d.seasons}</td>
@@ -1895,8 +1920,8 @@ window.addEventListener('resize', saaSizeScroll);
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.010';
-const RHOF_BUILD = '2026.08.28.010';
+const RHOF_VERSION = '1.011';
+const RHOF_BUILD = '2026.08.28.011';
 
 (function () {
   const modal = document.getElementById('aboutModal');

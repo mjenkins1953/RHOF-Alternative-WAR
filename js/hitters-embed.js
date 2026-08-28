@@ -74,7 +74,7 @@ function saaCard(d) {
 }
 
 function saaDetailRow(d) {
-  return `<tr class="saa-detail"><td colspan="11">${saaCard(d)}</td></tr>`;
+  return `<tr class="saa-detail"><td colspan="12">${saaCard(d)}</td></tr>`;
 }
 
 function saaRender() {
@@ -110,6 +110,7 @@ function saaRender() {
     const open = saaExpanded.has(d.rank);
     return `<tr class="saa-row${open ? ' is-open' : ''}" data-rank="${d.rank}" tabindex="0" aria-expanded="${open}">
       <td class="rank"><span class="saa-caret">${open ? '▾' : '▸'}</span>${d.rank}</td>
+      <td class="nel">${d.nel ? '<span class="nel-tag">NeL</span>' : ''}</td>
       <td class="name">${d.name}</td>
       <td>${d.pa.toLocaleString('en-US')}</td>
       <td>${d.seasons}</td>
