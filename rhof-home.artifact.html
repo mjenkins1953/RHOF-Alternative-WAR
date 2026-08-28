@@ -1421,9 +1421,7 @@ a { color: var(--brass-lt); }
 
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
-    <p>Career AVG / HR / hits and W-L / ERA / SO figures sourced from Lahman-derived data. Data lives in
-      <code>data/players.json</code> — extend it by hand or regenerate it from the Lahman Baseball Database.
-      Roster capped at 500; this build shows a starter set.</p>
+    <p>Data sourced from the latest version of the Lahman database.</p>
   </div>
 </footer>
 
@@ -1432,8 +1430,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.006</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.27.006</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.007</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.007</span></p>
   </div>
 </dialog>
 
@@ -1800,8 +1798,8 @@ saaRender();
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.006';
-const RHOF_BUILD = '2026.08.27.006';
+const RHOF_VERSION = '1.007';
+const RHOF_BUILD = '2026.08.28.007';
 
 (function () {
   const modal = document.getElementById('aboutModal');
