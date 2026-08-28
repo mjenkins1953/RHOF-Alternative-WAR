@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Top 200 Pitchers by Stat Above Average | The REAL Hall of Fame</title>
+<title>Top 150 Pitchers by Stat Above Average | The REAL Hall of Fame</title>
 <meta name="description" content="The REAL Hall of Fame's pitchers list, ranked by Stat Above Average — every pitcher-season scored against its own league on ERA, WHIP, strikeout rate, winning percentage, and saves.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -38,20 +38,28 @@
     <header class="board">
       <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
       <div class="eyebrow">RHOF Alternative War — pitchers, part two of two</div>
-      <h1>Top 200 Pitchers by <em>Stat Above Average</em></h1>
+      <h1>Top 150 Pitchers by <em>Stat Above Average</em></h1>
       <div class="board__body" id="boardBody">
       <p class="dek">
         The mound version of the hitters list. No borrowed run values, no replacement level:
         every pitcher is scored only against <b>the actual league average and spread of their own
         season</b>, on five things straight off the back of a baseball card — ERA, WHIP, strikeout
-        rate, winning percentage, and saves.
+        rate, winning percentage, and saves. The list is shorter than the hitters' — a pitching
+        staff is a handful of arms next to eight everyday bats, and Cooperstown's own ratio runs
+        about two hitters to every pitcher.
       </p>
       <div class="stat-row">
         <div class="stat"><span class="num">1,319</span><span class="lbl">qualifying pool</span></div>
-        <div class="stat"><span class="num">200</span><span class="lbl">shown here</span></div>
+        <div class="stat"><span class="num">150</span><span class="lbl">shown here</span></div>
         <div class="stat"><span class="num">1,000+</span><span class="lbl">career IP minimum</span></div>
-        <div class="stat"><span class="num">73 / 200</span><span class="lbl">also in Cooperstown</span></div>
+        <div class="stat"><span class="num">71 / 150</span><span class="lbl">also in Cooperstown</span></div>
       </div>
+      <p class="explainer">
+        <b>This is a living ranking, not a set of plaques.</b> It's rebuilt from scratch every year
+        on the latest data, so a pitcher climbs on when his case passes the 150th and a borderline
+        name drops off when someone else's rises past him. Active arms are in — no five-year wait.
+        This is the <b>2025 edition</b>; the twenty just outside the cut are listed at the bottom.
+      </p>
       <p class="explainer">
         <b>What's a Stat Above Average?</b> Each pitcher-season is compared only to that season's own
         league average and spread — a 1913 season is judged against 1913, a 2024 season against
@@ -189,6 +197,16 @@
       </p>
     </section>
 
+    <section class="bubble" aria-labelledby="bubble-h">
+      <p class="eyebrow">Recalculated every year</p>
+      <h2 id="bubble-h">On the bubble</h2>
+      <p class="bubble__lede">
+        The twenty just outside the cut, ranks <b>151&ndash;170</b>. A healthy season from an active
+        arm, or the next weighting pass, and the line moves.
+      </p>
+      <div class="bubble__list" id="saaBubble"></div>
+    </section>
+
     <footer>
       SAA = weighted blend of five per-season z-scores (ERA, WHIP [(H&plus;BB)/IP], strikeout rate
       [SO&times;9/IP], winning percentage [W/(W&plus;L)], and save count) against that season's
@@ -214,8 +232,8 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.012</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.012</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.013</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.28.013</span></p>
   </div>
 </dialog>
 

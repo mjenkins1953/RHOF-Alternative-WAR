@@ -18,7 +18,8 @@ import numpy as np
 import pandas as pd
 
 HERE = Path("/Users/martinjenkins/Personal/Claude Projects/RHOF Alternative War")
-N = 200
+N = 300
+BUBBLE_N = 20   # ranks N+1 .. N+BUBBLE_N shown in the "On the bubble" strip
 
 # ---- HoF: playerIDs inducted as a Player ----
 hof = set()
@@ -58,14 +59,27 @@ for r in top:
         "nel": r["is_nel_ranked"] == "True",
     })
 
+# ---- SAA_BUBBLE: the next BUBBLE_N, just outside the cut ----
+bubble = [{
+    "rank": int(r["rank_saa"]),
+    "name": r["name"],
+    "saa": round(float(r["SAA_final"]), 2),
+    "hof": r["playerID"] in hof,
+    "nel": r["is_nel_ranked"] == "True",
+} for r in full[N:N + BUBBLE_N]]
+
 embed_path = HERE / "js/hitters-embed.js"
 src = embed_path.read_text()
 new_line = "const SAA_DATA = " + json.dumps(saa_data, separators=(",", ":")) + ";"
 src, n = re.subn(r"const SAA_DATA = \[.*?\];", lambda _m: new_line, src, count=1, flags=re.S)
 assert n == 1, "could not find SAA_DATA array in hitters-embed.js"
+bub_line = "const SAA_BUBBLE = " + json.dumps(bubble, separators=(",", ":")) + ";"
+src, n = re.subn(r"const SAA_BUBBLE = \[.*?\];", lambda _m: bub_line, src, count=1, flags=re.S)
+assert n == 1, "could not find SAA_BUBBLE array in hitters-embed.js"
 embed_path.write_text(src)
 print(f"js/hitters-embed.js: SAA_DATA -> {len(saa_data)} rows "
-      f"({sum(d['hof'] for d in saa_data)} HoF, {sum(d['nel'] for d in saa_data)} NeL)")
+      f"({sum(d['hof'] for d in saa_data)} HoF, {sum(d['nel'] for d in saa_data)} NeL), "
+      f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']})")
 
 # ---- SAA_CAREER (build_saa_cards.py logic, N rows) ----
 top_df = pd.read_csv(HERE / f"saa_top_{N}_hitters.csv")

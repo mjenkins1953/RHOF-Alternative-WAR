@@ -601,6 +601,60 @@
   max-width: none;
 }
 
+/* ---------------- "On the bubble" strip ---------------- */
+.saa-embed .bubble {
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--saa-line);
+  padding-top: 1.5rem;
+}
+.saa-embed .bubble h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  margin: 0.45rem 0 0.6rem;
+  color: var(--saa-ink);
+}
+.saa-embed .bubble__lede {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--saa-ink);
+  margin: 0 0 1.1rem;
+  max-width: none;
+}
+.saa-embed .bubble__lede b { color: var(--saa-accent); }
+.saa-embed .bubble__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0 1.75rem;
+  border-top: 1px solid var(--saa-line);
+}
+.saa-embed .bubble-row {
+  display: grid;
+  grid-template-columns: 2.8em 1fr auto;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.42rem 0;
+  border-bottom: 1px solid var(--saa-line);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.saa-embed .bubble-rank {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--saa-ink-dim);
+}
+.saa-embed .bubble-name {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--saa-ink);
+}
+.saa-embed .bubble-saa {
+  color: var(--saa-ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 640px) {
   .saa-embed .wrap { padding: 1.5rem 1rem 2rem; }
   .saa-embed header.board { padding: 1.5rem 1.25rem; }

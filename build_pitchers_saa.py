@@ -199,11 +199,11 @@ def main():
             "SAA_total", "SAA_rate", "z_era", "z_whip", "z_k9", "z_wpct", "z_sv",
             "yr_min", "yr_max", "hof", "is_nel_ranked"]
     pool[cols].to_csv(HERE / "saa_pitchers_full.csv", index=False)
-    pool[cols].head(200).to_csv(HERE / "saa_top_200_pitchers.csv", index=False)
+    pool[cols].head(150).to_csv(HERE / "saa_top_150_pitchers.csv", index=False)
 
     print(f"Qualifying pool: {len(pool)} pitchers (career IP >= {CAREER_IP_FLOOR})")
-    print(f"  top 200: {int(pool.head(200)['hof'].sum())} in Cooperstown, "
-          f"{int((pool.head(200)['role'] == 'RP').sum())} relievers")
+    print(f"  top 150: {int(pool.head(150)['hof'].sum())} in Cooperstown, "
+          f"{int((pool.head(150)['role'] == 'RP').sum())} relievers")
     print("\n--- top 25 ---")
     for r in pool.head(25).itertuples():
         star = " *HOF" if r.hof else ""

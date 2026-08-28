@@ -337,14 +337,14 @@ def main():
                 "z_AVG_career", "z_ISO_career", "z_BB_career", "z_SB_career", "z_DEF_career", "real_WAR",
                 "is_negro_leaguer", "is_nel_ranked", "season_equivalents"]
     pool[out_cols].to_csv(HERE / "saa_full.csv", index=False)
-    pool[out_cols].head(200).to_csv(HERE / "saa_top_200_hitters.csv", index=False)
+    pool[out_cols].head(300).to_csv(HERE / "saa_top_300_hitters.csv", index=False)
 
     n_nel_via_carveout = ((pool["is_negro_leaguer"]) & (pool["career_PA"] < CAREER_PA_FLOOR)).sum()
     print(f"Qualifying pool: {len(pool)} hitters "
           f"(career PA >= {CAREER_PA_FLOOR}, OR Negro Leagues with "
           f"{NEL_SEASON_EQUIV_FLOOR}+ season-equivalents)")
     print(f"  -> {n_nel_via_carveout} of those qualify ONLY via the Negro Leagues carve-out")
-    print("Wrote saa_full.csv and saa_top_200_hitters.csv")
+    print("Wrote saa_full.csv and saa_top_300_hitters.csv")
 
     print()
     print("--- sanity checks ---")

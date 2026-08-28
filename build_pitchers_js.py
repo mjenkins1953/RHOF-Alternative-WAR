@@ -1,8 +1,8 @@
 """Regenerate the pitchers-list JS from saa_pitchers_full.csv.
 
 Produces:
-  - js/pitchers-embed.js  SAA_DATA    (200 rows)
-  - js/pitchers-career.js SAA_CAREER  (career line per rank, 1..200)
+  - js/pitchers-embed.js  SAA_DATA + SAA_BUBBLE  (top N + the next BUBBLE_N)
+  - js/pitchers-career.js SAA_CAREER             (career line per rank, 1..N)
 
 saa_pitchers_full.csv is the committed full ranked pool from
 build_pitchers_saa.py; taking the top N reproduces its numbers exactly.
@@ -13,7 +13,8 @@ import re
 from pathlib import Path
 
 HERE = Path("/Users/martinjenkins/Personal/Claude Projects/RHOF Alternative War")
-N = 200
+N = 150
+BUBBLE_N = 20   # ranks N+1 .. N+BUBBLE_N shown in the "On the bubble" strip
 
 full = list(csv.DictReader(open(HERE / "saa_pitchers_full.csv")))
 top = full[:N]
@@ -40,15 +41,28 @@ for r in top:
         "role": r["role"],
     })
 
+# ---- SAA_BUBBLE: the next BUBBLE_N, just outside the cut ----
+bubble = [{
+    "rank": int(r["rank_saa"]),
+    "name": r["name"],
+    "saa": round(float(r["SAA_total"]), 2),
+    "hof": r["hof"] == "True",
+    "nel": r["is_nel_ranked"] == "True",
+} for r in full[N:N + BUBBLE_N]]
+
 embed = HERE / "js/pitchers-embed.js"
 src = embed.read_text()
 line = "const SAA_DATA = " + json.dumps(data, separators=(",", ":")) + ";"
 src, n = re.subn(r"const SAA_DATA = \[.*?\];", lambda _m: line, src, count=1, flags=re.S)
 assert n == 1, "SAA_DATA line not found in pitchers-embed.js"
+bub_line = "const SAA_BUBBLE = " + json.dumps(bubble, separators=(",", ":")) + ";"
+src, n = re.subn(r"const SAA_BUBBLE = \[.*?\];", lambda _m: bub_line, src, count=1, flags=re.S)
+assert n == 1, "SAA_BUBBLE line not found in pitchers-embed.js"
 embed.write_text(src)
 print(f"js/pitchers-embed.js: SAA_DATA -> {len(data)} rows "
       f"({sum(d['hof'] for d in data)} HoF, {sum(d['nel'] for d in data)} NeL, "
-      f"{sum(d['role'] == 'RP' for d in data)} relievers)")
+      f"{sum(d['role'] == 'RP' for d in data)} relievers), "
+      f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']})")
 
 # ---- SAA_CAREER ----
 career = {}
