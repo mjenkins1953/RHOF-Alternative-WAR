@@ -55,7 +55,8 @@
       { "position": "OF", "start": 1970, "end": 1992, "fieldingPct": 0.98 },
       { "position": "OF", "start": 1993, "end": 2026, "fieldingPct": 0.985 }
     ],
-    "description": "Pitchers: a five-part weighted composite vs. league (25% ERA, 25% WHIP, 20% K/9, 20% winning percentage, 10% saves). Hitters: a four-part SUM vs. league and position (OBP, ISO power, fielding percentage vs. positional average, and net stolen-base value per PA) -- all benchmarked against the league averages/positional norms of the exact years and position that player played, so a dead-ball-era line is judged against dead-ball-era competition, not a modern one."
+    "hitterDescription": "A four-part SUM vs. league and position: on-base percentage, ISO power, fielding percentage against the positional average, and net stolen-base value per plate appearance. Every component is benchmarked against the league averages and positional norms of the exact years and position that player played, so a dead-ball-era line is judged against dead-ball-era competition, not a modern one.",
+    "pitcherDescription": "A five-part weighted composite vs. league: 25% ERA, 25% WHIP, 20% K/9, 20% winning percentage, 10% saves. ERA and WHIP are measured against the league average of the exact seasons that pitcher threw, so the same standard applies across every era."
   },
   "capacity": 500,
   "players": [

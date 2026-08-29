@@ -138,6 +138,7 @@ function renderFormula() {
   const pw = state.formula.pitcherWeights;
   const hw = state.formula.hitterWeights;
   formulaBox.innerHTML = `
+    <p class="formula-desc formula-desc--lede">${escapeHtml(state.formula.hitterDescription)}</p>
     <div class="formula-row">
       <span class="formula-term">Hitters</span>
       <span class="formula-eq">=</span>
@@ -149,7 +150,9 @@ function renderFormula() {
       <span class="formula-plus">+</span>
       <span class="formula-term">${(hw.run * 100).toFixed(0)}% Net SB value vs league</span>
     </div>
-    <div class="formula-row">
+    <hr class="formula-divider">
+    <p class="formula-desc formula-desc--lede">${escapeHtml(state.formula.pitcherDescription)}</p>
+    <div class="formula-row formula-row--last">
       <span class="formula-term">Pitchers</span>
       <span class="formula-eq">=</span>
       <span class="formula-term">${(pw.era * 100).toFixed(0)}% ERA vs league</span>
@@ -162,7 +165,6 @@ function renderFormula() {
       <span class="formula-plus">+</span>
       <span class="formula-term">${(pw.saves * 100).toFixed(0)}% Saves vs league</span>
     </div>
-    <p class="formula-desc">${escapeHtml(state.formula.description)}</p>
   `;
 }
 

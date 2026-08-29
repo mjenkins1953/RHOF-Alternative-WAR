@@ -472,6 +472,17 @@ a { color: var(--brass-lt); }
   max-width: none;
   margin: 0;
 }
+.formula-desc--lede {
+  margin-bottom: 14px;
+}
+.formula-divider {
+  border: 0;
+  border-top: 1px solid var(--green-line);
+  margin: 22px 0;
+}
+.formula-row--last {
+  margin-bottom: 0;
+}
 .standards__row {
   display: grid;
   grid-template-columns: 140px 1fr 90px 90px 90px;
