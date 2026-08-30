@@ -106,6 +106,10 @@
 .saa-embed .yh-total b { font-variant-numeric: tabular-nums; color: var(--saa-ink); }
 .saa-embed .yh-total.is-off,
 .saa-embed .yh-total.is-off b { color: #b5341f; }
+.saa-embed .yh-total__note {
+  font-weight: 400;
+  margin-left: 0.35rem;
+}
 
 .saa-embed .yh-panel__controls {
   display: flex;

@@ -21,14 +21,22 @@ const YH = {
 };
 const YH_NOUN = YH.mode === 'pitchers' ? 'pitchers' : 'players';
 
+// true when the five slider percentages (as shown) add up to 100
+function yhAtHundred() {
+  return YH.weights.reduce((a, _, i) => a + Math.round(YH.weights[i] * 100), 0) === 100;
+}
+
 // ---- the recompute: YH_PLAYERS + knobs -> a ranked array ----
 function yhScore() {
-  const raw = YH.weights;
-  const wsum = raw.reduce((a, b) => a + b, 0);
-  const w = wsum > 0 ? raw.map(x => x / wsum) : raw.map(() => 0.2);
+  // if the weights don't total 100%, fall back to the full RHOF default
+  // (the "Weights total …" line says so)
+  const atHundred = yhAtHundred();
+  const src = atHundred ? YH.weights : YH_CONFIG.defaultWeights;
+  const wsum = src.reduce((a, b) => a + b, 0) || 1;
+  const w = src.map(x => x / wsum);
   const hasPeak = YH.hasPeak;
-  const peakN = YH.peakN;
-  const blend = YH.blend;
+  const peakN = atHundred ? YH.peakN : (YH_CONFIG.defaultPeakN || 7);
+  const blend = atHundred ? YH.blend : (YH_CONFIG.defaultBlend == null ? 0.5 : YH_CONFIG.defaultBlend);
 
   const scored = YH_PLAYERS.map(p => {
     let total = 0, wlSum = 0;
@@ -297,8 +305,10 @@ function yhWeightPct(i) { return Math.round(YH.weights[i] * 100); }
 function yhUpdateTotal() {
   if (!yhTotalEl) return;
   const total = YH.weights.reduce((a, _, i) => a + yhWeightPct(i), 0);
-  yhTotalEl.innerHTML = `Weights total <b>${total}%</b>`;
-  yhTotalEl.classList.toggle('is-off', total !== 100);
+  const off = total !== 100;
+  yhTotalEl.classList.toggle('is-off', off);
+  yhTotalEl.innerHTML = `Weights total <b>${total}%</b>`
+    + (off ? ` <span class="yh-total__note">Current selections do not total 100%. List has been reset to RHOF default.</span>` : '');
 }
 
 function yhSyncWeightLabels() {
@@ -363,9 +373,11 @@ yhResetEl.addEventListener('click', () => {
 
 function yhUpdateReadout() {
   const inHof = yhList.reduce((n, d) => n + (d.hof ? 1 : 0), 0);
-  let isDefault = YH.weights.every((x, i) => Math.abs(x - YH_CONFIG.defaultWeights[i]) < 1e-9);
-  if (YH.hasPeak) {
-    isDefault = isDefault && YH.peakN === YH_CONFIG.defaultPeakN
+  // off-total => the list IS the default; otherwise check the knobs match
+  let isDefault = !yhAtHundred()
+    || YH.weights.every((x, i) => Math.abs(x - YH_CONFIG.defaultWeights[i]) < 1e-9);
+  if (isDefault && YH.hasPeak && yhAtHundred()) {
+    isDefault = YH.peakN === YH_CONFIG.defaultPeakN
       && Math.abs(YH.blend - YH_CONFIG.defaultBlend) < 1e-9;
   }
   yhReadoutEl.innerHTML =
