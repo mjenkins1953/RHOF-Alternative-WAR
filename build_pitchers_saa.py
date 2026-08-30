@@ -201,6 +201,21 @@ def main():
     pool[cols].to_csv(HERE / "saa_pitchers_full.csv", index=False)
     pool[cols].head(150).to_csv(HERE / "saa_top_150_pitchers.csv", index=False)
 
+    # Per-season z-score matrix for every ranked pitcher -- the raw inputs the
+    # "Your Hall" page needs to re-score the pool under user-chosen weights.
+    # (q is already the 40+ IP seasons with a defined default-weights score;
+    #  individual z's can still be blank -- e.g. z_wpct with <5 decisions --
+    #  and the client renormalises the weights over whatever a season has.)
+    pool_ids = set(pool["playerID"])
+    seasons_out = (
+        q[q["playerID"].isin(pool_ids)]
+        [["playerID", "yearID", "z_era", "z_whip", "z_k9", "z_wpct", "z_sv", "IP"]]
+        .sort_values(["playerID", "yearID"])
+    )
+    seasons_out.to_csv(HERE / "saa_seasons_pitchers.csv", index=False)
+    print(f"Wrote saa_seasons_pitchers.csv ({len(seasons_out)} pitcher-seasons "
+          f"across {seasons_out['playerID'].nunique()} pitchers)")
+
     print(f"Qualifying pool: {len(pool)} pitchers (career IP >= {CAREER_IP_FLOOR})")
     print(f"  top 150: {int(pool.head(150)['hof'].sum())} in Cooperstown, "
           f"{int((pool.head(150)['role'] == 'RP').sum())} relievers")

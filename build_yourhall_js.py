@@ -1,19 +1,19 @@
-"""Regenerate the "Your Hall" data module for the hitters side.
+"""Regenerate the "Your Hall" data modules (hitters and pitchers).
 
-Produces js/yourhall-hitters-data.js:
-  - YH_CONFIG   category order, the real RHOF default weights, peak/blend/list knobs
-  - YH_PLAYERS  every ranked hitter (the full 1,065 pool), each with per-season
-                z-scores + PA, so the page can re-score the whole pool under
-                user-chosen weights entirely client-side.
+For each side, produces:
+  js/yourhall-<side>-data.js
+    YH_CONFIG   category order, the real RHOF default weights, list/peak knobs
+    YH_PLAYERS  every ranked player (the whole pool), each with:
+                  z  = the five weight-INDEPENDENT career z's (table columns)
+                  s  = per-season [z0,z1,z2,z3,z4, workload]  (null z = stat
+                       absent that year -> renormalise the weights)
+  js/yourhall-<side>-cards.js
+    YH_CARDS    career box-score line per playerID
 
-Inputs (both from build_saa.py):
-  - saa_full.csv             player metadata + the default-weights ranking
-  - saa_seasons_hitters.csv  per-season z_AVG/z_ISO/z_BB/z_SB/z_DEF + PA
-
-The default weights / peak window / blend here MUST match build_saa.py
-(SAA_WEIGHTS, PEAK_N, and the (total+peak)/2 blend) -- the sanity check at
-the bottom re-scores the pool from YH_PLAYERS and asserts it reproduces
-saa_full.csv's SAA_final to the digit.
+The page re-scores the whole pool in the browser under visitor-chosen weights.
+The defaults / peak / blend below MUST match build_saa.py / build_pitchers_saa.py
+-- the sanity check re-scores the pool from the packed data and asserts it
+reproduces the committed ranking to the digit.
 """
 import csv
 import json
@@ -24,98 +24,118 @@ from build_cards import hitter_cards
 
 HERE = Path(__file__).resolve().parent
 
-# category order used everywhere on the Your Hall page (matches the table columns
-# and build_saa.py's SAA_WEIGHTS): batting avg, isolated power, walk rate,
-# stolen-base rate, defense.
-CATS = ["avg", "iso", "bb", "sb", "def"]
-DEFAULT_WEIGHTS = [0.30, 0.30, 0.10, 0.10, 0.20]
-PEAK_N = 7
-BLEND = 0.5           # SAA_final = (1-BLEND)*careerTotal + BLEND*peak
-LIST_N = 300
+HITTERS = dict(
+    side="hitters",
+    cats=["avg", "iso", "bb", "sb", "def"],
+    labels=["AVG", "ISO", "BB", "SB", "DEF"],
+    default_weights=[0.30, 0.30, 0.10, 0.10, 0.20],
+    peak_n=7,
+    blend=0.5,           # score = (1-blend)*careerTotal + blend*best-N peak
+    has_peak=True,
+    list_n=300,
+    workload_norm=600.0,
+    z_dp=4,              # per-season z rounding; 4 dp reproduces the ranking
+    workload_dp=0,       # PA is integer in the source
+
+    full_csv="saa_full.csv",
+    seasons_csv="saa_seasons_hitters.csv",
+    season_z_cols=["z_AVG", "z_ISO", "z_BB", "z_SB", "z_DEF"],
+    season_workload_col="PA",
+    career_z_cols=["z_AVG_career", "z_ISO_career", "z_BB_career", "z_SB_career", "z_DEF_career"],
+    workload_col="career_PA",
+    nel_col="is_nel_ranked",
+)
+PITCHERS = dict(
+    side="pitchers",
+    cats=["era", "whip", "k9", "wpct", "sv"],
+    labels=["ERA", "WHIP", "K/9", "WIN%", "SV"],
+    default_weights=[0.25, 0.25, 0.20, 0.20, 0.10],
+    peak_n=None,
+    blend=None,
+    has_peak=False,      # pitcher SAA is the career total only -- no peak/blend
+    list_n=150,
+    workload_norm=200.0,
+    z_dp=5,              # IP is fractional, so both z and IP need more places
+    workload_dp=3,       # than the hitters side to reproduce the ranking exactly
+
+    full_csv="saa_pitchers_full.csv",
+    seasons_csv="saa_seasons_pitchers.csv",
+    season_z_cols=["z_era", "z_whip", "z_k9", "z_wpct", "z_sv"],
+    season_workload_col="IP",
+    career_z_cols=["z_era", "z_whip", "z_k9", "z_wpct", "z_sv"],
+    workload_col="IP",
+    nel_col="is_nel_ranked",
+)
 BUBBLE_N = 20
-PA_NORM = 600.0
 
 hof = set()
 for r in csv.DictReader(open(HERE / "HallOfFame.csv")):
     if r["inducted"] == "Y" and r["category"] == "Player":
         hof.add(r["playerID"])
 
-# ---- season matrix, grouped by player ----
-seasons_by_pid = defaultdict(list)
-for r in csv.DictReader(open(HERE / "saa_seasons_hitters.csv")):
-    def z(v):
-        # 4 dp reproduces build_saa.py's ranking exactly across the whole pool
-        # (3 dp already nails the top 320; 4 dp nails all 1,065) while keeping
-        # the file ~625 KB.
-        return None if v == "" else round(float(v), 4)
-    seasons_by_pid[r["playerID"]].append([
-        z(r["z_AVG"]), z(r["z_ISO"]), z(r["z_BB"]), z(r["z_SB"]), z(r["z_DEF"]),
-        int(round(float(r["PA"]))),
-    ])
 
-# ---- players, in default-ranking order ----
-# The five career z's (z2 = PA-weighted average season z, per build_saa.py's
-# wavg_skipna) are weight-INDEPENDENT -- they describe the player, not the
-# formula -- so they're precomputed here and the table columns never change.
-players = []
-full = list(csv.DictReader(open(HERE / "saa_full.csv")))
-for r in full:
-    pid = r["playerID"]
-    players.append({
-        "id": pid,
-        "n": r["name"],
-        "hof": pid in hof,
-        "nel": r["is_nel_ranked"] == "True",
-        "pa": int(round(float(r["career_PA"]))),
-        "war": round(float(r["real_WAR"]), 1),
-        "z": [round(float(r[k]), 3) for k in
-              ("z_AVG_career", "z_ISO_career", "z_BB_career", "z_SB_career", "z_DEF_career")],
-        "s": seasons_by_pid[pid],
-    })
+def build(cfg):
+    full = list(csv.DictReader(open(HERE / cfg["full_csv"])))
+    zdp, wdp = cfg["z_dp"], cfg["workload_dp"]
 
-missing = [p["id"] for p in players if not p["s"]]
-assert not missing, f"no season rows for {len(missing)} pool players: {missing[:5]}"
+    def zval(v):
+        return None if v in ("", "nan") else round(float(v), zdp)
 
-config = {
-    "cats": CATS,
-    "catLabels": ["AVG", "ISO", "BB", "SB", "DEF"],
-    "defaultWeights": DEFAULT_WEIGHTS,
-    "defaultPeakN": PEAK_N,
-    "defaultBlend": BLEND,
-    "listN": LIST_N,
-    "bubbleN": BUBBLE_N,
-    "paNorm": PA_NORM,
-    "pool": len(players),
-}
+    seasons_by_pid = defaultdict(list)
+    for r in csv.DictReader(open(HERE / cfg["seasons_csv"])):
+        row = [zval(r[c]) for c in cfg["season_z_cols"]]
+        wl = float(r[cfg["season_workload_col"]])
+        row.append(int(round(wl)) if wdp == 0 else round(wl, wdp))
+        seasons_by_pid[r["playerID"]].append(row)
 
-out = (
-    "// Per-season z-score matrix for every ranked hitter, so the Your Hall page\n"
-    "// can re-score the whole pool under user-chosen weights. Generated by\n"
-    "// build_yourhall_js.py from saa_full.csv + saa_seasons_hitters.csv.\n"
-    "// season row = [z_AVG, z_ISO, z_BB, z_SB, z_DEF, PA]  (null z = stat absent that year)\n"
-    "const YH_CONFIG = " + json.dumps(config, separators=(",", ":")) + ";\n"
-    "const YH_PLAYERS = " + json.dumps(players, separators=(",", ":")) + ";\n"
-)
-(HERE / "js/yourhall-hitters-data.js").write_text(out)
-kb = len(out) / 1024
-print(f"js/yourhall-hitters-data.js: {len(players)} hitters, "
-      f"{sum(len(p['s']) for p in players)} player-seasons, {kb:.0f} KB")
+    players = []
+    for r in full:
+        pid = r["playerID"]
+        players.append({
+            "id": pid,
+            "n": r["name"],
+            "hof": pid in hof,
+            "nel": r[cfg["nel_col"]] == "True",
+            "wl": int(round(float(r[cfg["workload_col"]]))),
+            "z": [round(float(r[c]), 3) for c in cfg["career_z_cols"]],
+            "s": seasons_by_pid[pid],
+        })
+    missing = [p["id"] for p in players if not p["s"]]
+    assert not missing, f"{cfg['side']}: no season rows for {len(missing)}: {missing[:5]}"
 
-# ---- YH_CARDS: career box-score line per playerID, whole pool ----
-# (the Your Hall detail card, same shape as the Top-300 list's SAA_CAREER,
-#  but keyed by id since the ranking is recomputed client-side)
-war_fallback = {r["playerID"]: float(r["real_WAR"]) for r in full}
-cards = hitter_cards({p["id"] for p in players}, war_fallback)
-(HERE / "js/yourhall-hitters-cards.js").write_text(
-    "// Career box-score lines for every ranked hitter, keyed by playerID.\n"
-    "// Generated by build_yourhall_js.py (build_cards.hitter_cards).\n"
-    "const YH_CARDS = " + json.dumps(cards, separators=(",", ":")) + ";\n"
-)
-print(f"js/yourhall-hitters-cards.js: {len(cards)} of {len(players)} hitters have a card")
+    config = {
+        "mode": cfg["side"],
+        "cats": cfg["cats"],
+        "catLabels": cfg["labels"],
+        "defaultWeights": cfg["default_weights"],
+        "hasPeak": cfg["has_peak"],
+        "defaultPeakN": cfg["peak_n"],
+        "defaultBlend": cfg["blend"],
+        "listN": cfg["list_n"],
+        "bubbleN": BUBBLE_N,
+        "workloadNorm": cfg["workload_norm"],
+        "pool": len(players),
+    }
+    wl_label = cfg["season_workload_col"]
+    out = (
+        f"// Per-season z-score matrix for every ranked {cfg['side'][:-1]}, so the Your Hall\n"
+        f"// page can re-score the whole pool under user-chosen weights. Generated by\n"
+        f"// build_yourhall_js.py.  season row = [z, z, z, z, z, {wl_label}]  "
+        f"({'/'.join(cfg['labels'])}; null z = stat absent that year)\n"
+        "const YH_CONFIG = " + json.dumps(config, separators=(",", ":")) + ";\n"
+        "const YH_PLAYERS = " + json.dumps(players, separators=(",", ":")) + ";\n"
+    )
+    (HERE / f"js/yourhall-{cfg['side']}-data.js").write_text(out)
+    print(f"js/yourhall-{cfg['side']}-data.js: {len(players)} {cfg['side']}, "
+          f"{sum(len(p['s']) for p in players)} player-seasons, {len(out) / 1024:.0f} KB")
 
-# ---- sanity check: re-score from YH_PLAYERS, must reproduce saa_full.csv ----
-def score(seasons, weights, peak_n, blend):
+    _sanity(cfg, players, full)
+    _cards(cfg, players, full)
+
+
+def _score(seasons, weights, peak_n, blend, norm, has_peak):
     saas = []
+    total = 0.0
     for row in seasons:
         num = den = 0.0
         for w, zi in zip(weights, row[:5]):
@@ -123,28 +143,68 @@ def score(seasons, weights, peak_n, blend):
                 num += w * zi
                 den += w
         if den > 0:
-            saas.append((num / den) * row[5] / PA_NORM)
-    total = sum(saas)
+            v = (num / den) * row[5] / norm
+            saas.append(v)
+            total += v
+    if not has_peak:
+        return total
     peak = sum(sorted(saas, reverse=True)[:peak_n])
     return (1 - blend) * total + blend * peak
 
-recomputed = sorted(
-    ((score(p["s"], DEFAULT_WEIGHTS, PEAK_N, BLEND), p["id"], p["n"]) for p in players),
-    reverse=True,
-)
-worst = 0.0
-rank_moves = 0
-official = {r["playerID"]: (i + 1, float(r["SAA_final"])) for i, r in enumerate(full)}
-for new_rank, (saa, pid, name) in enumerate(recomputed, 1):
-    off_rank, off_saa = official[pid]
-    worst = max(worst, abs(saa - off_saa))
-    if new_rank != off_rank:
-        rank_moves += 1
-        if rank_moves <= 5:
-            print(f"  rank drift: {name} #{off_rank} -> #{new_rank} "
-                  f"(saa {off_saa:.4f} vs {saa:.4f})")
-print(f"sanity: max |SAA_final - recomputed| = {worst:.2e} over {len(players)} hitters "
-      f"(displayed to 2 dp); {rank_moves} rank differences")
-assert worst < 1e-3, "client recompute drifts too far from build_saa.py"
-assert rank_moves == 0, "recompute reproduces scores but not the ranking order"
-print("OK -- client recompute reproduces build_saa.py's ranking exactly")
+
+def _sanity(cfg, players, full):
+    official_key = "SAA_final" if cfg["has_peak"] else "SAA_total"
+    official = {r["playerID"]: (i + 1, float(r[official_key])) for i, r in enumerate(full)}
+    rec = sorted(
+        ((_score(p["s"], cfg["default_weights"], cfg["peak_n"], cfg["blend"],
+                 cfg["workload_norm"], cfg["has_peak"]), p["id"], p["n"]) for p in players),
+        reverse=True,
+    )
+    worst = 0.0
+    moves = 0
+    for new_rank, (saa, pid, name) in enumerate(rec, 1):
+        off_rank, off_saa = official[pid]
+        worst = max(worst, abs(saa - off_saa))
+        if new_rank != off_rank:
+            moves += 1
+            if moves <= 4:
+                print(f"  {cfg['side']} rank drift: {name} #{off_rank} -> #{new_rank}")
+    print(f"  sanity: max |score - recomputed| = {worst:.2e}; {moves} rank differences")
+    assert worst < 1e-3, f"{cfg['side']}: client recompute drifts too far"
+    assert moves == 0, f"{cfg['side']}: recompute does not reproduce the ranking order"
+
+
+def _cards(cfg, players, full):
+    ids = {p["id"] for p in players}
+    if cfg["side"] == "hitters":
+        war_fallback = {r["playerID"]: float(r["real_WAR"]) for r in full}
+        cards = hitter_cards(ids, war_fallback)
+    else:
+        cards = {}
+        for r in full:
+            eplus = r["ERA_plus"]
+            cards[r["playerID"]] = {
+                "role": "Starter" if r["role"] == "SP" else "Reliever",
+                "yrs": f"{int(float(r['yr_min']))}–{int(float(r['yr_max']))}",
+                "team": r["team"],
+                "qip": round(float(r["qualifying_IP"])),
+                "w": int(r["W"]), "l": int(r["L"]), "sv": int(r["SV"]), "so": int(r["SO"]),
+                "g": int(r["G"]), "gs": int(r["GS"]),
+                "ip": round(float(r["IP"])),
+                "era": round(float(r["career_ERA"]), 2),
+                "whip": round(float(r["career_WHIP"]), 2),
+                "eraPlus": None if eplus in ("", "nan") else round(float(eplus)),
+                "war": round(float(r["real_WAR"]), 1),
+            }
+    (HERE / f"js/yourhall-{cfg['side']}-cards.js").write_text(
+        f"// Career box-score lines for every ranked {cfg['side'][:-1]}, keyed by playerID.\n"
+        "// Generated by build_yourhall_js.py.\n"
+        "const YH_CARDS = " + json.dumps(cards, separators=(",", ":")) + ";\n"
+    )
+    print(f"js/yourhall-{cfg['side']}-cards.js: {len(cards)} of {len(players)} have a card")
+
+
+if __name__ == "__main__":
+    build(HITTERS)
+    build(PITCHERS)
+    print("OK -- both Your Hall sides reproduce the committed ranking exactly")
