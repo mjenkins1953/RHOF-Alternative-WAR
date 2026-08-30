@@ -134,6 +134,8 @@ a { color: var(--brass-lt); }
   text-align: center;
   color: var(--brass-lt);
 }
+/* "REAL" set brighter than the surrounding brass so it stands out */
+.mark__real { color: var(--paper); }
 .site-head__tag {
   font-family: var(--font-mono);
   font-size: 12px;

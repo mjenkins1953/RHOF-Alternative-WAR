@@ -140,6 +140,8 @@ a { color: var(--brass-lt); }
   text-align: center;
   color: var(--brass-lt);
 }
+/* "REAL" set brighter than the surrounding brass so it stands out */
+.mark__real { color: var(--paper); }
 .site-head__tag {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -1289,7 +1291,7 @@ a { color: var(--brass-lt); }
   <div class="wrap site-head__inner">
     <a href="#" class="mark">
       <span class="mark__stitch">⚾</span>
-      <span class="mark__text">THE REAL HALL OF FAME</span>
+      <span class="mark__text">THE <span class="mark__real">REAL</span> HALL OF FAME</span>
     </a>
     <p class="site-head__tag">Real stats. One formula. No ballots. No committees.</p>
   </div>
@@ -1595,10 +1597,10 @@ a { color: var(--brass-lt); }
 <dialog class="about-modal" id="aboutModal">
   <div class="about-modal__inner">
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
-    <p class="about-modal__eyebrow">About</p>
-    <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.017</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.29.017</span></p>
+    <p class="about-modal__eyebrow">The Real Hall of Fame</p>
+    <h2 class="about-modal__title">About</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.018</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.08.29</span></p>
   </div>
 </dialog>
 
@@ -2028,9 +2030,11 @@ window.addEventListener('resize', saaSizeScroll);
 // Bump both counters by .001 on every commit + push:
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
+// The dialog shows only the date portion of RHOF_BUILD; the trailing
+// counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.017';
-const RHOF_BUILD = '2026.08.29.017';
+const RHOF_VERSION = '1.018';
+const RHOF_BUILD = '2026.08.29.018';
 
 (function () {
   const modal = document.getElementById('aboutModal');
@@ -2040,7 +2044,7 @@ const RHOF_BUILD = '2026.08.29.017';
   const vEl = modal.querySelector('#aboutVersion');
   const bEl = modal.querySelector('#aboutBuild');
   if (vEl) vEl.textContent = RHOF_VERSION;
-  if (bEl) bEl.textContent = RHOF_BUILD;
+  if (bEl) bEl.textContent = RHOF_BUILD.split('.').slice(0, 3).join('.');
 
   link.addEventListener('click', (e) => {
     e.preventDefault();
