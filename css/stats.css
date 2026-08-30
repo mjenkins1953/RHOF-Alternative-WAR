@@ -1,45 +1,74 @@
 /* ============================================================
-   Stats page — the click-to-expand season card. Same shape as the SAA
-   career cards on the Hitters/Pitchers pages (sticky, accent left border),
-   but the body is a season-by-season table instead of a z-score panel.
-   Lives inside .saa-embed -> light "ledger" palette (--saa-*).
+   Stats page — click a row to open the season card in a popup. The card
+   keeps the SAA cards' accent left bar; its body is a season-by-season
+   table. The card uses the light "ledger" palette (--saa-*), which is
+   scoped to .saa-embed, so the modal re-declares those tokens.
    ============================================================ */
 
 .saa-embed .stats-row { cursor: pointer; }
+.saa-embed .stats-row:hover td { background: var(--saa-surface-2); }
+.saa-embed .stats-row:hover td.name { color: var(--saa-accent); }
 .saa-embed .stats-row:focus-visible { outline: 2px solid var(--saa-accent); outline-offset: -2px; }
-.saa-embed .stats-row.is-open { background: var(--saa-card); }
-.saa-embed .stats-row.is-open td { border-bottom-color: transparent; }
-.saa-embed .stats-caret {
-  display: inline-block;
-  width: 1em;
-  margin-right: 0.15em;
-  color: var(--saa-ink-dim);
-  font-size: 0.8em;
-}
-.saa-embed td.name { cursor: pointer; }
 
-.saa-embed tr.stats-detail td {
+/* ---------- the popup ---------- */
+.stats-modal {
+  /* the ledger tokens live on .saa-embed; the dialog renders in the top
+     layer, outside it, so bring them along */
+  --saa-surface: #ffffff;
+  --saa-surface-2: #e6ebdd;
+  --saa-card: #f8fdec;
+  --saa-line: #d1d8c6;
+  --saa-ink: #16211d;
+  --saa-ink-dim: #5c6d61;
+  --saa-accent: #a8660a;
+
   padding: 0;
+  border: 1px solid var(--brass-dk);
+  border-left: 4px solid var(--saa-accent);   /* the brown bar */
+  border-radius: 4px;
   background: var(--saa-card);
-  border-bottom: 1px solid var(--saa-line);
+  color: var(--saa-ink);
+  width: min(1080px, calc(100vw - 2.5rem));
+  max-height: calc(100vh - 3rem);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
 }
-.saa-embed .stats-card {
-  position: sticky;
-  left: 0;
-  width: min(1080px, calc(100vw - 3rem));
+.stats-modal::backdrop { background: rgba(7,16,13,0.62); }
+.stats-modal__close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.75rem;
+  z-index: 2;
+  background: none;
+  border: none;
+  color: var(--saa-ink-dim);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+.stats-modal__close:hover { color: var(--saa-accent); }
+.stats-modal__body {
+  max-height: calc(100vh - 3rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.stats-modal .stats-card {
   box-sizing: border-box;
-  padding: 1.1rem 1.3rem 1.3rem;
-  border-left: 4px solid var(--saa-accent);
+  padding: 1.2rem 1.4rem 1.4rem;
+  font-family: var(--font-body);
   white-space: normal;
 }
-.saa-embed .stats-card__head {
+.stats-modal .stats-card__head {
   display: flex;
   align-items: baseline;
   gap: 0.55rem 0.9rem;
   flex-wrap: wrap;
   margin-bottom: 0.9rem;
+  padding-right: 1.5rem;   /* clear the close button */
 }
-.saa-embed .stats-card__name {
+.stats-modal .stats-card__name {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.3rem;
@@ -47,23 +76,21 @@
   letter-spacing: 0.01em;
   color: var(--saa-ink);
 }
-.saa-embed .stats-card__sub {
+.stats-modal .stats-card__sub {
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--saa-ink-dim);
 }
 
-.saa-embed .stats-card__wrap { overflow-x: auto; overscroll-behavior-x: contain; }
-.saa-embed table.stats-seasons {
+.stats-modal .stats-card__wrap { overflow-x: auto; overscroll-behavior-x: contain; }
+.stats-modal table.stats-seasons {
   border-collapse: collapse;
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-size: 0.78rem;
+  width: 100%;
 }
-.saa-embed .stats-seasons th {
-  position: static;
-  background: none;
-  box-shadow: none;
+.stats-modal .stats-seasons th {
   text-align: right;
   font-family: var(--font-display);
   font-weight: 500;
@@ -71,29 +98,29 @@
   font-size: 0.66rem;
   letter-spacing: 0.04em;
   color: var(--saa-ink-dim);
-  padding: 0.3rem 0.45rem;
+  padding: 0.3rem 0.5rem;
   border-bottom: 1px solid var(--saa-line);
   white-space: nowrap;
-  cursor: default;
 }
-.saa-embed .stats-seasons th:first-child,
-.saa-embed .stats-seasons td:first-child { text-align: left; }
-.saa-embed .stats-seasons th:nth-child(2),
-.saa-embed .stats-seasons td:nth-child(2) { text-align: left; }
-.saa-embed .stats-seasons td {
+.stats-modal .stats-seasons th:first-child,
+.stats-modal .stats-seasons td:first-child,
+.stats-modal .stats-seasons th:nth-child(2),
+.stats-modal .stats-seasons td:nth-child(2) { text-align: left; }
+.stats-modal .stats-seasons td {
   text-align: right;
-  padding: 0.26rem 0.45rem;
+  padding: 0.28rem 0.5rem;
   border-bottom: 1px solid var(--saa-line);
   white-space: nowrap;
 }
-.saa-embed .stats-seasons tr:last-child td { border-bottom: none; }
-.saa-embed .stats-seasons tr.is-total td {
+.stats-modal .stats-seasons tbody tr:last-child td { border-bottom: none; }
+.stats-modal .stats-seasons tr.is-total td {
   border-top: 2px solid var(--saa-line);
   font-weight: 600;
   color: var(--saa-ink);
 }
-.saa-embed .stats-seasons tr.is-total td:first-child { font-family: var(--font-display); }
+.stats-modal .stats-seasons tr.is-total td:first-child { font-family: var(--font-display); }
 
 @media (max-width: 640px) {
-  .saa-embed .stats-card { width: calc(100vw - 2.5rem); }
+  .stats-modal { width: calc(100vw - 1.5rem); }
+  .stats-modal .stats-card { padding: 1rem 1rem 1.2rem; }
 }

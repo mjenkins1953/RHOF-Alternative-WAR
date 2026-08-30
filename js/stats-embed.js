@@ -48,6 +48,8 @@ const stCountEl = document.getElementById('statsCount');
 const stSearchInput = document.getElementById('statsQ');
 const stHeaders = Array.from(document.querySelectorAll('.saa-embed th[data-key]'));
 const stShell = document.querySelector('.saa-embed .table-shell');
+const stModal = document.getElementById('statsModal');
+const stModalBody = document.getElementById('statsModalBody');
 const stNoun = ST_MODE === 'pitchers' ? 'pitchers' : 'players';
 
 let stSortKey = ST_MODE === 'pitchers' ? 'ip' : 'g';
@@ -56,7 +58,6 @@ let stQuery = '';
 let stFiltered = ST.rows;
 let stRendered = 0;
 const ST_CHUNK = 150;
-const stExpanded = new Set();
 
 function stSortVal(row, key) {
   const v = row[ST_IDX[key]];
@@ -124,9 +125,6 @@ function stCard(id, name) {
       </table></div>
     </div>`;
 }
-function stDetailRow(id, name) {
-  return `<tr class="stats-detail"><td colspan="${ST_NCOLS}">${stCard(id, name)}</td></tr>`;
-}
 
 // ---------------- list ----------------
 function stApply() {
@@ -167,14 +165,12 @@ function stApply() {
 }
 
 function stRowHtml(r) {
-  const open = stExpanded.has(r[0]);
-  let tds = `<td class="name"><span class="stats-caret">${open ? '▾' : '▸'}</span>${r[1]}</td>`;
+  let tds = `<td class="name">${r[1]}</td>`;
   for (let c = 1; c < ST.cols.length; c++) {
     const k = ST.cols[c][0];
     tds += `<td>${stCell(k, r[ST_IDX[k]])}</td>`;
   }
-  return `<tr class="stats-row${open ? ' is-open' : ''}" data-id="${r[0]}" tabindex="0" aria-expanded="${open}">${tds}</tr>`
-    + (open ? stDetailRow(r[0], r[1]) : '');
+  return `<tr class="stats-row" data-id="${r[0]}" tabindex="0" role="button" aria-label="${r[1]} — season stats">${tds}</tr>`;
 }
 
 function stRenderMore() {
@@ -193,44 +189,32 @@ if (stShell) {
   }, { passive: true });
 }
 
-// ---------------- expand / collapse ----------------
-function stToggleRow(tr) {
-  const id = tr.dataset.id;
-  const name = tr.querySelector('.name').textContent.replace(/^[▸▾]\s*/, '');
-  const isOpen = stExpanded.has(id);
-  if (isOpen) {
-    stExpanded.delete(id);
-    const next = tr.nextElementSibling;
-    if (next && next.classList.contains('stats-detail')) next.remove();
-  } else {
-    stExpanded.add(id);
-    tr.insertAdjacentHTML('afterend', stDetailRow(id, name));
-  }
-  tr.classList.toggle('is-open', !isOpen);
-  tr.setAttribute('aria-expanded', String(!isOpen));
-  const caret = tr.querySelector('.stats-caret');
-  if (caret) caret.textContent = isOpen ? '▸' : '▾';
+// ---------------- season card popup ----------------
+function stOpenCard(tr) {
+  if (!stModal) return;
+  stModalBody.innerHTML = stCard(tr.dataset.id, tr.querySelector('.name').textContent);
+  stModalBody.scrollTop = 0;
+  if (typeof stModal.showModal === 'function') stModal.showModal();
+  else stModal.setAttribute('open', '');
 }
+function stCloseCard() { stModal && stModal.close && stModal.close(); }
+
 stTbody.addEventListener('click', e => {
   const tr = e.target.closest('tr.stats-row');
-  if (tr) stToggleRow(tr);
+  if (tr) stOpenCard(tr);
 });
 stTbody.addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
   const tr = e.target.closest('tr.stats-row');
   if (!tr) return;
   e.preventDefault();
-  stToggleRow(tr);
+  stOpenCard(tr);
 });
-
-// season data arrives after the list (deferred) -- refresh any card still on "Loading…"
-window.addEventListener('load', () => {
-  if (!ST.seasons() || !stExpanded.size) return;
-  document.querySelectorAll('tr.stats-detail').forEach(d => {
-    const row = d.previousElementSibling;
-    if (row) d.querySelector('td').innerHTML = stCard(row.dataset.id, row.querySelector('.name').textContent.replace(/^[▸▾]\s*/, ''));
-  });
-});
+if (stModal) {
+  stModal.querySelector('.stats-modal__close')?.addEventListener('click', stCloseCard);
+  stModal.addEventListener('click', e => { if (e.target === stModal) stCloseCard(); });
+  stModal.addEventListener('keydown', e => { if (e.key === 'Escape') stCloseCard(); });
+}
 
 // ---------------- sort / search ----------------
 stHeaders.forEach(th => {
