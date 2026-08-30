@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology | The TRUE Hall of Fame</title>
+<meta name="description" content="How the True Hall of Fame's Stat Above Average (SAA) is built, a glossary of every metric on the site, and why the list isn't just sorted by WAR.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a href="index.html" class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE <span class="mark__real">TRUE</span> HALL OF FAME</span>
+    </a>
+    <p class="site-head__tag">Real stats. One formula. No ballots. No committees.</p>
+  </div>
+</header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <a href="hitters.html" class="site-menu__link">Hitters</a>
+    <a href="pitchers.html" class="site-menu__link">Pitchers</a>
+    <a href="yourhall.html" class="site-menu__link">Your Hall</a>
+    <a href="stats.html" class="site-menu__link">Stats</a>
+    <a href="methodology.html" class="site-menu__link">Methodology</a>
+    <a href="#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="standards" id="methodology">
+  <div class="wrap">
+    <h2 class="section-title">How Stat Above Average works</h2>
+    <p class="section-lede">One formula, applied identically whether you struck people out or drove them in.</p>
+    <div class="formula-box">
+      <p class="formula-desc formula-desc--lede">
+        A hitter's <strong>Stat Above Average (SAA)</strong> is built one season at a time. Each season, five
+        rate stats are turned into z-scores — standard deviations above or below that season's league average,
+        measured against qualifying hitters only — then blended by weight, scaled to a 600&#8209;plate&#8209;appearance
+        workload, and summed across the whole career. The ranking number is a JAWS-style 50/50 average of that
+        career total and the sum of the player's seven best individual seasons, so a long steady career and a
+        short brilliant one can both build a real case.
+      </p>
+      <div class="formula-row">
+        <span class="formula-term">Hitters</span>
+        <span class="formula-eq">=</span>
+        <span class="formula-term">30% AVG vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">30% ISO vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">20% Defense vs position</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">10% Walk rate vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">10% Steal rate vs league</span>
+      </div>
+      <hr class="formula-divider">
+      <p class="formula-desc formula-desc--lede">
+        A pitcher's SAA works the same way, minus the peak adjustment: five z-scored rate stats per season
+        (ERA and WHIP flipped, so beating the league counts as positive), blended by weight, scaled to a
+        200&#8209;inning workload, and summed across every qualifying season. There is no best-seven bonus —
+        a pitcher's number is the career total only.
+      </p>
+      <div class="formula-row formula-row--last">
+        <span class="formula-term">Pitchers</span>
+        <span class="formula-eq">=</span>
+        <span class="formula-term">25% ERA vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">25% WHIP vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">20% K/9 vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">20% Win%</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">10% Saves vs league</span>
+      </div>
+    </div>
+    <p class="standards__note">
+      Every comparison is to the player's <em>own</em> league in the <em>exact</em> seasons he played — a 1927
+      season is judged against 1927, a 2024 season against 2024. A career that spans eras gets a benchmark
+      blended across those years. Nothing is measured against a fixed all-time standard or a
+      replacement&#8209;level constant. The weights are deliberately tilted toward contact, power, and run
+      prevention: a walks-only bat or a pure basestealer could otherwise ride a single category past a
+      complete player.
+    </p>
+  </div>
+</section>
+
+<section class="glossary">
+  <div class="wrap">
+    <h2 class="section-title">Glossary</h2>
+    <p class="section-lede">Every abbreviation you'll run into on the lists, the cards, and the Stats pages.</p>
+
+    <h3>The five hitting inputs</h3>
+    <dl>
+      <dt>AVG &mdash; Batting average</dt>
+      <dd>Hits divided by at&#8209;bats. The oldest measure of pure contact.</dd>
+      <dt>ISO &mdash; Isolated power</dt>
+      <dd>Slugging percentage minus batting average: extra bases per at&#8209;bat, with singles stripped out.
+        A hitter with nothing but singles has an ISO of .000; prime Babe Ruth sat around .350.</dd>
+      <dt>Defense (vs position)</dt>
+      <dd>Runs saved or cost relative to an average fielder at the same position in the same era, built from
+        putouts and assists against the positional rate and scaled by playing time. A shortstop is only ever
+        compared to other shortstops.</dd>
+      <dt>Walk rate (BB)</dt>
+      <dd>Bases on balls as a share of plate appearances &mdash; how often a hitter reaches base without
+        putting the ball in play.</dd>
+      <dt>Steal rate (SB)</dt>
+      <dd>Net stolen&#8209;base value per plate appearance: steals credited, caught&#8209;stealing charged at a
+        heavier penalty. Weighted lightly on purpose.</dd>
+    </dl>
+
+    <h3>The five pitching inputs</h3>
+    <dl>
+      <dt>ERA &mdash; Earned run average</dt>
+      <dd>Earned runs allowed per nine innings. Lower is better, so the z&#8209;score is flipped before it's
+        blended.</dd>
+      <dt>WHIP &mdash; Walks and hits per inning pitched</dt>
+      <dd>Baserunners allowed per inning, walks plus hits. Also flipped &mdash; fewer is better.</dd>
+      <dt>K/9 &mdash; Strikeouts per nine innings</dt>
+      <dd>The one bat&#8209;missing skill that shows up on every stat sheet, in any era.</dd>
+      <dt>Win% &mdash; Winning percentage</dt>
+      <dd>Wins divided by decisions (wins plus losses). It leans on the team around the pitcher, so it carries
+        a modest weight.</dd>
+      <dt>SV &mdash; Saves</dt>
+      <dd>Games finished protecting a lead, per the official rule. Weighted lightest of the five: it depends
+        heavily on how a manager chooses to use a pitcher.</dd>
+    </dl>
+
+    <h3>Other batting stats on the site</h3>
+    <dl>
+      <dt>OBP &mdash; On&#8209;base percentage</dt>
+      <dd>Times reached base (hits + walks + hit&#8209;by&#8209;pitch) divided by plate appearances.</dd>
+      <dt>SLG &mdash; Slugging percentage</dt>
+      <dd>Total bases divided by at&#8209;bats &mdash; a double counts 2, a home run 4.</dd>
+      <dt>OPS &mdash; On&#8209;base plus slugging</dt>
+      <dd>OBP + SLG. A quick catch&#8209;all for offensive value; .900 and up is star level.</dd>
+      <dt>OPS+ &mdash; Adjusted OPS</dt>
+      <dd>OPS restated so 100 is league average and each point above is one percent better, adjusted for
+        ballpark. 150 means 50% better than league.</dd>
+      <dt>PA &mdash; Plate appearances</dt>
+      <dd>Every trip to the plate, walks and sacrifices included. SAA scales each hitting season to 600 PA.</dd>
+      <dt>R, RBI, HR, H, 2B, 3B, SB, BB, SO</dt>
+      <dd>Runs, runs batted in, home runs, hits, doubles, triples, stolen bases, walks, strikeouts &mdash; raw
+        season and career totals, no adjustment.</dd>
+    </dl>
+
+    <h3>Other pitching stats on the site</h3>
+    <dl>
+      <dt>IP &mdash; Innings pitched</dt>
+      <dd>Shown in the traditional thirds notation: 200.1 is 200 innings and one out, 200.2 is two outs.
+        SAA scales each pitching season to 200 IP.</dd>
+      <dt>ERA+ &mdash; Adjusted ERA</dt>
+      <dd>ERA restated to a 100&#8209;is&#8209;average, park&#8209;adjusted scale where higher is better &mdash;
+        the inverse direction of raw ERA.</dd>
+      <dt>W, L, G, GS, CG, SHO</dt>
+      <dd>Wins, losses, games, games started, complete games, shutouts.</dd>
+      <dt>H, ER, HR, BB, SO (allowed)</dt>
+      <dd>Hits, earned runs, home runs, walks, and strikeouts a pitcher gave up.</dd>
+    </dl>
+
+    <h3>Methodology terms</h3>
+    <dl>
+      <dt>z&#8209;score</dt>
+      <dd>How far a number sits from the average, measured in standard deviations. A z of +1 is one standard
+        deviation better than that season's qualifying players; +2 is rare air. SAA blends z&#8209;scores, not
+        raw stats, so separating yourself in a tightly bunched category counts for more than in one where the
+        league is spread all over.</dd>
+      <dt>&ldquo;vs league&rdquo; / league&#8209;relative</dt>
+      <dd>Every input is scored against the average of the same season, never a fixed all&#8209;time bar. This
+        is the core difference from career&#8209;counting totals and from WAR's replacement level.</dd>
+      <dt>Qualifying season</dt>
+      <dd>A season that counts toward SAA: 200+ plate appearances for a hitter, 40+ innings for a pitcher.
+        Below the line, a season doesn't move the number.</dd>
+      <dt>Peak / best&#8209;seven</dt>
+      <dd>For hitters, the final SAA is a 50/50 average of the career total and the sum of the seven best
+        individual seasons &mdash; the same idea as Baseball&#8209;Reference's JAWS. It stops a compiler with
+        no great years from outranking a shorter&#8209;career great. Pitchers get no peak component.</dd>
+      <dt>WAR / bWAR</dt>
+      <dd>Wins Above Replacement, the mainstream all&#8209;in&#8209;one value stat. &ldquo;bWAR&rdquo; is
+        Baseball&#8209;Reference's version, the one quoted on this site. See <em>Why not WAR?</em> below.</dd>
+      <dt>Replacement level</dt>
+      <dd>The baseline WAR measures against: what a team could get essentially for free from the minor leagues
+        or the waiver wire. SAA has no equivalent &mdash; it compares to the real league, not a hypothetical
+        floor.</dd>
+      <dt>NeL</dt>
+      <dd>A flag on the lists marking a player whose SAA draws on Negro Leagues seasons &mdash; now part of the
+        official record and scored exactly the same way.</dd>
+      <dt>Cooperstown / HOF</dt>
+      <dd>The Baseball Hall of Fame in Cooperstown, New York, and its membership, which is decided by vote. The
+        HOF column on each list shows who is already in.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="dossier">
+  <div class="wrap dossier__inner">
+    <h2 class="section-title">Why not WAR?</h2>
+    <p>Wins Above Replacement measures every player against one universal "replacement level" —
+      a theoretical bench player, calibrated once from decades of injury-substitution data and then
+      applied identically to a dead-ball-era outfielder and a modern closer. It's the industry
+      standard for good reason, but that one number was never derived for either of them specifically.</p>
+    <p class="dossier__punch">Stat Above Average measures every player against their own competition
+      instead — the actual league average, in the actual years and at the actual position they
+      played, blended across whichever eras their career spans.</p>
+    <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
+      Just each player's rate stats, held up against the players who were actually on the field
+      around them.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Data sourced from the latest version of the Lahman database.</p>
+  </div>
+</footer>
+
+<dialog class="about-modal" id="aboutModal">
+  <div class="about-modal__inner">
+    <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
+    <p class="about-modal__eyebrow">The True Hall of Fame</p>
+    <h2 class="about-modal__title">About</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.040</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
+  </div>
+</dialog>
+
+<script src="js/about.js"></script>
+</body>
+</html>

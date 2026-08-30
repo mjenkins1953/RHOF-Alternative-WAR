@@ -528,6 +528,44 @@ a { color: var(--brass-lt); }
   padding-left: 16px;
 }
 
+/* ---------------- Methodology page ---------------- */
+.standards__note {
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: none;
+  margin: 22px 0 0;
+}
+.glossary {
+  padding: 56px 0 64px;
+  border-top: 1px solid var(--green-line);
+}
+.glossary h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  color: var(--brass-lt);
+  margin: 40px 0 6px;
+}
+.glossary h3:first-of-type { margin-top: 8px; }
+.glossary dl { margin: 0; }
+.glossary dt {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--paper);
+  margin-top: 18px;
+}
+.glossary dl > dt:first-of-type { margin-top: 8px; }
+.glossary dd {
+  margin: 4px 0 0;
+  color: var(--paper-dim);
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: none;
+}
+
 /* ---------------- Footer ---------------- */
 .site-foot { padding: 28px 0 40px; }
 .site-foot__inner p {

@@ -534,6 +534,44 @@ a { color: var(--brass-lt); }
   padding-left: 16px;
 }
 
+/* ---------------- Methodology page ---------------- */
+.standards__note {
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: none;
+  margin: 22px 0 0;
+}
+.glossary {
+  padding: 56px 0 64px;
+  border-top: 1px solid var(--green-line);
+}
+.glossary h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  color: var(--brass-lt);
+  margin: 40px 0 6px;
+}
+.glossary h3:first-of-type { margin-top: 8px; }
+.glossary dl { margin: 0; }
+.glossary dt {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--paper);
+  margin-top: 18px;
+}
+.glossary dl > dt:first-of-type { margin-top: 8px; }
+.glossary dd {
+  margin: 4px 0 0;
+  color: var(--paper-dim);
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: none;
+}
+
 /* ---------------- Footer ---------------- */
 .site-foot { padding: 28px 0 40px; }
 .site-foot__inner p {
@@ -1417,22 +1455,6 @@ a { color: var(--brass-lt); }
   </div>
 </section>
 
-<section class="dossier">
-  <div class="wrap dossier__inner">
-    <h2 class="section-title">Why not WAR?</h2>
-    <p>Wins Above Replacement measures every player against one universal "replacement level" —
-      a theoretical bench player, calibrated once from decades of injury-substitution data and then
-      applied identically to a dead-ball-era outfielder and a modern closer. It's the industry
-      standard for good reason, but that one number was never derived for either of them specifically.</p>
-    <p class="dossier__punch">Stat Above Average measures every player against their own competition
-      instead — the actual league average, in the actual years and at the actual position they
-      played, blended across whichever eras their career spans.</p>
-    <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
-      Just each player's rate stats, held up against the players who were actually on the field
-      around them.</p>
-  </div>
-</section>
-
 <main>
 <section class="saa-embed" id="view-hitters">
   <div class="wrap">
@@ -1632,15 +1654,190 @@ a { color: var(--brass-lt); }
 
   </div>
 </section>
-</main>
+
 
 <section class="standards" id="methodology">
   <div class="wrap">
     <h2 class="section-title">How Stat Above Average works</h2>
     <p class="section-lede">One formula, applied identically whether you struck people out or drove them in.</p>
-    <div class="formula-box" id="formulaBox"></div>
+    <div class="formula-box">
+      <p class="formula-desc formula-desc--lede">
+        A hitter's <strong>Stat Above Average (SAA)</strong> is built one season at a time. Each season, five
+        rate stats are turned into z-scores — standard deviations above or below that season's league average,
+        measured against qualifying hitters only — then blended by weight, scaled to a 600&#8209;plate&#8209;appearance
+        workload, and summed across the whole career. The ranking number is a JAWS-style 50/50 average of that
+        career total and the sum of the player's seven best individual seasons, so a long steady career and a
+        short brilliant one can both build a real case.
+      </p>
+      <div class="formula-row">
+        <span class="formula-term">Hitters</span>
+        <span class="formula-eq">=</span>
+        <span class="formula-term">30% AVG vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">30% ISO vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">20% Defense vs position</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">10% Walk rate vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">10% Steal rate vs league</span>
+      </div>
+      <hr class="formula-divider">
+      <p class="formula-desc formula-desc--lede">
+        A pitcher's SAA works the same way, minus the peak adjustment: five z-scored rate stats per season
+        (ERA and WHIP flipped, so beating the league counts as positive), blended by weight, scaled to a
+        200&#8209;inning workload, and summed across every qualifying season. There is no best-seven bonus —
+        a pitcher's number is the career total only.
+      </p>
+      <div class="formula-row formula-row--last">
+        <span class="formula-term">Pitchers</span>
+        <span class="formula-eq">=</span>
+        <span class="formula-term">25% ERA vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">25% WHIP vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">20% K/9 vs league</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">20% Win%</span>
+        <span class="formula-plus">+</span>
+        <span class="formula-term">10% Saves vs league</span>
+      </div>
+    </div>
+    <p class="standards__note">
+      Every comparison is to the player's <em>own</em> league in the <em>exact</em> seasons he played — a 1927
+      season is judged against 1927, a 2024 season against 2024. A career that spans eras gets a benchmark
+      blended across those years. Nothing is measured against a fixed all-time standard or a
+      replacement&#8209;level constant. The weights are deliberately tilted toward contact, power, and run
+      prevention: a walks-only bat or a pure basestealer could otherwise ride a single category past a
+      complete player.
+    </p>
   </div>
 </section>
+
+<section class="glossary">
+  <div class="wrap">
+    <h2 class="section-title">Glossary</h2>
+    <p class="section-lede">Every abbreviation you'll run into on the lists, the cards, and the Stats pages.</p>
+
+    <h3>The five hitting inputs</h3>
+    <dl>
+      <dt>AVG &mdash; Batting average</dt>
+      <dd>Hits divided by at&#8209;bats. The oldest measure of pure contact.</dd>
+      <dt>ISO &mdash; Isolated power</dt>
+      <dd>Slugging percentage minus batting average: extra bases per at&#8209;bat, with singles stripped out.
+        A hitter with nothing but singles has an ISO of .000; prime Babe Ruth sat around .350.</dd>
+      <dt>Defense (vs position)</dt>
+      <dd>Runs saved or cost relative to an average fielder at the same position in the same era, built from
+        putouts and assists against the positional rate and scaled by playing time. A shortstop is only ever
+        compared to other shortstops.</dd>
+      <dt>Walk rate (BB)</dt>
+      <dd>Bases on balls as a share of plate appearances &mdash; how often a hitter reaches base without
+        putting the ball in play.</dd>
+      <dt>Steal rate (SB)</dt>
+      <dd>Net stolen&#8209;base value per plate appearance: steals credited, caught&#8209;stealing charged at a
+        heavier penalty. Weighted lightly on purpose.</dd>
+    </dl>
+
+    <h3>The five pitching inputs</h3>
+    <dl>
+      <dt>ERA &mdash; Earned run average</dt>
+      <dd>Earned runs allowed per nine innings. Lower is better, so the z&#8209;score is flipped before it's
+        blended.</dd>
+      <dt>WHIP &mdash; Walks and hits per inning pitched</dt>
+      <dd>Baserunners allowed per inning, walks plus hits. Also flipped &mdash; fewer is better.</dd>
+      <dt>K/9 &mdash; Strikeouts per nine innings</dt>
+      <dd>The one bat&#8209;missing skill that shows up on every stat sheet, in any era.</dd>
+      <dt>Win% &mdash; Winning percentage</dt>
+      <dd>Wins divided by decisions (wins plus losses). It leans on the team around the pitcher, so it carries
+        a modest weight.</dd>
+      <dt>SV &mdash; Saves</dt>
+      <dd>Games finished protecting a lead, per the official rule. Weighted lightest of the five: it depends
+        heavily on how a manager chooses to use a pitcher.</dd>
+    </dl>
+
+    <h3>Other batting stats on the site</h3>
+    <dl>
+      <dt>OBP &mdash; On&#8209;base percentage</dt>
+      <dd>Times reached base (hits + walks + hit&#8209;by&#8209;pitch) divided by plate appearances.</dd>
+      <dt>SLG &mdash; Slugging percentage</dt>
+      <dd>Total bases divided by at&#8209;bats &mdash; a double counts 2, a home run 4.</dd>
+      <dt>OPS &mdash; On&#8209;base plus slugging</dt>
+      <dd>OBP + SLG. A quick catch&#8209;all for offensive value; .900 and up is star level.</dd>
+      <dt>OPS+ &mdash; Adjusted OPS</dt>
+      <dd>OPS restated so 100 is league average and each point above is one percent better, adjusted for
+        ballpark. 150 means 50% better than league.</dd>
+      <dt>PA &mdash; Plate appearances</dt>
+      <dd>Every trip to the plate, walks and sacrifices included. SAA scales each hitting season to 600 PA.</dd>
+      <dt>R, RBI, HR, H, 2B, 3B, SB, BB, SO</dt>
+      <dd>Runs, runs batted in, home runs, hits, doubles, triples, stolen bases, walks, strikeouts &mdash; raw
+        season and career totals, no adjustment.</dd>
+    </dl>
+
+    <h3>Other pitching stats on the site</h3>
+    <dl>
+      <dt>IP &mdash; Innings pitched</dt>
+      <dd>Shown in the traditional thirds notation: 200.1 is 200 innings and one out, 200.2 is two outs.
+        SAA scales each pitching season to 200 IP.</dd>
+      <dt>ERA+ &mdash; Adjusted ERA</dt>
+      <dd>ERA restated to a 100&#8209;is&#8209;average, park&#8209;adjusted scale where higher is better &mdash;
+        the inverse direction of raw ERA.</dd>
+      <dt>W, L, G, GS, CG, SHO</dt>
+      <dd>Wins, losses, games, games started, complete games, shutouts.</dd>
+      <dt>H, ER, HR, BB, SO (allowed)</dt>
+      <dd>Hits, earned runs, home runs, walks, and strikeouts a pitcher gave up.</dd>
+    </dl>
+
+    <h3>Methodology terms</h3>
+    <dl>
+      <dt>z&#8209;score</dt>
+      <dd>How far a number sits from the average, measured in standard deviations. A z of +1 is one standard
+        deviation better than that season's qualifying players; +2 is rare air. SAA blends z&#8209;scores, not
+        raw stats, so separating yourself in a tightly bunched category counts for more than in one where the
+        league is spread all over.</dd>
+      <dt>&ldquo;vs league&rdquo; / league&#8209;relative</dt>
+      <dd>Every input is scored against the average of the same season, never a fixed all&#8209;time bar. This
+        is the core difference from career&#8209;counting totals and from WAR's replacement level.</dd>
+      <dt>Qualifying season</dt>
+      <dd>A season that counts toward SAA: 200+ plate appearances for a hitter, 40+ innings for a pitcher.
+        Below the line, a season doesn't move the number.</dd>
+      <dt>Peak / best&#8209;seven</dt>
+      <dd>For hitters, the final SAA is a 50/50 average of the career total and the sum of the seven best
+        individual seasons &mdash; the same idea as Baseball&#8209;Reference's JAWS. It stops a compiler with
+        no great years from outranking a shorter&#8209;career great. Pitchers get no peak component.</dd>
+      <dt>WAR / bWAR</dt>
+      <dd>Wins Above Replacement, the mainstream all&#8209;in&#8209;one value stat. &ldquo;bWAR&rdquo; is
+        Baseball&#8209;Reference's version, the one quoted on this site. See <em>Why not WAR?</em> below.</dd>
+      <dt>Replacement level</dt>
+      <dd>The baseline WAR measures against: what a team could get essentially for free from the minor leagues
+        or the waiver wire. SAA has no equivalent &mdash; it compares to the real league, not a hypothetical
+        floor.</dd>
+      <dt>NeL</dt>
+      <dd>A flag on the lists marking a player whose SAA draws on Negro Leagues seasons &mdash; now part of the
+        official record and scored exactly the same way.</dd>
+      <dt>Cooperstown / HOF</dt>
+      <dd>The Baseball Hall of Fame in Cooperstown, New York, and its membership, which is decided by vote. The
+        HOF column on each list shows who is already in.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="dossier">
+  <div class="wrap dossier__inner">
+    <h2 class="section-title">Why not WAR?</h2>
+    <p>Wins Above Replacement measures every player against one universal "replacement level" —
+      a theoretical bench player, calibrated once from decades of injury-substitution data and then
+      applied identically to a dead-ball-era outfielder and a modern closer. It's the industry
+      standard for good reason, but that one number was never derived for either of them specifically.</p>
+    <p class="dossier__punch">Stat Above Average measures every player against their own competition
+      instead — the actual league average, in the actual years and at the actual position they
+      played, blended across whichever eras their career spans.</p>
+    <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
+      Just each player's rate stats, held up against the players who were actually on the field
+      around them.</p>
+  </div>
+</section>
+
+</main>
 
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
@@ -1653,186 +1850,11 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.039</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.040</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
 
-<script>
-const RHOF_PLAYERS_DATA = {"_schema_notes": "One flat, cross-position ranking. Pitchers use a five-part weighted composite (formula.pitcherWeights) benchmarked against era-specific league averages (formula.eraBaselines): eraScore = (leagueEra / era) * 100; whipScore = (leagueWhip / whip) * 100, where whip = (bb + hitsAllowed) / ip; k9Score = (k9 / leagueK9) * 100, where k9 = so * 9 / ip; winsIndex = (wins / (wins + losses)) * 100; savesIndex = (saves / leagueSaves) * 100. Composite = 0.25*eraScore + 0.25*whipScore + 0.20*k9Score + 0.20*winsIndex + 0.10*savesIndex. Hitters use a four-part weighted composite (formula.hitterWeights, 0.35/0.35/0.15/0.15) benchmarked the same way: hitScore = (obp / leagueObp) * 100; powerScore = (iso / leagueIso) * 100, where iso = slg - avg; fieldScore = (fieldingPct / positionalFieldingBaseline) * 100; runScore = 100 + ((netSbValuePerPa - leagueNetSbValuePerPa) * formula.sbValueScale), where netSbValuePerPa = (sb*sbRunValues.sb + cs*sbRunValues.cs) / pa -- Run Score is a DIFFERENCE from league, not a ratio (see caveat 2 below for why). Composite = hitWeight*hitScore + powerWeight*powerScore + fieldWeight*fieldScore + runWeight*runScore. League baselines (formula.eraBaselines) and positional fielding baselines (formula.fieldingBaselines) are both computed at load time by blending period buckets across the exact years in a player's 'years' string, weighted by how many of each bucket's seasons overlap the player's career -- a career spanning two eras/regimes gets a blended baseline instead of one arbitrary constant. IMPORTANT CAVEATS: (1) eraBaselines/fieldingBaselines are researched approximations built from published era-level trends, not exact year-by-year league totals from a play-by-play database -- treat as directionally right, not authoritative to the decimal. (2) League-average net SB value per PA is naturally very close to zero in most eras (the running game roughly break-evens in aggregate), so an early version of this formula divided by it directly and produced wild swings (Babe Ruth's composite went to roughly -7800). Run Score was changed to a difference-from-league (scaled by formula.sbValueScale = 15000, chosen so a typical career-length SB/CS differential of about +/-0.003 net value per PA swings Run Score by roughly +/-45 points around the 100 baseline) specifically to avoid that instability. (3) 'years' is treated as a continuous span for era-blending purposes even for players with mid-career gaps (military service, injury, etc.) -- e.g. Ted Williams' 1943-1945 and 1952-1953 service years are counted as part of his career span. Regenerate by pulling real career avg/hits/hr/obp/slg/sb/cs/pa/fieldingPct for hitters, or wins/losses/era/so/ip/bb/hitsAllowed/saves for pitchers, keeping these exact field names.", "formula": {"name": "RHOF Custom Score", "sbRunValues": {"sb": 0.2, "cs": -0.4}, "sbValueScale": 15000, "hitterWeights": {"hit": 0.35, "power": 0.35, "field": 0.15, "run": 0.15}, "pitcherWeights": {"era": 0.25, "whip": 0.25, "k9": 0.2, "wins": 0.2, "saves": 0.1}, "eraBaselines": [{"start": 1876, "end": 1899, "era": 4.1, "whip": 1.45, "k9": 3.3, "saves": 10, "obp": 0.335, "iso": 0.075, "sbValue": 0.0005}, {"start": 1900, "end": 1919, "era": 2.85, "whip": 1.2, "k9": 3.6, "saves": 15, "obp": 0.32, "iso": 0.06, "sbValue": 0.001}, {"start": 1920, "end": 1929, "era": 4.05, "whip": 1.45, "k9": 2.8, "saves": 20, "obp": 0.345, "iso": 0.135, "sbValue": -0.0003}, {"start": 1930, "end": 1941, "era": 4.35, "whip": 1.48, "k9": 3.4, "saves": 22, "obp": 0.35, "iso": 0.15, "sbValue": -0.0004}, {"start": 1942, "end": 1945, "era": 3.6, "whip": 1.35, "k9": 3.6, "saves": 22, "obp": 0.33, "iso": 0.11, "sbValue": -0.0002}, {"start": 1946, "end": 1962, "era": 3.9, "whip": 1.35, "k9": 4.3, "saves": 25, "obp": 0.33, "iso": 0.13, "sbValue": -0.0003}, {"start": 1963, "end": 1968, "era": 3.3, "whip": 1.2, "k9": 5.6, "saves": 25, "obp": 0.31, "iso": 0.125, "sbValue": 0.0}, {"start": 1969, "end": 1976, "era": 3.65, "whip": 1.28, "k9": 5.2, "saves": 35, "obp": 0.325, "iso": 0.12, "sbValue": 0.001}, {"start": 1977, "end": 1992, "era": 3.95, "whip": 1.32, "k9": 5.6, "saves": 40, "obp": 0.33, "iso": 0.135, "sbValue": 0.0018}, {"start": 1993, "end": 2009, "era": 4.55, "whip": 1.4, "k9": 6.4, "saves": 45, "obp": 0.335, "iso": 0.16, "sbValue": 0.001}, {"start": 2010, "end": 2026, "era": 4.1, "whip": 1.3, "k9": 8.3, "saves": 45, "obp": 0.32, "iso": 0.16, "sbValue": 0.0008}], "fieldingBaselines": [{"position": "1B", "start": 1876, "end": 1919, "fieldingPct": 0.973}, {"position": "1B", "start": 1920, "end": 1945, "fieldingPct": 0.984}, {"position": "1B", "start": 1946, "end": 1969, "fieldingPct": 0.992}, {"position": "1B", "start": 1970, "end": 1992, "fieldingPct": 0.993}, {"position": "1B", "start": 1993, "end": 2026, "fieldingPct": 0.994}, {"position": "C", "start": 1876, "end": 1919, "fieldingPct": 0.955}, {"position": "C", "start": 1920, "end": 1945, "fieldingPct": 0.975}, {"position": "C", "start": 1946, "end": 1969, "fieldingPct": 0.985}, {"position": "C", "start": 1970, "end": 1992, "fieldingPct": 0.988}, {"position": "C", "start": 1993, "end": 2026, "fieldingPct": 0.992}, {"position": "IF", "start": 1876, "end": 1919, "fieldingPct": 0.93}, {"position": "IF", "start": 1920, "end": 1945, "fieldingPct": 0.955}, {"position": "IF", "start": 1946, "end": 1969, "fieldingPct": 0.968}, {"position": "IF", "start": 1970, "end": 1992, "fieldingPct": 0.975}, {"position": "IF", "start": 1993, "end": 2026, "fieldingPct": 0.98}, {"position": "OF", "start": 1876, "end": 1919, "fieldingPct": 0.92}, {"position": "OF", "start": 1920, "end": 1945, "fieldingPct": 0.96}, {"position": "OF", "start": 1946, "end": 1969, "fieldingPct": 0.975}, {"position": "OF", "start": 1970, "end": 1992, "fieldingPct": 0.98}, {"position": "OF", "start": 1993, "end": 2026, "fieldingPct": 0.985}], "hitterDescription": "The Hitters SAA (Stat Above Average) is a four-part sum vs. league and position: on-base percentage, ISO power, fielding percentage against the positional average, and net stolen-base value per plate appearance. Every component is benchmarked against the league averages and positional norms of the exact years and position that player played, so a dead-ball-era line is judged against dead-ball-era competition, not a modern one.", "pitcherDescription": "The Pitchers SAA (Stat Above Average) is a five-part weighted composite vs. league: 25% ERA, 25% WHIP, 20% K/9, 20% winning percentage, 10% saves. ERA and WHIP are measured against the league average of the exact seasons that pitcher threw, so the same standard applies across every era."}, "capacity": 500, "players": [{"id": "johnson-walter", "name": "Walter Johnson", "role": "pitcher", "position": "P", "years": "1907\u20131927", "team": "Washington Senators", "stats": {"wins": 417, "losses": 279, "era": 2.17, "so": 3509, "ip": 5914.1, "bb": 1363, "hitsAllowed": 4913, "saves": 34}}, {"id": "aaron-hank", "name": "Hank Aaron", "role": "hitter", "position": "RF", "years": "1954\u20131976", "team": "Milwaukee / Atlanta Braves", "stats": {"avg": 0.305, "hits": 3771, "hr": 755, "obp": 0.374, "slg": 0.555, "sb": 240, "cs": 73, "pa": 13940, "fieldingPct": 0.981}}, {"id": "grich-bobby", "name": "Bobby Grich", "role": "hitter", "position": "2B", "years": "1970\u20131986", "team": "Baltimore Orioles / California Angels", "stats": {"avg": 0.266, "hits": 1833, "hr": 224, "obp": 0.371, "slg": 0.424, "sb": 104, "cs": 83, "pa": 8220, "fieldingPct": 0.984}}, {"id": "whitaker-lou", "name": "Lou Whitaker", "role": "hitter", "position": "2B", "years": "1977\u20131995", "team": "Detroit Tigers", "stats": {"avg": 0.276, "hits": 2369, "hr": 244, "obp": 0.363, "slg": 0.426, "sb": 143, "cs": 75, "pa": 9967, "fieldingPct": 0.984}}, {"id": "mazeroski-bill", "name": "Bill Mazeroski", "role": "hitter", "position": "2B", "years": "1956\u20131972", "team": "Pittsburgh Pirates", "stats": {"avg": 0.26, "hits": 2016, "hr": 138, "obp": 0.299, "slg": 0.367, "sb": 27, "cs": 23, "pa": 8379, "fieldingPct": 0.983}}, {"id": "ryan-nolan", "name": "Nolan Ryan", "role": "pitcher", "position": "P", "years": "1966\u20131993", "team": "Mets / Angels / Astros / Rangers", "stats": {"wins": 324, "losses": 292, "era": 3.19, "so": 5714, "ip": 5386.0, "bb": 2795, "hitsAllowed": 3923, "saves": 3}}, {"id": "bonds-barry", "name": "Barry Bonds", "role": "hitter", "position": "LF", "years": "1986\u20132007", "team": "Pittsburgh Pirates / San Francisco Giants", "stats": {"avg": 0.298, "hits": 2935, "hr": 762, "obp": 0.444, "slg": 0.607, "sb": 514, "cs": 141, "pa": 12606, "fieldingPct": 0.984}}, {"id": "ruth-babe", "name": "Babe Ruth", "role": "hitter", "position": "RF", "years": "1914\u20131935", "team": "Boston Red Sox / New York Yankees / Boston Braves", "stats": {"avg": 0.342, "hits": 2873, "hr": 714, "obp": 0.474, "slg": 0.69, "sb": 123, "cs": 122, "pa": 10617, "fieldingPct": 0.966}}, {"id": "young-cy", "name": "Cy Young", "role": "pitcher", "position": "P", "years": "1890\u20131911", "team": "Cleveland Spiders / St. Louis Cardinals / Boston Americans / Cleveland Naps", "stats": {"wins": 511, "losses": 316, "era": 2.63, "so": 2803, "ip": 7356.0, "bb": 1217, "hitsAllowed": 7092, "saves": 17}}, {"id": "cobb-ty", "name": "Ty Cobb", "role": "hitter", "position": "CF", "years": "1905\u20131928", "team": "Detroit Tigers / Philadelphia Athletics", "stats": {"avg": 0.366, "hits": 4189, "hr": 117, "obp": 0.433, "slg": 0.512, "sb": 892, "cs": 178, "pa": 13103, "fieldingPct": 0.969}}, {"id": "kaline-al", "name": "Al Kaline", "role": "hitter", "position": "RF", "years": "1953\u20131974", "team": "Detroit Tigers", "stats": {"avg": 0.297, "hits": 3007, "hr": 399, "obp": 0.376, "slg": 0.48, "sb": 137, "cs": 65, "pa": 11596, "fieldingPct": 0.985}}, {"id": "williams-ted", "name": "Ted Williams", "role": "hitter", "position": "LF", "years": "1939\u20131960", "team": "Boston Red Sox", "stats": {"avg": 0.344, "hits": 2654, "hr": 521, "obp": 0.482, "slg": 0.634, "sb": 24, "cs": 17, "pa": 9791, "fieldingPct": 0.977}}]};
-</script>
-<script>
-// THE TRUE HALL OF FAME
-// Loads data/players.json, computes each player's SAA (Stat Above Average), ranks, renders.
-
-const state = {
-  players: [],
-  formula: null,
-  capacity: 500,
-};
-
-const formulaBox = document.getElementById('formulaBox');
-
-async function loadData() {
-  try {
-    const data = RHOF_PLAYERS_DATA;
-    state.formula = data.formula;
-    state.capacity = data.capacity;
-    state.players = data.players.map(scorePlayer);
-    state.players.sort((a, b) => b.rhofScore - a.rhofScore);
-    state.players.forEach((p, i) => { p.rank = i + 1; });
-    renderFormula();
-  } catch (err) {
-    console.error('RHOF: could not load player data —', err);
-  }
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
-}
-
-function parseYears(yearsStr) {
-  const [start, end] = yearsStr.split(/[–—-]/).map(s => parseInt(s.trim(), 10));
-  return { start, end };
-}
-
-function eraBaseline(start, end) {
-  let totalYears = 0;
-  const sums = { era: 0, whip: 0, k9: 0, saves: 0, obp: 0, iso: 0, sbValue: 0 };
-  state.formula.eraBaselines.forEach(b => {
-    const overlapStart = Math.max(start, b.start);
-    const overlapEnd = Math.min(end, b.end);
-    const years = overlapEnd - overlapStart + 1;
-    if (years > 0) {
-      totalYears += years;
-      sums.era += b.era * years;
-      sums.whip += b.whip * years;
-      sums.k9 += b.k9 * years;
-      sums.saves += b.saves * years;
-      sums.obp += b.obp * years;
-      sums.iso += b.iso * years;
-      sums.sbValue += b.sbValue * years;
-    }
-  });
-  return {
-    era: sums.era / totalYears,
-    whip: sums.whip / totalYears,
-    k9: sums.k9 / totalYears,
-    saves: sums.saves / totalYears,
-    obp: sums.obp / totalYears,
-    iso: sums.iso / totalYears,
-    sbValue: sums.sbValue / totalYears,
-  };
-}
-
-function positionGroup(position) {
-  if (position === '1B') return '1B';
-  if (position === 'C') return 'C';
-  if (position === '2B' || position === '3B' || position === 'SS') return 'IF';
-  if (position === 'DH') return 'DH';
-  return 'OF'; // LF, CF, RF
-}
-
-function fieldingBaseline(group, start, end) {
-  let totalYears = 0;
-  let sum = 0;
-  state.formula.fieldingBaselines
-    .filter(b => b.position === group)
-    .forEach(b => {
-      const overlapStart = Math.max(start, b.start);
-      const overlapEnd = Math.min(end, b.end);
-      const years = overlapEnd - overlapStart + 1;
-      if (years > 0) {
-        totalYears += years;
-        sum += b.fieldingPct * years;
-      }
-    });
-  return sum / totalYears;
-}
-
-function scorePlayer(p) {
-  if (p.role === 'pitcher') {
-    const w = state.formula.pitcherWeights;
-    const { wins, losses, era, so, ip, bb, hitsAllowed, saves } = p.stats;
-    const { start, end } = parseYears(p.years);
-    const league = eraBaseline(start, end);
-
-    const whip = (bb + hitsAllowed) / ip;
-    const k9 = (so * 9) / ip;
-    const eraScore = (league.era / era) * 100;
-    const whipScore = (league.whip / whip) * 100;
-    const k9Score = (k9 / league.k9) * 100;
-    const winsIndex = (wins + losses) > 0 ? (wins / (wins + losses)) * 100 : 0;
-    const savesIndex = (saves / league.saves) * 100;
-
-    const rhofScore = (w.era * eraScore) + (w.whip * whipScore) + (w.k9 * k9Score)
-      + (w.wins * winsIndex) + (w.saves * savesIndex);
-
-    return { ...p, rhofScore, whip, k9, league, eraScore, whipScore, k9Score, winsIndex, savesIndex };
-  }
-  const sbv = state.formula.sbRunValues;
-  const hw = state.formula.hitterWeights;
-  const { avg, slg, obp, sb, cs, pa, fieldingPct } = p.stats;
-  const { start, end } = parseYears(p.years);
-  const league = eraBaseline(start, end);
-  const group = positionGroup(p.position);
-  // DH doesn't field at all -- there's no positional fielding baseline to
-  // compare against, so DH gets a flat 0 (no defensive value), not a
-  // crash or a silent NaN from dividing by an undefined baseline.
-  const posBaseline = group === 'DH' ? null : fieldingBaseline(group, start, end);
-
-  const iso = slg - avg;
-  const netSbValue = ((sb * sbv.sb) + (cs * sbv.cs)) / pa;
-
-  const hitScore = (obp / league.obp) * 100;
-  const powerScore = (iso / league.iso) * 100;
-  const fieldScore = group === 'DH' ? 0 : (fieldingPct / posBaseline) * 100;
-  const runScore = 100 + ((netSbValue - league.sbValue) * state.formula.sbValueScale);
-
-  const rhofScore = (hw.hit * hitScore) + (hw.power * powerScore)
-    + (hw.field * fieldScore) + (hw.run * runScore);
-  return { ...p, rhofScore, iso, netSbValue, league, posBaseline, hitScore, powerScore, fieldScore, runScore };
-}
-
-function renderFormula() {
-  const pw = state.formula.pitcherWeights;
-  const hw = state.formula.hitterWeights;
-  formulaBox.innerHTML = `
-    <p class="formula-desc formula-desc--lede">${escapeHtml(state.formula.hitterDescription)}</p>
-    <div class="formula-row">
-      <span class="formula-term">Hitters</span>
-      <span class="formula-eq">=</span>
-      <span class="formula-term">${(hw.hit * 100).toFixed(0)}% OBP vs league</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(hw.power * 100).toFixed(0)}% ISO vs league</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(hw.field * 100).toFixed(0)}% Fielding% vs position</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(hw.run * 100).toFixed(0)}% Net SB value vs league</span>
-    </div>
-    <hr class="formula-divider">
-    <p class="formula-desc formula-desc--lede">${escapeHtml(state.formula.pitcherDescription)}</p>
-    <div class="formula-row formula-row--last">
-      <span class="formula-term">Pitchers</span>
-      <span class="formula-eq">=</span>
-      <span class="formula-term">${(pw.era * 100).toFixed(0)}% ERA vs league</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(pw.whip * 100).toFixed(0)}% WHIP vs league</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(pw.k9 * 100).toFixed(0)}% K/9 vs league</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(pw.wins * 100).toFixed(0)}% Win%</span>
-      <span class="formula-plus">+</span>
-      <span class="formula-term">${(pw.saves * 100).toFixed(0)}% Saves vs league</span>
-    </div>
-  `;
-}
-
-loadData();
-
-</script>
 <script>
 // Career box-score lines for the Top 300 SAA hitters, keyed by SAA rank.
 // Generated by build_hitters_js.py from Lahman Batting/Fielding + BBRef WAR.
@@ -2087,8 +2109,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.039';
-const RHOF_BUILD = '2026.08.30.039';
+const RHOF_VERSION = '1.040';
+const RHOF_BUILD = '2026.08.30.040';
 
 (function () {
   const modal = document.getElementById('aboutModal');
