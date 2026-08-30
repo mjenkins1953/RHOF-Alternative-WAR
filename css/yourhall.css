@@ -1,54 +1,8 @@
 /* ============================================================
-   Your Hall — the Hitters/Pitchers switch that sits in the top-right of the
-   "Build your hall of fame" box (next to the collapse caret), and the weights
-   panel that drives the live re-ranking. Both live inside .saa-embed, so they
-   borrow that block's light "ledger" palette (--saa-*).
+   Your Hall — the weights panel that drives the live re-ranking. Lives inside
+   .saa-embed, so it borrows that block's light "ledger" palette (--saa-*).
+   (The .board__nav switch it shares with the Stats page is in hitters-embed.css.)
    ============================================================ */
-
-/* ---------------- Hitters/Pitchers switch, in the board header ---------------- */
-.saa-embed .board__nav {
-  position: absolute;
-  top: 1rem;
-  right: 3.4rem;             /* clear of the 2rem toggle at right:1rem */
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
-  height: 2rem;
-}
-.saa-embed .board__nav-link {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-  color: var(--saa-ink-dim);
-  border-bottom: 2px solid transparent;
-  padding-bottom: 2px;
-  transition: color 0.12s, border-color 0.12s;
-}
-.saa-embed .board__nav-link:hover,
-.saa-embed .board__nav-link:focus-visible { color: var(--saa-ink); }
-.saa-embed .board__nav-link.is-active {
-  color: var(--saa-accent);
-  border-color: var(--saa-accent);
-}
-
-/* keep the eyebrow + headline clear of the switch and the toggle */
-.saa-embed .board--nav .eyebrow,
-.saa-embed .board--nav h1 { padding-right: 13rem; }
-
-@media (max-width: 640px) {
-  .saa-embed .board__nav {
-    position: static;
-    height: auto;
-    margin-bottom: 0.9rem;
-    padding-right: 2.5rem;   /* clear the toggle on its own line */
-  }
-  .saa-embed .board--nav .eyebrow,
-  .saa-embed .board--nav h1 { padding-right: 2.5rem; }
-}
 
 /* ---------------- weights panel ---------------- */
 /* the collapse caret also tucks the whole weights panel away --

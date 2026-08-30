@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stats — Batters | The REAL Hall of Fame</title>
+<meta name="description" content="Every player in the Lahman database, one career line each — straight from the source, no RHOF scoring.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/hitters-embed.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a href="index.html" class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE <span class="mark__real">REAL</span> HALL OF FAME</span>
+    </a>
+    <p class="site-head__tag">Real stats. One formula. No ballots. No committees.</p>
+  </div>
+</header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <a href="hitters.html" class="site-menu__link">Hitters</a>
+    <a href="pitchers.html" class="site-menu__link">Pitchers</a>
+    <a href="yourhall.html" class="site-menu__link">Your Hall</a>
+    <a href="stats.html" class="site-menu__link is-active">Stats</a>
+    <a href="index.html#methodology" class="site-menu__link">Methodology</a>
+    <a href="index.html#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
+
+<main>
+<section class="saa-embed" id="view-stats">
+  <div class="wrap">
+
+    <header class="board board--nav">
+      <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
+      <nav class="board__nav" aria-label="Stats sections">
+        <a href="stats.html" class="board__nav-link is-active">Batters</a>
+        <span class="board__nav-link board__nav-link--soon" aria-disabled="true">Pitchers</span>
+      </nav>
+      <div class="eyebrow">The Real Hall of Fame — stats</div>
+      <h1>Every player, <em>every career</em></h1>
+      <div class="board__body" id="boardBody">
+      <p class="dek">
+        Every player in the <b>Lahman database</b> — all <span id="statsPool">24,000+</span> of them — with
+        one career batting line each, taken straight from the source. No RHOF score, no cut, no ranking:
+        just the totals. Sort any column, or search for a name.
+      </p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="search">
+        <input id="statsQ" type="text" placeholder="Find a player…" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="count" id="statsCount"></div>
+
+    <div class="table-shell">
+      <table>
+        <thead>
+          <tr>
+            <th data-key="name" class="name-col">Player<span class="arrow">▲</span></th>
+            <th data-key="yrs">Yrs<span class="arrow">▲</span></th>
+            <th data-key="g">G<span class="arrow">▲</span></th>
+            <th data-key="ab">AB<span class="arrow">▲</span></th>
+            <th data-key="r">R<span class="arrow">▲</span></th>
+            <th data-key="h">H<span class="arrow">▲</span></th>
+            <th data-key="d2">2B<span class="arrow">▲</span></th>
+            <th data-key="d3">3B<span class="arrow">▲</span></th>
+            <th data-key="hr">HR<span class="arrow">▲</span></th>
+            <th data-key="rbi">RBI<span class="arrow">▲</span></th>
+            <th data-key="sb">SB<span class="arrow">▲</span></th>
+            <th data-key="bb">BB<span class="arrow">▲</span></th>
+            <th data-key="so">SO<span class="arrow">▲</span></th>
+            <th data-key="avg">AVG<span class="arrow">▲</span></th>
+            <th data-key="obp">OBP<span class="arrow">▲</span></th>
+            <th data-key="slg">SLG<span class="arrow">▲</span></th>
+            <th data-key="ops">OPS<span class="arrow">▲</span></th>
+          </tr>
+        </thead>
+        <tbody id="statsRows"></tbody>
+      </table>
+      <div class="empty" id="statsEmpty" style="display:none;">No players match "<span id="statsQEcho"></span>".</div>
+    </div>
+
+    <footer>
+      Career batting totals aggregated from the Lahman database's Batting table (2025 release, including
+      Negro Leagues statistics), one row per player who ever came to bat — pitchers included, on their
+      own hitting line. AVG/OBP/SLG/OPS are computed from the career totals; a dash means the player has
+      no at-bats. Nothing here is filtered or scored.
+    </footer>
+
+  </div>
+</section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Data sourced from the latest version of the Lahman database.</p>
+  </div>
+</footer>
+
+<dialog class="about-modal" id="aboutModal">
+  <div class="about-modal__inner">
+    <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
+    <p class="about-modal__eyebrow">The Real Hall of Fame</p>
+    <h2 class="about-modal__title">About</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.027</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
+  </div>
+</dialog>
+
+<script src="js/stats-batters-data.js"></script>
+<script src="js/stats-embed.js"></script>
+<script src="js/board-collapse.js"></script>
+<script src="js/about.js"></script>
+</body>
+</html>

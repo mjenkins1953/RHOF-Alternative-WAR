@@ -78,6 +78,43 @@
 .saa-embed header.board .eyebrow,
 .saa-embed header.board h1 { padding-right: 2.5rem; }
 
+/* Section switch (Hitters/Pitchers on Your Hall, Batters/Pitchers on Stats),
+   top-right of the board box just left of the collapse caret. */
+.saa-embed .board__nav {
+  position: absolute;
+  top: 1rem;
+  right: 3.4rem;             /* clear of the 2rem toggle at right:1rem */
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  height: 2rem;
+}
+.saa-embed .board__nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--saa-ink-dim);
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  transition: color 0.12s, border-color 0.12s;
+}
+.saa-embed .board__nav-link:hover,
+.saa-embed .board__nav-link:focus-visible { color: var(--saa-ink); }
+.saa-embed .board__nav-link.is-active {
+  color: var(--saa-accent);
+  border-color: var(--saa-accent);
+}
+.saa-embed .board__nav-link--soon {
+  color: var(--saa-line);
+  cursor: default;
+}
+.saa-embed .board--nav .eyebrow,
+.saa-embed .board--nav h1 { padding-right: 13rem; }  /* clear switch + toggle */
+
 .saa-embed .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -658,6 +695,14 @@
 @media (max-width: 640px) {
   .saa-embed .wrap { padding: 1.5rem 1rem 2rem; }
   .saa-embed header.board { padding: 1.5rem 1.25rem; }
+  .saa-embed .board__nav {
+    position: static;
+    height: auto;
+    margin-bottom: 0.9rem;
+    padding-right: 2.5rem;   /* clear the toggle on its own line */
+  }
+  .saa-embed .board--nav .eyebrow,
+  .saa-embed .board--nav h1 { padding-right: 2.5rem; }
   .saa-embed .stat { flex-basis: 45%; padding: 0.4rem 1rem; border-left: none; border-top: 1px solid var(--saa-line); }
   .saa-embed .stat:first-child { border-top: none; }
   .saa-embed .saa-card__meta { margin-left: 0; width: 100%; }
