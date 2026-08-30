@@ -51,6 +51,10 @@
 }
 
 /* ---------------- weights panel ---------------- */
+/* the collapse caret also tucks the whole weights panel away --
+   collapsed = just the title in the box, then the search row below it */
+.saa-embed header.board.is-collapsed ~ .yh-panel { display: none; }
+
 .saa-embed .yh-panel {
   border: 1px solid var(--saa-line);
   background: var(--saa-surface);
