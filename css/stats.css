@@ -1,0 +1,99 @@
+/* ============================================================
+   Stats page — the click-to-expand season card. Same shape as the SAA
+   career cards on the Hitters/Pitchers pages (sticky, accent left border),
+   but the body is a season-by-season table instead of a z-score panel.
+   Lives inside .saa-embed -> light "ledger" palette (--saa-*).
+   ============================================================ */
+
+.saa-embed .stats-row { cursor: pointer; }
+.saa-embed .stats-row:focus-visible { outline: 2px solid var(--saa-accent); outline-offset: -2px; }
+.saa-embed .stats-row.is-open { background: var(--saa-surface-2); }
+.saa-embed .stats-row.is-open td { border-bottom-color: transparent; }
+.saa-embed .stats-caret {
+  display: inline-block;
+  width: 1em;
+  margin-right: 0.15em;
+  color: var(--saa-ink-dim);
+  font-size: 0.8em;
+}
+.saa-embed td.name { cursor: pointer; }
+
+.saa-embed tr.stats-detail td {
+  padding: 0;
+  background: var(--saa-surface-2);
+  border-bottom: 1px solid var(--saa-line);
+}
+.saa-embed .stats-card {
+  position: sticky;
+  left: 0;
+  width: min(1080px, calc(100vw - 3rem));
+  box-sizing: border-box;
+  padding: 1.1rem 1.3rem 1.3rem;
+  border-left: 4px solid var(--saa-accent);
+  white-space: normal;
+}
+.saa-embed .stats-card__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+.saa-embed .stats-card__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--saa-ink);
+}
+.saa-embed .stats-card__sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--saa-ink-dim);
+}
+
+.saa-embed .stats-card__wrap { overflow-x: auto; overscroll-behavior-x: contain; }
+.saa-embed table.stats-seasons {
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+}
+.saa-embed .stats-seasons th {
+  position: static;
+  background: none;
+  box-shadow: none;
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--saa-ink-dim);
+  padding: 0.3rem 0.45rem;
+  border-bottom: 1px solid var(--saa-line);
+  white-space: nowrap;
+  cursor: default;
+}
+.saa-embed .stats-seasons th:first-child,
+.saa-embed .stats-seasons td:first-child { text-align: left; }
+.saa-embed .stats-seasons th:nth-child(2),
+.saa-embed .stats-seasons td:nth-child(2) { text-align: left; }
+.saa-embed .stats-seasons td {
+  text-align: right;
+  padding: 0.26rem 0.45rem;
+  border-bottom: 1px solid var(--saa-line);
+  white-space: nowrap;
+}
+.saa-embed .stats-seasons tr:last-child td { border-bottom: none; }
+.saa-embed .stats-seasons tr.is-total td {
+  border-top: 2px solid var(--saa-line);
+  font-weight: 600;
+  color: var(--saa-ink);
+}
+.saa-embed .stats-seasons tr.is-total td:first-child { font-family: var(--font-display); }
+
+@media (max-width: 640px) {
+  .saa-embed .stats-card { width: calc(100vw - 2.5rem); }
+}
