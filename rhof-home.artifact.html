@@ -565,7 +565,9 @@ a { color: var(--brass-lt); }
 }
 .about-modal__inner {
   position: relative;
-  padding: 28px 30px 26px;
+  /* tight top padding so the "THE REAL HALL OF FAME" eyebrow lines up
+     with the close button in the corner */
+  padding: 12px 30px 26px;
 }
 .about-modal__close {
   position: absolute;
@@ -582,7 +584,7 @@ a { color: var(--brass-lt); }
 .about-modal__close:hover { color: var(--brass-lt); }
 .about-modal__eyebrow {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--brass);
@@ -590,16 +592,21 @@ a { color: var(--brass-lt); }
 }
 .about-modal__title {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 22px;
+  font-weight: 700;
+  /* same size as the "THE REAL HALL OF FAME" eyebrow line above it,
+     just bold so "About" still reads as the heading */
+  font-size: 15px;
   color: var(--brass-lt);
-  margin: 0 0 14px;
+  /* blank row above "About"; "About" and the version/date lines centered */
+  margin: 1.6em 0 14px;
+  text-align: center;
 }
 .about-modal__line {
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--paper-dim);
   margin: 0 0 4px;
+  text-align: center;
 }
 .about-modal__line span { color: var(--paper); }
 
@@ -1599,7 +1606,7 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The Real Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.018</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.019</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.29</span></p>
   </div>
 </dialog>
@@ -2033,8 +2040,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.018';
-const RHOF_BUILD = '2026.08.29.018';
+const RHOF_VERSION = '1.019';
+const RHOF_BUILD = '2026.08.29.019';
 
 (function () {
   const modal = document.getElementById('aboutModal');

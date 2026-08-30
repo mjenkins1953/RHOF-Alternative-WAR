@@ -559,7 +559,9 @@ a { color: var(--brass-lt); }
 }
 .about-modal__inner {
   position: relative;
-  padding: 28px 30px 26px;
+  /* tight top padding so the "THE REAL HALL OF FAME" eyebrow lines up
+     with the close button in the corner */
+  padding: 12px 30px 26px;
 }
 .about-modal__close {
   position: absolute;
@@ -576,7 +578,7 @@ a { color: var(--brass-lt); }
 .about-modal__close:hover { color: var(--brass-lt); }
 .about-modal__eyebrow {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--brass);
@@ -584,16 +586,21 @@ a { color: var(--brass-lt); }
 }
 .about-modal__title {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 22px;
+  font-weight: 700;
+  /* same size as the "THE REAL HALL OF FAME" eyebrow line above it,
+     just bold so "About" still reads as the heading */
+  font-size: 15px;
   color: var(--brass-lt);
-  margin: 0 0 14px;
+  /* blank row above "About"; "About" and the version/date lines centered */
+  margin: 1.6em 0 14px;
+  text-align: center;
 }
 .about-modal__line {
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--paper-dim);
   margin: 0 0 4px;
+  text-align: center;
 }
 .about-modal__line span { color: var(--paper); }
 
