@@ -641,6 +641,7 @@ a { color: var(--brass-lt); }
   --saa-bg: #eef1ea;
   --saa-surface: #ffffff;
   --saa-surface-2: #e6ebdd;
+  --saa-card: #eef3e2;        /* expanded card + its open row -- a hair lighter green */
   --saa-line: #d1d8c6;
   --saa-ink: #16211d;
   --saa-ink-dim: #5c6d61;
@@ -1016,7 +1017,7 @@ a { color: var(--brass-lt); }
 /* ---------------- Expandable career card (click a row) ---------------- */
 .saa-embed .saa-row { cursor: pointer; }
 .saa-embed .saa-row:focus-visible { outline: 2px solid var(--saa-accent); outline-offset: -2px; }
-.saa-embed .saa-row.is-open { background: var(--saa-surface-2); }
+.saa-embed .saa-row.is-open { background: var(--saa-card); }
 .saa-embed .saa-row.is-open td { border-bottom-color: transparent; }
 .saa-embed td.rank { width: 3.6em; white-space: nowrap; }
 .saa-embed .saa-caret {
@@ -1029,7 +1030,7 @@ a { color: var(--brass-lt); }
 
 .saa-embed tr.saa-detail td {
   padding: 0;
-  background: var(--saa-surface-2);
+  background: var(--saa-card);
   border-bottom: 1px solid var(--saa-line);
 }
 .saa-embed .saa-card {
@@ -1651,7 +1652,7 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The Real Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.029</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.030</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
@@ -2085,8 +2086,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.029';
-const RHOF_BUILD = '2026.08.30.029';
+const RHOF_VERSION = '1.030';
+const RHOF_BUILD = '2026.08.30.030';
 
 (function () {
   const modal = document.getElementById('aboutModal');
