@@ -115,7 +115,7 @@ function stHead(id, name) {
     if (lines) bio = `<div class="stats-card__bio">${lines}</div>`;
   }
   return `<div class="stats-card__head">
-      <div class="stats-card__title"><span class="stats-card__pid">${id}</span><span class="stats-card__name">${name}</span></div>
+      <div class="stats-card__title"><span class="stats-card__name">${name}</span><span class="stats-card__pid">${id}</span></div>
       ${bio}
     </div>`;
 }

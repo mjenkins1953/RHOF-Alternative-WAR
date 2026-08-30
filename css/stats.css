@@ -66,17 +66,19 @@
   background: var(--bg);
   border-bottom: 1px solid var(--green-line);
   margin: -1.2rem -1.4rem 1.1rem;
-  padding: 0.9rem 2.6rem 0.95rem 1.4rem;   /* right padding clears the close button */
+  padding: 0.9rem 1.4rem 0.95rem;
 }
 .stats-modal .stats-card__title {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.15rem 0.55rem;
+  gap: 0.15rem 0.9rem;
+  padding-right: 2rem;              /* keep the pid clear of the close button */
 }
 .stats-modal .stats-card__pid {
+  margin-left: auto;               /* push to the right, next to the close button */
   font-family: var(--font-mono);
-  font-size: 0.78rem;                /* same as the season table */
+  font-size: 0.78rem;               /* same as the season table */
   color: var(--brass-lt);
 }
 .stats-modal .stats-card__name {
