@@ -279,6 +279,7 @@ const yhBlendVal = document.getElementById('yhBlendVal');
 const yhPeakEl = document.getElementById('yhPeak');
 const yhResetEl = document.getElementById('yhReset');
 const yhReadoutEl = document.getElementById('yhReadout');
+const yhTotalEl = document.getElementById('yhTotal');
 const yhBlendField = yhBlendEl ? yhBlendEl.closest('.yh-field') : null;
 const yhPeakField = yhPeakEl ? yhPeakEl.closest('.yh-field') : null;
 
@@ -288,16 +289,24 @@ function yhScheduleRecompute() {
   yhRaf = requestAnimationFrame(() => { yhRaf = 0; yhRecompute(); });
 }
 
-function yhNormPct() {
-  const s = YH.weights.reduce((a, b) => a + b, 0) || 1;
-  return YH.weights.map(x => Math.round((x / s) * 100));
+// Each slider is independent -- its label shows its OWN value, never a
+// renormalised one. yhScore() still divides by the running sum, so the
+// list always ranks; the total readout goes red until the five make 100.
+function yhWeightPct(i) { return Math.round(YH.weights[i] * 100); }
+
+function yhUpdateTotal() {
+  if (!yhTotalEl) return;
+  const total = YH.weights.reduce((a, _, i) => a + yhWeightPct(i), 0);
+  yhTotalEl.innerHTML = `Weights total <b>${total}%</b>`;
+  yhTotalEl.classList.toggle('is-off', total !== 100);
 }
+
 function yhSyncWeightLabels() {
-  const pct = yhNormPct();
   yhWeightsEl.querySelectorAll('.yh-w').forEach((row, i) => {
-    row.querySelector('.yh-w__val').textContent = pct[i] + '%';
-    row.querySelector('input').value = Math.round(YH.weights[i] * 100);
+    row.querySelector('.yh-w__val').textContent = yhWeightPct(i) + '%';
+    row.querySelector('input').value = yhWeightPct(i);
   });
+  yhUpdateTotal();
 }
 function yhBuildWeightSliders() {
   yhWeightsEl.innerHTML = YH.cats.map((cat, i) => `
