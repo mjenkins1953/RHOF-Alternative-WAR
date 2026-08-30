@@ -1,6 +1,6 @@
 // Your Hall — hitters and pitchers share this file. The ranking is recomputed
 // in the browser from per-season z-scores (YH_PLAYERS) under weights the visitor
-// chooses. YH_CONFIG carries the real RHOF defaults and the mode; YH_CARDS is
+// chooses. YH_CONFIG carries the SAA defaults and the mode; YH_CARDS is
 // the career box-score line per playerID.
 //
 // season row in YH_PLAYERS[i].s = [z0, z1, z2, z3, z4, workload]  (order =
@@ -28,7 +28,7 @@ function yhAtHundred() {
 
 // ---- the recompute: YH_PLAYERS + knobs -> a ranked array ----
 function yhScore() {
-  // if the weights don't total 100%, fall back to the full RHOF default
+  // if the weights don't total 100%, fall back to the full SAA default
   // (the "Weights total …" line says so)
   const atHundred = yhAtHundred();
   const src = atHundred ? YH.weights : YH_CONFIG.defaultWeights;
@@ -308,7 +308,7 @@ function yhUpdateTotal() {
   const off = total !== 100;
   yhTotalEl.classList.toggle('is-off', off);
   yhTotalEl.innerHTML = `Weights total <b>${total}%</b>`
-    + (off ? ` <span class="yh-total__note">Current selections do not total 100%. List has been reset to RHOF default.</span>` : '');
+    + (off ? ` <span class="yh-total__note">Current selections do not total 100%. List has been reset to SAA default.</span>` : '');
 }
 
 function yhSyncWeightLabels() {
@@ -382,7 +382,7 @@ function yhUpdateReadout() {
   }
   yhReadoutEl.innerHTML =
     `<b>${inHof}</b> of your top ${YH.listN} are in Cooperstown` +
-    (isDefault ? ' &nbsp;·&nbsp; this is the real RHOF formula' : '');
+    (isDefault ? ' &nbsp;·&nbsp; this is the standard SAA formula' : '');
 }
 
 // ================= go =================
