@@ -513,8 +513,8 @@ a { color: var(--brass-lt); }
   border-top: 1px solid var(--green-line);
   background: var(--bg-deep);
 }
-.dossier__inner { max-width: 68ch; }
-.dossier p { color: var(--paper-dim); font-size: 17px; }
+.dossier__inner { max-width: none; text-align: left; }
+.dossier p { color: var(--paper-dim); font-size: 17px; max-width: none; }
 .dossier__punch {
   color: var(--flag-lt) !important;
   font-family: var(--font-display);

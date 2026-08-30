@@ -519,8 +519,8 @@ a { color: var(--brass-lt); }
   border-top: 1px solid var(--green-line);
   background: var(--bg-deep);
 }
-.dossier__inner { max-width: 68ch; }
-.dossier p { color: var(--paper-dim); font-size: 17px; }
+.dossier__inner { max-width: none; text-align: left; }
+.dossier p { color: var(--paper-dim); font-size: 17px; max-width: none; }
 .dossier__punch {
   color: var(--flag-lt) !important;
   font-family: var(--font-display);
@@ -1357,6 +1357,22 @@ a { color: var(--brass-lt); }
   </div>
 </section>
 
+<section class="dossier">
+  <div class="wrap dossier__inner">
+    <h2 class="section-title">Why not WAR?</h2>
+    <p>Wins Above Replacement measures every player against one universal "replacement level" —
+      a theoretical bench player, calibrated once from decades of injury-substitution data and then
+      applied identically to a dead-ball-era outfielder and a modern closer. It's the industry
+      standard for good reason, but that one number was never derived for either of them specifically.</p>
+    <p class="dossier__punch">The RHOF Score measures every player against their own competition
+      instead — the actual league average, in the actual years and at the actual position they
+      played, blended across whichever eras their career spans.</p>
+    <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
+      Just each player's rate stats, held up against the players who were actually on the field
+      around them.</p>
+  </div>
+</section>
+
 <main>
 <section class="saa-embed" id="view-hitters">
   <div class="wrap">
@@ -1566,22 +1582,6 @@ a { color: var(--brass-lt); }
   </div>
 </section>
 
-<section class="dossier">
-  <div class="wrap dossier__inner">
-    <h2 class="section-title">Why not WAR?</h2>
-    <p>Wins Above Replacement measures every player against one universal "replacement level" —
-      a theoretical bench player, calibrated once from decades of injury-substitution data and then
-      applied identically to a dead-ball-era outfielder and a modern closer. It's the industry
-      standard for good reason, but that one number was never derived for either of them specifically.</p>
-    <p class="dossier__punch">The RHOF Score measures every player against their own competition
-      instead — the actual league average, in the actual years and at the actual position they
-      played, blended across whichever eras their career spans.</p>
-    <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
-      Just each player's rate stats, held up against the players who were actually on the field
-      around them.</p>
-  </div>
-</section>
-
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
     <p>Data sourced from the latest version of the Lahman database.</p>
@@ -1593,8 +1593,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.015</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.29.015</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.016</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.29.016</span></p>
   </div>
 </dialog>
 
@@ -2025,8 +2025,8 @@ window.addEventListener('resize', saaSizeScroll);
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.015';
-const RHOF_BUILD = '2026.08.29.015';
+const RHOF_VERSION = '1.016';
+const RHOF_BUILD = '2026.08.29.016';
 
 (function () {
   const modal = document.getElementById('aboutModal');
