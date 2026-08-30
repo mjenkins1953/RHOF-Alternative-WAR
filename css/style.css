@@ -516,7 +516,7 @@ a { color: var(--brass-lt); }
   background: var(--bg-deep);
 }
 /* same bounds as .standards > .wrap, so the copy lines up edge-for-edge
-   with the "How the RHOF Score works" formula box below it */
+   with the "How Stat Above Average works" formula box below it */
 .dossier__inner { text-align: left; }
 .dossier p { color: var(--paper-dim); font-size: 17px; max-width: none; }
 .dossier__punch {
@@ -559,7 +559,7 @@ a { color: var(--brass-lt); }
 }
 .about-modal__inner {
   position: relative;
-  /* tight top padding so the "THE REAL HALL OF FAME" eyebrow lines up
+  /* tight top padding so the "THE TRUE HALL OF FAME" eyebrow lines up
      with the close button in the corner */
   padding: 12px 30px 26px;
 }
@@ -587,7 +587,7 @@ a { color: var(--brass-lt); }
 .about-modal__title {
   font-family: var(--font-display);
   font-weight: 700;
-  /* same size as the "THE REAL HALL OF FAME" eyebrow line above it,
+  /* same size as the "THE TRUE HALL OF FAME" eyebrow line above it,
      just bold so "About" still reads as the heading */
   font-size: 15px;
   color: var(--brass-lt);

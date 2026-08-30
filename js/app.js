@@ -1,5 +1,5 @@
-// THE REAL HALL OF FAME
-// Loads data/players.json, computes each player's RHOF Score, ranks, renders.
+// THE TRUE HALL OF FAME
+// Loads data/players.json, computes each player's SAA (Stat Above Average), ranks, renders.
 
 const state = {
   players: [],

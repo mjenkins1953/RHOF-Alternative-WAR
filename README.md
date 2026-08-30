@@ -1,4 +1,4 @@
-# The REAL Hall of Fame
+# The TRUE Hall of Fame
 
 A single, merit-ranked list of the greatest players ever to play — hitters and
 pitchers together, no position quotas, no reference to the actual Cooperstown
