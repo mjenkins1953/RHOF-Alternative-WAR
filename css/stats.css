@@ -41,13 +41,13 @@
   z-index: 2;
   background: none;
   border: none;
-  color: var(--saa-ink-dim);
+  color: var(--paper-dim);          /* sits on the dark header band */
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
   padding: 4px;
 }
-.stats-modal__close:hover { color: var(--saa-accent); }
+.stats-modal__close:hover { color: var(--brass-lt); }
 .stats-modal__body {
   max-height: calc(100vh - 3rem);
   overflow: auto;
@@ -65,21 +65,26 @@
   align-items: baseline;
   gap: 0.55rem 0.9rem;
   flex-wrap: wrap;
-  margin-bottom: 0.9rem;
-  padding-right: 1.5rem;   /* clear the close button */
+  /* dark green band, same as the site header the wordmark sits on --
+     bleeds out over the card's top + side padding */
+  background: var(--bg);
+  border-bottom: 1px solid var(--green-line);
+  margin: -1.2rem -1.4rem 1.1rem;
+  padding: 0.95rem 2.6rem 0.95rem 1.4rem;   /* right padding clears the close button */
 }
 .stats-modal .stats-card__name {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.3rem;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
-  color: var(--saa-ink);
+  letter-spacing: 0.05em;
+  color: var(--brass-lt);          /* the wordmark's "darker yellow" */
 }
 .stats-modal .stats-card__sub {
   font-family: var(--font-mono);
   font-size: 0.78rem;
   color: var(--saa-ink-dim);
+  padding: 0 1.4rem;
 }
 
 .stats-modal .stats-card__wrap { overflow-x: auto; overscroll-behavior-x: contain; }
