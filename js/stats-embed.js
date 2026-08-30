@@ -101,10 +101,29 @@ function stPitStatCells(s) {
 }
 const ST_PIT_TH = ['Year', 'Tm', 'W', 'L', 'ERA', 'WHIP', 'G', 'GS', 'CG', 'SHO', 'SV', 'IP', 'H', 'ER', 'HR', 'BB', 'SO'];
 
+// bio = [ht, wt, born, place, bats, throws, debut, final]  (any may be "")
+function stHead(id, name) {
+  const b = (typeof STATS_BIO !== 'undefined' && STATS_BIO[id]) || null;
+  const join = parts => parts.filter(Boolean).join(' · ');
+  let bio = '';
+  if (b) {
+    const [ht, wt, born, place, bats, throws, debut, final] = b;
+    const l1 = join([ht, wt && `${wt} lb`, bats && `Bats ${bats}`, throws && `Throws ${throws}`,
+      born && `Born ${born}`]);
+    const l2 = join([place, debut && `Debut ${debut}`, final && `Final Game ${final}`]);
+    const lines = [l1, l2].filter(Boolean).join('<br>');
+    if (lines) bio = `<div class="stats-card__bio">${lines}</div>`;
+  }
+  return `<div class="stats-card__head">
+      <div class="stats-card__title"><span class="stats-card__pid">${id}</span><span class="stats-card__name">${name}</span></div>
+      ${bio}
+    </div>`;
+}
+
 function stCard(id, name) {
   const all = ST.seasons();
   const seasons = all ? all[id] : null;
-  const head = `<div class="stats-card__head"><span class="stats-card__name">${name}</span></div>`;
+  const head = stHead(id, name);
   if (!seasons || !seasons.length) {
     return `<div class="stats-card">${head}<p class="stats-card__sub">${all ? 'No season data.' : 'Loading season data…'}</p></div>`;
   }

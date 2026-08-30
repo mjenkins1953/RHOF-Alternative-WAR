@@ -61,16 +61,23 @@
   white-space: normal;
 }
 .stats-modal .stats-card__head {
-  display: flex;
-  align-items: baseline;
-  gap: 0.55rem 0.9rem;
-  flex-wrap: wrap;
   /* dark green band, same as the site header the wordmark sits on --
      bleeds out over the card's top + side padding */
   background: var(--bg);
   border-bottom: 1px solid var(--green-line);
   margin: -1.2rem -1.4rem 1.1rem;
-  padding: 0.95rem 2.6rem 0.95rem 1.4rem;   /* right padding clears the close button */
+  padding: 0.9rem 2.6rem 0.95rem 1.4rem;   /* right padding clears the close button */
+}
+.stats-modal .stats-card__title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.55rem;
+}
+.stats-modal .stats-card__pid {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;                /* same as the season table */
+  color: var(--brass-lt);
 }
 .stats-modal .stats-card__name {
   font-family: var(--font-display);
@@ -79,6 +86,13 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--brass-lt);          /* the wordmark's "darker yellow" */
+}
+.stats-modal .stats-card__bio {
+  margin-top: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;              /* same as the season table */
+  line-height: 1.75;
+  color: var(--brass-lt);
 }
 .stats-modal .stats-card__sub {
   font-family: var(--font-mono);
