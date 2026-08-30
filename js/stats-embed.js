@@ -108,9 +108,8 @@ function stHead(id, name) {
   let bio = '';
   if (b) {
     const [ht, wt, born, place, bats, throws, debut, final] = b;
-    const l1 = join([ht, wt && `${wt} lb`, bats && `Bats ${bats}`, throws && `Throws ${throws}`,
-      born && `Born ${born}`]);
-    const l2 = join([place, debut && `Debut ${debut}`, final && `Final Game ${final}`]);
+    const l1 = join([ht, wt && `${wt} lb`, bats && `Bats ${bats}`, throws && `Throws ${throws}`]);
+    const l2 = join([born && `Born ${born}`, place, debut && `Debut ${debut}`, final && `Final Game ${final}`]);
     const lines = [l1, l2].filter(Boolean).join('<br>');
     if (lines) bio = `<div class="stats-card__bio">${lines}</div>`;
   }

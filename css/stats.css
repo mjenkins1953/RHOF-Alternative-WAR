@@ -23,8 +23,8 @@
   --saa-accent: #a8660a;
 
   padding: 0;
-  border: 1px solid var(--brass-dk);
-  border-left: 4px solid var(--saa-accent);   /* the brown bar */
+  border: 1px solid var(--brass-dk);          /* thin goldish-brown, all four sides */
+  border-top-width: 4px;                       /* heavier rule across the top */
   border-radius: 4px;
   background: var(--saa-card);
   color: var(--saa-ink);
@@ -63,6 +63,7 @@
 .stats-modal .stats-card__head {
   /* dark green band, same as the site header the wordmark sits on --
      bleeds out over the card's top + side padding */
+  position: relative;
   background: var(--bg);
   border-bottom: 1px solid var(--green-line);
   margin: -1.2rem -1.4rem 1.1rem;
@@ -73,10 +74,18 @@
   align-items: baseline;
   flex-wrap: wrap;
   gap: 0.15rem 0.9rem;
-  padding-right: 2rem;              /* keep the pid clear of the close button */
+  padding-right: 6.5rem;           /* clear the pid + close button on the right */
 }
 .stats-modal .stats-card__pid {
-  margin-left: auto;               /* push to the right, next to the close button */
+  /* pinned to the right, box-matched to the close button so the two
+     line up on a shared vertical centre */
+  position: absolute;
+  top: 0.55rem;
+  right: 2.5rem;
+  height: 30px;                     /* == close button: 22px glyph + 2*4px padding */
+  display: flex;
+  align-items: center;
+  line-height: 1;
   font-family: var(--font-mono);
   font-size: 0.78rem;               /* same as the season table */
   color: var(--brass-lt);
