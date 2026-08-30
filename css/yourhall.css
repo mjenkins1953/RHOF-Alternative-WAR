@@ -1,56 +1,53 @@
 /* ============================================================
-   Your Hall — the secondary Hitters/Pitchers strip under the main menu,
-   and the weights panel that drives the live re-ranking. The panel lives
-   inside .saa-embed, so it borrows that block's light "ledger" palette
-   (--saa-*). The strip sits on the dark page and matches .site-menu.
+   Your Hall — the Hitters/Pitchers switch that sits in the top-right of the
+   "Build your hall of fame" box (next to the collapse caret), and the weights
+   panel that drives the live re-ranking. Both live inside .saa-embed, so they
+   borrow that block's light "ledger" palette (--saa-*).
    ============================================================ */
 
-/* ---------------- secondary nav strip ---------------- */
-.subnav {
-  background: var(--bg-deep);
-  border-bottom: 1px solid var(--green-line);
-}
-.subnav__inner {
+/* ---------------- Hitters/Pitchers switch, in the board header ---------------- */
+.saa-embed .board__nav {
+  position: absolute;
+  top: 1rem;
+  right: 3.4rem;             /* clear of the 2rem toggle at right:1rem */
   display: flex;
   align-items: center;
-  gap: 22px;
-  padding-top: 9px;
-  padding-bottom: 9px;
+  gap: 1.1rem;
+  height: 2rem;
 }
-.subnav__link {
+.saa-embed .board__nav-link {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--paper-dim);
-  opacity: 0.72;
+  white-space: nowrap;
+  color: var(--saa-ink-dim);
   border-bottom: 2px solid transparent;
-  padding: 2px 0;
-  transition: color 0.15s, border-color 0.15s, opacity 0.15s;
+  padding-bottom: 2px;
+  transition: color 0.12s, border-color 0.12s;
 }
-.subnav__link:hover,
-.subnav__link:focus-visible {
-  color: var(--brass-lt);
-  opacity: 1;
+.saa-embed .board__nav-link:hover,
+.saa-embed .board__nav-link:focus-visible { color: var(--saa-ink); }
+.saa-embed .board__nav-link.is-active {
+  color: var(--saa-accent);
+  border-color: var(--saa-accent);
 }
-.subnav__link.is-active {
-  color: var(--brass-lt);
-  border-color: var(--brass-lt);
-  opacity: 1;
-}
-.subnav__link--soon {
-  cursor: default;
-  opacity: 0.4;
-}
-.subnav__link--soon:hover { color: var(--paper-dim); }
-.subnav__soon {
-  font-size: 8px;
-  letter-spacing: 0.06em;
-  color: var(--brass);
-  margin-left: 3px;
-  vertical-align: 1px;
+
+/* keep the eyebrow + headline clear of the switch and the toggle */
+.saa-embed .board--nav .eyebrow,
+.saa-embed .board--nav h1 { padding-right: 13rem; }
+
+@media (max-width: 640px) {
+  .saa-embed .board__nav {
+    position: static;
+    height: auto;
+    margin-bottom: 0.9rem;
+    padding-right: 2.5rem;   /* clear the toggle on its own line */
+  }
+  .saa-embed .board--nav .eyebrow,
+  .saa-embed .board--nav h1 { padding-right: 2.5rem; }
 }
 
 /* ---------------- weights panel ---------------- */

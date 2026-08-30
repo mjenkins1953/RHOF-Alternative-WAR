@@ -34,19 +34,16 @@
   </div>
 </nav>
 
-<nav class="subnav" aria-label="Your Hall sections">
-  <div class="wrap subnav__inner">
-    <a href="yourhall.html" class="subnav__link is-active">Hitters</a>
-    <a href="yourhall-pitchers.html" class="subnav__link">Pitchers</a>
-  </div>
-</nav>
-
 <main>
 <section class="saa-embed" id="view-yourhall">
   <div class="wrap">
 
-    <header class="board">
+    <header class="board board--nav">
       <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
+      <nav class="board__nav" aria-label="Your Hall sections">
+        <a href="yourhall.html" class="board__nav-link is-active">Hitters</a>
+        <a href="yourhall-pitchers.html" class="board__nav-link">Pitchers</a>
+      </nav>
       <div class="eyebrow">Your Hall — hitters</div>
       <h1>Build <em>your</em> hall of fame</h1>
       <div class="board__body" id="boardBody">
@@ -154,7 +151,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The Real Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.023</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.024</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
