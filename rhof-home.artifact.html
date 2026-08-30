@@ -1308,7 +1308,7 @@ a { color: var(--brass-lt); }
   <div class="wrap site-menu__inner">
     <a href="#view-hitters" class="site-menu__link">Hitters</a>
     <a href="#" class="site-menu__link" aria-disabled="true">Pitchers</a>
-    <a href="#" class="site-menu__link">Your Hall</a>
+    <a href="#" class="site-menu__link" aria-disabled="true">Your Hall</a>
     <a href="#" class="site-menu__link">Stats</a>
     <a href="#methodology" class="site-menu__link">Methodology</a>
     <a href="#about" class="site-menu__link site-menu__link--right">About</a>
@@ -1606,8 +1606,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The Real Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.019</span></p>
-    <p class="about-modal__line"><span id="aboutBuild">2026.08.29</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.020</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
 
@@ -2040,8 +2040,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.019';
-const RHOF_BUILD = '2026.08.29.019';
+const RHOF_VERSION = '1.020';
+const RHOF_BUILD = '2026.08.30.020';
 
 (function () {
   const modal = document.getElementById('aboutModal');

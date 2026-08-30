@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Hall — Hitters | The REAL Hall of Fame</title>
+<meta name="description" content="Build your own hall of fame: set the weights on the five RHOF hitting categories and the list re-ranks the full pool live, every player still scored only against his own seasons' league averages.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/hitters-embed.css">
+<link rel="stylesheet" href="css/yourhall.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a href="index.html" class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE <span class="mark__real">REAL</span> HALL OF FAME</span>
+    </a>
+    <p class="site-head__tag">Real stats. One formula. No ballots. No committees.</p>
+  </div>
+</header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <a href="hitters.html" class="site-menu__link">Hitters</a>
+    <a href="pitchers.html" class="site-menu__link">Pitchers</a>
+    <a href="yourhall.html" class="site-menu__link is-active">Your Hall</a>
+    <a href="#" class="site-menu__link">Stats</a>
+    <a href="index.html#methodology" class="site-menu__link">Methodology</a>
+    <a href="index.html#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
+
+<nav class="subnav" aria-label="Your Hall sections">
+  <div class="wrap subnav__inner">
+    <a href="yourhall.html" class="subnav__link is-active">Hitters</a>
+    <span class="subnav__link subnav__link--soon" aria-disabled="true">Pitchers <span class="subnav__soon">soon</span></span>
+  </div>
+</nav>
+
+<main>
+<section class="saa-embed" id="view-yourhall">
+  <div class="wrap">
+
+    <header class="board">
+      <button type="button" class="board__toggle" aria-expanded="true" aria-controls="boardBody" aria-label="Hide list details">▾</button>
+      <div class="eyebrow">Your Hall — hitters</div>
+      <h1>Build <em>your</em> hall of fame</h1>
+      <div class="board__body" id="boardBody">
+      <p class="dek">
+        Set the weights and the list re-ranks the full <b>1,065-hitter pool</b> live. Every
+        player is still scored only against <b>the league average and spread of his own seasons</b>
+        — no cross-era skew, same as the real list — but with <b>your</b> emphasis on contact,
+        power, defense, patience and speed. The sliders start on the real RHOF formula.
+      </p>
+      </div>
+    </header>
+
+    <div class="yh-panel" id="yhPanel">
+      <div class="yh-weights" id="yhWeights"></div>
+      <div class="yh-panel__controls">
+        <label class="yh-field yh-field--blend">
+          <span class="yh-field__label">Career &harr; Peak</span>
+          <input type="range" id="yhBlend" min="0" max="100" step="1" value="50" aria-label="Career vs peak blend">
+          <span class="yh-field__val" id="yhBlendVal">50 / 50</span>
+        </label>
+        <div class="yh-field">
+          <span class="yh-field__label">Peak window</span>
+          <span class="yh-seg" id="yhPeak" role="group" aria-label="Peak window, best N seasons">
+            <button type="button" data-n="5">5</button>
+            <button type="button" data-n="7" class="is-on">7</button>
+            <button type="button" data-n="9">9</button>
+          </span>
+        </div>
+        <button type="button" class="yh-reset" id="yhReset">Reset to RHOF default</button>
+      </div>
+      <p class="yh-panel__readout" id="yhReadout"></p>
+    </div>
+
+    <div class="controls">
+      <div class="search">
+        <input id="saaQ" type="text" placeholder="Find a player…" autocomplete="off">
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="saaHofOnly">
+        Hall of Famers only
+      </label>
+      <div class="legend">
+        <span><span class="hof-star">★</span> already in Cooperstown</span>
+        <span><span class="nel-tag">NeL</span> Negro Leagues player</span>
+      </div>
+    </div>
+
+    <div class="count" id="saaCount"></div>
+
+    <div class="table-shell">
+      <table>
+        <thead>
+          <tr>
+            <th data-key="rank" class="sorted">Rank<span class="arrow">▲</span></th>
+            <th data-key="nel" class="nel-col">NeL<span class="arrow">▲</span></th>
+            <th data-key="name" class="name-col">Player<span class="arrow">▲</span></th>
+            <th data-key="pa">PA<span class="arrow">▲</span></th>
+            <th data-key="seasons">Seasons<span class="arrow">▲</span></th>
+            <th data-key="saa">Score<span class="arrow">▲</span></th>
+            <th data-key="avg">AVG z<span class="arrow">▲</span></th>
+            <th data-key="iso">ISO z<span class="arrow">▲</span></th>
+            <th data-key="bb">BB z<span class="arrow">▲</span></th>
+            <th data-key="sb">SB z<span class="arrow">▲</span></th>
+            <th data-key="def">DEF z<span class="arrow">▲</span></th>
+            <th data-key="hof">HOF<span class="arrow">▲</span></th>
+          </tr>
+        </thead>
+        <tbody id="saaRows"></tbody>
+      </table>
+      <div class="empty" id="saaEmpty" style="display:none;">No players match "<span id="saaQEcho"></span>".</div>
+    </div>
+
+    <section class="bubble" aria-labelledby="bubble-h">
+      <p class="eyebrow">Just outside your cut</p>
+      <h2 id="bubble-h">On the bubble</h2>
+      <p class="bubble__lede">
+        The twenty next in line under your weights — nudge a slider and the line moves.
+      </p>
+      <div class="bubble__list" id="saaBubble"></div>
+    </section>
+
+    <footer>
+      Every hitter in the 5,000+ career-PA pool (plus Negro Leagues players clearing 9 season-equivalents),
+      re-scored in your browser: five per-season z-scores against that season's league mean and spread among
+      200+ PA hitters — batting average, isolated power, walk rate, stolen-base rate, defensive value — blended
+      by your weights, each season scaled to 600 PA, then combined as your Career&nbsp;&harr;&nbsp;Peak setting
+      dictates (the RHOF default is a 50/50 average of the career total and the best seven seasons). Source:
+      Lahman database hitting/fielding (2025 release, including Negro Leagues statistics); Hall of Fame
+      membership current through the 2026 induction class. Nothing you set here is saved or shared — it's your hall.
+    </footer>
+
+  </div>
+</section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Data sourced from the latest version of the Lahman database.</p>
+  </div>
+</footer>
+
+<dialog class="about-modal" id="aboutModal">
+  <div class="about-modal__inner">
+    <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
+    <p class="about-modal__eyebrow">The Real Hall of Fame</p>
+    <h2 class="about-modal__title">About</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.020</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
+  </div>
+</dialog>
+
+<script src="js/yourhall-hitters-data.js"></script>
+<script src="js/yourhall-hitters-cards.js"></script>
+<script src="js/yourhall-embed.js"></script>
+<script src="js/board-collapse.js"></script>
+<script src="js/about.js"></script>
+</body>
+</html>

@@ -17,7 +17,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-HERE = Path("/Users/martinjenkins/Personal/Claude Projects/RHOF Alternative War")
+from build_cards import hitter_cards
+
+HERE = Path(__file__).resolve().parent
 N = 300
 BUBBLE_N = 20   # ranks N+1 .. N+BUBBLE_N shown in the "On the bubble" strip
 
@@ -81,90 +83,12 @@ print(f"js/hitters-embed.js: SAA_DATA -> {len(saa_data)} rows "
       f"({sum(d['hof'] for d in saa_data)} HoF, {sum(d['nel'] for d in saa_data)} NeL), "
       f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']})")
 
-# ---- SAA_CAREER (build_saa_cards.py logic, N rows) ----
+# ---- SAA_CAREER (career box-score line per rank, 1..N) ----
 top_df = pd.read_csv(HERE / f"saa_top_{N}_hitters.csv")
-ids = set(top_df["playerID"])
-
-bat = pd.read_csv(HERE / "Batting.csv")
-num = ["G", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "BB", "SO", "HBP", "SF", "SH"]
-for c in num:
-    bat[c] = pd.to_numeric(bat[c], errors="coerce").fillna(0)
-bat["yearID"] = pd.to_numeric(bat["yearID"], errors="coerce")
-bat["PA"] = bat["AB"] + bat["BB"] + bat["HBP"] + bat["SF"] + bat["SH"]
-b = bat[bat["playerID"].isin(ids)]
-gb = b.groupby("playerID")
-car = gb[num].sum()
-
-seas_pa = b.groupby(["playerID", "yearID"])["PA"].sum()
-qpa = seas_pa[seas_pa >= 200].groupby("playerID").sum()
-car["yr_min"] = gb["yearID"].min()
-car["yr_max"] = gb["yearID"].max()
-car["TB"] = (car["H"] - car["2B"] - car["3B"] - car["HR"]) + 2 * car["2B"] + 3 * car["3B"] + 4 * car["HR"]
-car["AVG"] = car["H"] / car["AB"].replace(0, np.nan)
-car["OBP"] = (car["H"] + car["BB"] + car["HBP"]) / (car["AB"] + car["BB"] + car["HBP"] + car["SF"]).replace(0, np.nan)
-car["SLG"] = car["TB"] / car["AB"].replace(0, np.nan)
-car["OPS"] = car["OBP"] + car["SLG"]
-
-fld = pd.read_csv(HERE / "Fielding.csv", low_memory=False)
-fld["G"] = pd.to_numeric(fld["G"], errors="coerce").fillna(0)
-fld = fld[fld["playerID"].isin(ids) & (fld["POS"] != "P")]
-posg = fld.groupby(["playerID", "POS"])["G"].sum().reset_index()
-primary = posg.sort_values("G").groupby("playerID").tail(1).set_index("playerID")["POS"]
-fld_games = fld.groupby("playerID")["G"].sum()
-
-# war_daily_bat keys on the BBRef id -- differs from the Lahman playerID for
-# a handful of players (sabatcc01 -> sabatc.01 etc.); People.csv bridges them.
-bbref = pd.read_csv(HERE / "People.csv").set_index("playerID")["bbrefID"].to_dict()
-bbref_ids = {bbref.get(i, i) for i in ids}
-lahman_of = {bbref.get(i, i): i for i in ids}
-
-war = pd.read_csv(HERE / "war_daily_bat.txt")
-war["WAR"] = pd.to_numeric(war["WAR"], errors="coerce").fillna(0)
-war["PA"] = pd.to_numeric(war["PA"], errors="coerce").fillna(0)
-war["G"] = pd.to_numeric(war["G"], errors="coerce").fillna(0)
-war["OPS_plus"] = pd.to_numeric(war["OPS_plus"], errors="coerce")
-w = war[war["player_ID"].isin(bbref_ids)].copy()
-w["player_ID"] = w["player_ID"].map(lambda x: lahman_of.get(x, x))  # back to Lahman ids
-war_tot = w.groupby("player_ID")["WAR"].sum()
-team = (w.groupby(["player_ID", "team_ID"])["G"].sum().reset_index()
-        .sort_values("G").groupby("player_ID").tail(1).set_index("player_ID")["team_ID"])
-
-
-def wops(d):
-    m = d["OPS_plus"].notna() & (d["PA"] > 0)
-    if not m.any():
-        return None
-    return float(np.average(d.loc[m, "OPS_plus"], weights=d.loc[m, "PA"]))
-
-
-opsplus = w.groupby("player_ID").apply(wops)
-
-out = {}
-for _, row in top_df.iterrows():
-    pid = row["playerID"]
-    rank = int(row["rank_saa"])
-    c = car.loc[pid]
-    fg = float(fld_games.get(pid, 0.0))
-    dh_share = (c["G"] - fg) / c["G"] if c["G"] else 0
-    pos = primary.get(pid, "DH")
-    if dh_share > 0.55:
-        pos = "DH"
-    op = opsplus.get(pid)
-    out[rank] = {
-        "pos": pos,
-        "yrs": f"{int(c['yr_min'])}–{int(c['yr_max'])}",
-        "team": (team.get(pid) or ""),
-        "qpa": int(qpa.get(pid, 0)),
-        "g": int(c["G"]), "ab": int(c["AB"]), "r": int(c["R"]), "h": int(c["H"]),
-        "d2": int(c["2B"]), "d3": int(c["3B"]), "hr": int(c["HR"]), "rbi": int(c["RBI"]),
-        "sb": int(c["SB"]), "cs": int(c["CS"]), "bb": int(c["BB"]), "so": int(c["SO"]),
-        "avg": None if pd.isna(c["AVG"]) else round(float(c["AVG"]), 3),
-        "obp": None if pd.isna(c["OBP"]) else round(float(c["OBP"]), 3),
-        "slg": None if pd.isna(c["SLG"]) else round(float(c["SLG"]), 3),
-        "ops": None if pd.isna(c["OPS"]) else round(float(c["OPS"]), 3),
-        "opsPlus": None if op is None or pd.isna(op) else round(op),
-        "war": round(float(war_tot.get(pid, row["real_WAR"])), 1),
-    }
+war_fallback = dict(zip(top_df["playerID"], top_df["real_WAR"].astype(float)))
+cards = hitter_cards(set(top_df["playerID"]), war_fallback)
+out = {int(row["rank_saa"]): cards[row["playerID"]]
+       for _, row in top_df.iterrows() if row["playerID"] in cards}
 
 (HERE / "js/saa-career.js").write_text(
     f"// Career box-score lines for the Top {N} SAA hitters, keyed by SAA rank.\n"
@@ -174,10 +98,13 @@ for _, row in top_df.iterrows():
 print(f"js/saa-career.js: SAA_CAREER -> {len(out)} players")
 
 # ---- career lines for whoever now just misses the cut (the "leaves out" writeup) ----
+# Console diagnostic only -- writes nothing; used when drafting the writeup.
+_num = ["G", "AB", "R", "H", "2B", "3B", "HR", "RBI", "SB", "CS", "BB", "SO", "HBP", "SF", "SH"]
+bbref = pd.read_csv(HERE / "People.csv").set_index("playerID")["bbrefID"].to_dict()
 just_miss = [r["name"] for r in full[N:N + 20]]
 _jm_ids = {r["playerID"] for r in full if r["name"] in just_miss}
 bb = pd.read_csv(HERE / "Batting.csv")
-for c in num:
+for c in _num:
     bb[c] = pd.to_numeric(bb[c], errors="coerce").fillna(0)
 bb = bb[bb["playerID"].isin(_jm_ids)]
 _jm_war = pd.read_csv(HERE / "war_daily_bat.txt")

@@ -339,6 +339,21 @@ def main():
     pool[out_cols].to_csv(HERE / "saa_full.csv", index=False)
     pool[out_cols].head(300).to_csv(HERE / "saa_top_300_hitters.csv", index=False)
 
+    # Per-season z-score matrix for every ranked hitter -- the raw inputs the
+    # "Your Hall" page needs to re-score the pool under user-chosen weights.
+    # Just the raw per-season z's + PA; the composite/peak/blend is redone
+    # client-side. Missing z (a part-time fielder has no z_DEF, a few 1800s
+    # seasons have no SB spread) is left blank.
+    pool_ids = set(pool["playerID"])
+    seasons_out = (
+        qseason[qseason["playerID"].isin(pool_ids)]
+        [["playerID", "yearID", "z_AVG", "z_ISO", "z_BB", "z_SB", "z_DEF", "PA"]]
+        .sort_values(["playerID", "yearID"])
+    )
+    seasons_out.to_csv(HERE / "saa_seasons_hitters.csv", index=False)
+    print(f"Wrote saa_seasons_hitters.csv ({len(seasons_out)} player-seasons "
+          f"across {seasons_out['playerID'].nunique()} hitters)")
+
     n_nel_via_carveout = ((pool["is_negro_leaguer"]) & (pool["career_PA"] < CAREER_PA_FLOOR)).sum()
     print(f"Qualifying pool: {len(pool)} hitters "
           f"(career PA >= {CAREER_PA_FLOOR}, OR Negro Leagues with "

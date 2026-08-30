@@ -1,0 +1,181 @@
+/* ============================================================
+   Your Hall — the secondary Hitters/Pitchers strip under the main menu,
+   and the weights panel that drives the live re-ranking. The panel lives
+   inside .saa-embed, so it borrows that block's light "ledger" palette
+   (--saa-*). The strip sits on the dark page and matches .site-menu.
+   ============================================================ */
+
+/* ---------------- secondary nav strip ---------------- */
+.subnav {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--green-line);
+}
+.subnav__inner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.subnav__link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--paper-dim);
+  opacity: 0.72;
+  border-bottom: 2px solid transparent;
+  padding: 2px 0;
+  transition: color 0.15s, border-color 0.15s, opacity 0.15s;
+}
+.subnav__link:hover,
+.subnav__link:focus-visible {
+  color: var(--brass-lt);
+  opacity: 1;
+}
+.subnav__link.is-active {
+  color: var(--brass-lt);
+  border-color: var(--brass-lt);
+  opacity: 1;
+}
+.subnav__link--soon {
+  cursor: default;
+  opacity: 0.4;
+}
+.subnav__link--soon:hover { color: var(--paper-dim); }
+.subnav__soon {
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: var(--brass);
+  margin-left: 3px;
+  vertical-align: 1px;
+}
+
+/* ---------------- weights panel ---------------- */
+.saa-embed .yh-panel {
+  border: 1px solid var(--saa-line);
+  background: var(--saa-surface);
+  border-radius: 4px;
+  padding: 1.4rem 1.6rem 1.5rem;
+  margin-bottom: 1.6rem;
+}
+
+.saa-embed .yh-weights {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.6rem 1.4rem;
+}
+.saa-embed .yh-w {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.saa-embed .yh-w__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--saa-ink-dim);
+}
+.saa-embed .yh-w__val {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--saa-ink);
+}
+
+.saa-embed .yh-w input[type="range"],
+.saa-embed .yh-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--saa-accent);
+  cursor: pointer;
+}
+
+.saa-embed .yh-panel__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.8rem;
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--saa-line);
+}
+.saa-embed .yh-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.saa-embed .yh-field--blend { flex: 1 1 220px; max-width: 320px; }
+.saa-embed .yh-field__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--saa-ink-dim);
+}
+.saa-embed .yh-field__val {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  color: var(--saa-ink);
+}
+
+.saa-embed .yh-seg {
+  display: inline-flex;
+  border: 1px solid var(--saa-line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.saa-embed .yh-seg button {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--saa-ink-dim);
+  background: var(--saa-surface);
+  border: none;
+  border-left: 1px solid var(--saa-line);
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.saa-embed .yh-seg button:first-child { border-left: none; }
+.saa-embed .yh-seg button:hover { color: var(--saa-ink); }
+.saa-embed .yh-seg button.is-on {
+  background: var(--saa-accent);
+  color: #fff;
+}
+
+.saa-embed .yh-reset {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--saa-accent);
+  background: var(--saa-surface);
+  border: 1px solid var(--saa-accent);
+  border-radius: 3px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.saa-embed .yh-reset:hover {
+  background: var(--saa-accent);
+  color: #fff;
+}
+
+.saa-embed .yh-panel__readout {
+  margin: 1rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--saa-ink-dim);
+}
+.saa-embed .yh-panel__readout b { color: var(--saa-accent); }
+
+@media (max-width: 720px) {
+  .saa-embed .yh-weights { grid-template-columns: repeat(2, 1fr); }
+}
