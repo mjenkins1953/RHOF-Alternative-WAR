@@ -519,7 +519,9 @@ a { color: var(--brass-lt); }
   border-top: 1px solid var(--green-line);
   background: var(--bg-deep);
 }
-.dossier__inner { max-width: none; text-align: left; }
+/* same bounds as .standards > .wrap, so the copy lines up edge-for-edge
+   with the "How the RHOF Score works" formula box below it */
+.dossier__inner { text-align: left; }
 .dossier p { color: var(--paper-dim); font-size: 17px; max-width: none; }
 .dossier__punch {
   color: var(--flag-lt) !important;
@@ -1297,6 +1299,8 @@ a { color: var(--brass-lt); }
   <div class="wrap site-menu__inner">
     <a href="#view-hitters" class="site-menu__link">Hitters</a>
     <a href="#" class="site-menu__link" aria-disabled="true">Pitchers</a>
+    <a href="#" class="site-menu__link">Your Hall</a>
+    <a href="#" class="site-menu__link">Stats</a>
     <a href="#methodology" class="site-menu__link">Methodology</a>
     <a href="#about" class="site-menu__link site-menu__link--right">About</a>
   </div>
@@ -1593,8 +1597,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">About</p>
     <h2 class="about-modal__title">The Real Hall of Fame</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.016</span></p>
-    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.29.016</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.017</span></p>
+    <p class="about-modal__line">Build <span id="aboutBuild">2026.08.29.017</span></p>
   </div>
 </dialog>
 
@@ -2025,8 +2029,8 @@ window.addEventListener('resize', saaSizeScroll);
 //   RHOF_VERSION  1.000  -> 1.001 -> 1.002 ...
 //   RHOF_BUILD    <date>.000 -> <date>.001 ...  (date = the build date)
 
-const RHOF_VERSION = '1.016';
-const RHOF_BUILD = '2026.08.29.016';
+const RHOF_VERSION = '1.017';
+const RHOF_BUILD = '2026.08.29.017';
 
 (function () {
   const modal = document.getElementById('aboutModal');

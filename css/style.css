@@ -513,7 +513,9 @@ a { color: var(--brass-lt); }
   border-top: 1px solid var(--green-line);
   background: var(--bg-deep);
 }
-.dossier__inner { max-width: none; text-align: left; }
+/* same bounds as .standards > .wrap, so the copy lines up edge-for-edge
+   with the "How the RHOF Score works" formula box below it */
+.dossier__inner { text-align: left; }
 .dossier p { color: var(--paper-dim); font-size: 17px; max-width: none; }
 .dossier__punch {
   color: var(--flag-lt) !important;
