@@ -79,7 +79,7 @@
 .saa-embed header.board .eyebrow,
 .saa-embed header.board h1 { padding-right: 2.5rem; }
 
-/* Section switch (Hitters/Pitchers on Your Hall, Batters/Pitchers on Stats),
+/* Section switch (Hitters/Pitchers on Your Hall and Stats),
    top-right of the board box just left of the collapse caret. */
 .saa-embed .board__nav {
   position: absolute;

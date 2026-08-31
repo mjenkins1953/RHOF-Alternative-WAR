@@ -5,6 +5,18 @@
    scoped to .saa-embed, so the modal re-declares those tokens.
    ============================================================ */
 
+/* ---------- the main career-line table ----------
+   Tighter columns than the ranked SAA lists so all 17 stat columns fit
+   in the scroll window on a normal desktop without sideways scrolling. */
+#view-stats.saa-embed table,
+#view-stats-pitchers.saa-embed table { font-size: 0.82rem; min-width: 0; }
+#view-stats .table-shell thead th,
+#view-stats-pitchers .table-shell thead th { padding: 0.6rem 0.55rem; font-size: 0.68rem; }
+#view-stats .table-shell tbody td,
+#view-stats-pitchers .table-shell tbody td { padding: 0.45rem 0.55rem; }
+#view-stats .table-shell td.name,
+#view-stats-pitchers .table-shell td.name { min-width: 9.5em; }
+
 .saa-embed .stats-row { cursor: pointer; }
 .saa-embed .stats-row:hover td { background: var(--saa-surface-2); }
 .saa-embed .stats-row:hover td.name { color: var(--saa-accent); }

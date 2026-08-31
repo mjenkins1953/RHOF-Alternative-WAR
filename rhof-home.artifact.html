@@ -765,7 +765,7 @@ a { color: var(--brass-lt); }
 .saa-embed header.board .eyebrow,
 .saa-embed header.board h1 { padding-right: 2.5rem; }
 
-/* Section switch (Hitters/Pitchers on Your Hall, Batters/Pitchers on Stats),
+/* Section switch (Hitters/Pitchers on Your Hall and Stats),
    top-right of the board box just left of the collapse caret. */
 .saa-embed .board__nav {
   position: absolute;
@@ -1872,8 +1872,8 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.045</span></p>
-    <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.046</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.08.31</span></p>
   </div>
 </dialog>
 
@@ -1917,7 +1917,7 @@ a { color: var(--brass-lt); }
     'pitchers.html': 'Pitchers',
     'yourhall.html': 'Your Hall — Hitters',
     'yourhall-pitchers.html': 'Your Hall — Pitchers',
-    'stats.html': 'Stats — Batters',
+    'stats.html': 'Stats — Hitters',
     'stats-pitchers.html': 'Stats — Pitchers',
     'methodology.html': 'Methodology'
   };
@@ -2212,8 +2212,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.045';
-const RHOF_BUILD = '2026.08.30.045';
+const RHOF_VERSION = '1.046';
+const RHOF_BUILD = '2026.08.31.046';
 
 (function () {
   const modal = document.getElementById('aboutModal');

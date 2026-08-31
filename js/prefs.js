@@ -37,7 +37,7 @@
     'pitchers.html': 'Pitchers',
     'yourhall.html': 'Your Hall — Hitters',
     'yourhall-pitchers.html': 'Your Hall — Pitchers',
-    'stats.html': 'Stats — Batters',
+    'stats.html': 'Stats — Hitters',
     'stats-pitchers.html': 'Stats — Pitchers',
     'methodology.html': 'Methodology'
   };

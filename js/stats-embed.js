@@ -1,5 +1,5 @@
 // Stats — every player in the Lahman database, one career line each. No RHOF
-// scoring. Batters and pitchers share this file (STATS_META.source picks the
+// scoring. Hitters and pitchers share this file (STATS_META.source picks the
 // mode). The list renders in chunks (tens of thousands of rows) and grows on
 // scroll; clicking a name expands a season-by-season card.
 
