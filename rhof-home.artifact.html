@@ -590,12 +590,15 @@ a { color: var(--brass-lt); }
 
 /* ---------------- Footer ---------------- */
 .site-foot { padding: 28px 0 40px; }
+/* line the footnote up with the list tables (.saa-embed .wrap), not the
+   narrower site .wrap */
+.site-foot__inner { max-width: 1180px; }
 .site-foot__inner p {
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--paper-dim);
   opacity: 0.7;
-  max-width: 70ch;
+  max-width: none;   /* footnotes span the full content width, like the tables above */
   line-height: 1.6;
 }
 .site-foot__inner a { color: inherit; text-decoration: underline; }
@@ -1869,7 +1872,7 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.043</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.044</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
@@ -2209,8 +2212,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.043';
-const RHOF_BUILD = '2026.08.30.043';
+const RHOF_VERSION = '1.044';
+const RHOF_BUILD = '2026.08.30.044';
 
 (function () {
   const modal = document.getElementById('aboutModal');
