@@ -590,7 +590,10 @@ a { color: var(--brass-lt); }
   color: var(--paper-dim);
   opacity: 0.7;
   max-width: 70ch;
+  line-height: 1.6;
 }
+.site-foot__inner a { color: inherit; text-decoration: underline; }
+.site-foot__inner a:hover { color: var(--brass-lt); }
 .site-foot code {
   background: rgba(239,230,208,0.08);
   padding: 1px 5px;

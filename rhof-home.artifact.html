@@ -596,7 +596,10 @@ a { color: var(--brass-lt); }
   color: var(--paper-dim);
   opacity: 0.7;
   max-width: 70ch;
+  line-height: 1.6;
 }
+.site-foot__inner a { color: inherit; text-decoration: underline; }
+.site-foot__inner a:hover { color: var(--brass-lt); }
 .site-foot code {
   background: rgba(239,230,208,0.08);
   padding: 1px 5px;
@@ -1857,7 +1860,7 @@ a { color: var(--brass-lt); }
 
 <footer class="site-foot">
   <div class="wrap site-foot__inner">
-    <p>Data sourced from the latest version of the Lahman database.</p>
+    <p>Player and season statistics from the Lahman Baseball Database, with biographical data from the Chadwick Baseball Bureau. The information used here was obtained free of charge from and is copyrighted by Sean Lahman and Retrosheet. Interested parties may contact Retrosheet at <a href="https://www.retrosheet.org" target="_blank" rel="noopener">www.retrosheet.org</a> and Sean Lahman at <a href="https://www.seanlahman.com" target="_blank" rel="noopener">www.seanlahman.com</a>. Wins Above Replacement, OPS+, and ERA+ are from <a href="https://www.baseball-reference.com" target="_blank" rel="noopener">Baseball-Reference.com</a>.</p>
   </div>
 </footer>
 
@@ -1866,7 +1869,7 @@ a { color: var(--brass-lt); }
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.042</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.043</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
@@ -2206,8 +2209,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.042';
-const RHOF_BUILD = '2026.08.30.042';
+const RHOF_VERSION = '1.043';
+const RHOF_BUILD = '2026.08.30.043';
 
 (function () {
   const modal = document.getElementById('aboutModal');
