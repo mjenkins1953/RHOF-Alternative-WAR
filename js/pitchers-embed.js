@@ -22,6 +22,33 @@ let saaSortDir = 1; // 1 asc, -1 desc
 let saaQuery = '';
 const saaExpanded = new Set(); // SAA ranks whose career card is open
 
+// ---- remembered view (js/prefs.js): sort + search + HoF toggle ----
+const SAA_PREF_KEY = 'pitchers';
+const SAA_KEYS = new Set(saaHeaders.map(th => th.dataset.key));
+function saaMarkSortedHeader() {
+  saaHeaders.forEach(h => {
+    const on = h.dataset.key === saaSortKey;
+    h.classList.toggle('sorted', on);
+    const arrow = h.querySelector('.arrow');
+    if (on && arrow) arrow.textContent = saaSortDir === 1 ? '▲' : '▼';
+  });
+}
+function saaSavePrefs() {
+  if (!window.THOF) return;
+  THOF.set(SAA_PREF_KEY, { sortKey: saaSortKey, sortDir: saaSortDir, q: saaQuery, hof: saaHofToggle.checked });
+}
+(function saaRestorePrefs() {
+  const s = window.THOF && THOF.get(SAA_PREF_KEY, null);
+  if (!s) return;
+  if (s.sortKey && SAA_KEYS.has(s.sortKey)) {
+    saaSortKey = s.sortKey;
+    saaSortDir = s.sortDir === -1 ? -1 : 1;
+  }
+  if (typeof s.q === 'string' && s.q) { saaQuery = s.q; saaSearchInput.value = s.q; }
+  if (s.hof) saaHofToggle.checked = true;
+  saaMarkSortedHeader();
+})();
+
 function saaFmtZ(z) {
   const cls = z > 0.15 ? 'z-pos' : (z < -0.15 ? 'z-neg' : 'z-flat');
   const txt = (z > 0 ? '+' : '') + z.toFixed(2);
@@ -112,11 +139,11 @@ function saaRender() {
     const open = saaExpanded.has(d.rank);
     return `<tr class="saa-row${open ? ' is-open' : ''}" data-rank="${d.rank}" tabindex="0" aria-expanded="${open}">
       <td class="rank"><span class="saa-caret">${open ? '▾' : '▸'}</span>${d.rank}</td>
-      <td class="nel">${d.nel ? '<span class="nel-tag">NeL</span>' : ''}</td>
+      <td class="saa">${d.saa > 0 ? '+' : ''}${d.saa.toFixed(2)}</td>
       <td class="name">${d.name}</td>
+      <td class="nel">${d.nel ? '<span class="nel-tag">NeL</span>' : ''}</td>
       <td>${Math.round(d.ip).toLocaleString('en-US')}</td>
       <td>${d.seasons}</td>
-      <td class="saa">${d.saa > 0 ? '+' : ''}${d.saa.toFixed(2)}</td>
       ${saaFmtZ(d.era)}
       ${saaFmtZ(d.whip)}
       ${saaFmtZ(d.k9)}
@@ -136,20 +163,18 @@ saaHeaders.forEach(th => {
       saaSortKey = key;
       saaSortDir = 1;
     }
-    saaHeaders.forEach(h => {
-      h.classList.toggle('sorted', h === th);
-      const arrow = h.querySelector('.arrow');
-      if (h === th) arrow.textContent = saaSortDir === 1 ? '▲' : '▼';
-    });
+    saaMarkSortedHeader();
     saaRender();
+    saaSavePrefs();
   });
 });
 
 saaSearchInput.addEventListener('input', e => {
   saaQuery = e.target.value.trim();
   saaRender();
+  saaSavePrefs();
 });
-saaHofToggle.addEventListener('change', saaRender);
+saaHofToggle.addEventListener('change', () => { saaRender(); saaSavePrefs(); });
 
 // Click (or Enter/Space on a focused row) toggles that player's career card.
 function saaToggleRow(tr) {

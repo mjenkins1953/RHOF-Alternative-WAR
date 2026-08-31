@@ -197,11 +197,11 @@ function saaRender() {
     const zcells = YH.cats.map(cat => saaFmtZ(d[cat])).join('');
     return `<tr class="saa-row${open ? ' is-open' : ''}" data-id="${d.id}" tabindex="0" aria-expanded="${open}">
       <td class="rank"><span class="saa-caret">${open ? '▾' : '▸'}</span>${d.rank}</td>
-      <td class="nel">${d.nel ? '<span class="nel-tag">NeL</span>' : ''}</td>
+      <td class="saa">${d.saa > 0 ? '+' : ''}${d.saa.toFixed(2)}</td>
       <td class="name">${d.name}</td>
+      <td class="nel">${d.nel ? '<span class="nel-tag">NeL</span>' : ''}</td>
       <td>${Math.round(d.wl).toLocaleString('en-US')}</td>
       <td>${d.seasons}</td>
-      <td class="saa">${d.saa > 0 ? '+' : ''}${d.saa.toFixed(2)}</td>
       ${zcells}
       <td>${d.hof ? '<span class="hof-star">★</span>' : '<span class="hof-dash">—</span>'}</td>
     </tr>${open ? saaDetailRow(d) : ''}`;
@@ -228,6 +228,33 @@ function yhRecompute() {
   saaRenderBubble();
   yhUpdateReadout();
   saaSizeScroll();
+  yhSavePrefs();
+}
+
+// ---- remembered hall (js/prefs.js): weights, blend, peak window, size, search ----
+const YH_PREF_KEY = 'yourhall-' + YH.mode;
+const YH_SIZE_MAX = YH.mode === 'pitchers' ? 300 : 500;
+function yhSavePrefs() {
+  if (!window.THOF) return;
+  const p = { w: YH.weights.slice(), listN: YH.listN, q: saaQuery };
+  if (YH.hasPeak) { p.blend = YH.blend; p.peakN = YH.peakN; }
+  THOF.set(YH_PREF_KEY, p);
+}
+function yhRestorePrefs() {
+  const s = window.THOF && THOF.get(YH_PREF_KEY, null);
+  if (!s) return;
+  if (Array.isArray(s.w) && s.w.length === YH.weights.length
+      && s.w.every(x => typeof x === 'number' && x >= 0 && x <= 1)) {
+    YH.weights = s.w.slice();
+  }
+  if (YH.hasPeak) {
+    if (typeof s.blend === 'number' && s.blend >= 0 && s.blend <= 1) YH.blend = s.blend;
+    if (s.peakN === 5 || s.peakN === 7 || s.peakN === 9) YH.peakN = s.peakN;
+  }
+  if (typeof s.listN === 'number' && isFinite(s.listN)) {
+    YH.listN = Math.min(Math.max(Math.round(s.listN), 10), YH_SIZE_MAX);
+  }
+  if (typeof s.q === 'string' && s.q) { saaQuery = s.q; saaSearchInput.value = s.q; }
 }
 
 // ================= sorting / search / expand =================
@@ -244,7 +271,7 @@ saaHeaders.forEach(th => {
     saaRender();
   });
 });
-saaSearchInput.addEventListener('input', e => { saaQuery = e.target.value.trim(); saaRender(); });
+saaSearchInput.addEventListener('input', e => { saaQuery = e.target.value.trim(); saaRender(); yhSavePrefs(); });
 saaHofToggle.addEventListener('change', saaRender);
 
 function saaToggleRow(tr) {
@@ -405,8 +432,12 @@ function yhUpdateReadout() {
 }
 
 // ================= go =================
+yhRestorePrefs();
 yhBuildWeightSliders();
-if (YH.hasPeak) yhSetBlendLabel();
+if (YH.hasPeak) {
+  yhSetBlendLabel();
+  yhPeakEl.querySelectorAll('button').forEach(b => b.classList.toggle('is-on', Number(b.dataset.n) === YH.peakN));
+}
 yhSetSizeLabel();
 yhRecompute();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(saaSizeScroll);

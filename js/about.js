@@ -5,8 +5,8 @@
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.041';
-const RHOF_BUILD = '2026.08.30.041';
+const RHOF_VERSION = '1.042';
+const RHOF_BUILD = '2026.08.30.042';
 
 (function () {
   const modal = document.getElementById('aboutModal');

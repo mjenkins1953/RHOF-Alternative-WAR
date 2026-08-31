@@ -18,9 +18,14 @@
     btn.textContent = collapsed ? '▸' : '▾';
   }
 
+  // remember collapsed/expanded per page (js/prefs.js)
+  const key = 'collapsed:' + ((location.pathname.split('/').pop() || 'index.html').toLowerCase());
+
   btn.addEventListener('click', () => {
-    apply(!board.classList.contains('is-collapsed'));
+    const collapsed = !board.classList.contains('is-collapsed');
+    apply(collapsed);
+    if (window.THOF) THOF.set(key, collapsed);
   });
 
-  apply(false);
+  apply(window.THOF ? THOF.get(key, false) === true : false);
 })();

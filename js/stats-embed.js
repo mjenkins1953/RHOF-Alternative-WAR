@@ -59,6 +59,23 @@ let stFiltered = ST.rows;
 let stRendered = 0;
 const ST_CHUNK = 150;
 
+// ---- remembered view (js/prefs.js): sort + search ----
+const ST_PREF_KEY = 'stats-' + (ST_MODE === 'pitchers' ? 'pitchers' : 'batters');
+const ST_KEYS = new Set(stHeaders.map(th => th.dataset.key));
+function stSavePrefs() {
+  if (!window.THOF) return;
+  THOF.set(ST_PREF_KEY, { sortKey: stSortKey, sortDir: stSortDir, q: stQuery });
+}
+(function stRestorePrefs() {
+  const s = window.THOF && THOF.get(ST_PREF_KEY, null);
+  if (!s) return;
+  if (s.sortKey && ST_KEYS.has(s.sortKey)) {
+    stSortKey = s.sortKey;
+    stSortDir = s.sortDir === 1 ? 1 : -1;
+  }
+  if (typeof s.q === 'string' && s.q) { stQuery = s.q; stSearchInput.value = s.q; }
+})();
+
 function stSortVal(row, key) {
   const v = row[ST_IDX[key]];
   const t = ST_TYPE[key];
@@ -249,6 +266,7 @@ stHeaders.forEach(th => {
       if (h === th && arrow) arrow.textContent = stSortDir === 1 ? '▲' : '▼';
     });
     stApply();
+    stSavePrefs();
   });
 });
 
@@ -256,7 +274,7 @@ let stQTimer = 0;
 stSearchInput.addEventListener('input', e => {
   stQuery = e.target.value.trim();
   clearTimeout(stQTimer);
-  stQTimer = setTimeout(stApply, 120);
+  stQTimer = setTimeout(() => { stApply(); stSavePrefs(); }, 120);
 });
 
 // ---------------- scroll window ----------------
@@ -274,9 +292,10 @@ if (stPoolEl) stPoolEl.textContent = ST.count.toLocaleString('en-US');
 
 const stDefaultTh = document.querySelector(`.saa-embed th[data-key="${stSortKey}"]`);
 if (stDefaultTh) {
+  stHeaders.forEach(h => h.classList.remove('sorted'));
   stDefaultTh.classList.add('sorted');
   const a = stDefaultTh.querySelector('.arrow');
-  if (a) a.textContent = '▼';
+  if (a) a.textContent = stSortDir === 1 ? '▲' : '▼';
 }
 
 stApply();
