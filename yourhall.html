@@ -60,6 +60,11 @@
       <div class="yh-weights" id="yhWeights"></div>
       <p class="yh-total" id="yhTotal"></p>
       <div class="yh-panel__controls">
+        <label class="yh-field yh-field--size">
+          <span class="yh-field__label">Hall size</span>
+          <input type="range" id="yhSize" min="10" max="500" step="10" value="300" aria-label="How many players in your hall">
+          <span class="yh-field__val" id="yhSizeVal">Top 300</span>
+        </label>
         <label class="yh-field yh-field--blend">
           <span class="yh-field__label">Career &harr; Peak</span>
           <input type="range" id="yhBlend" min="0" max="100" step="1" value="50" aria-label="Career vs peak blend">
@@ -151,7 +156,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.040</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.041</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>

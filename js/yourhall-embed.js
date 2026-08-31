@@ -288,8 +288,25 @@ const yhPeakEl = document.getElementById('yhPeak');
 const yhResetEl = document.getElementById('yhReset');
 const yhReadoutEl = document.getElementById('yhReadout');
 const yhTotalEl = document.getElementById('yhTotal');
+const yhSizeEl = document.getElementById('yhSize');
+const yhSizeVal = document.getElementById('yhSizeVal');
 const yhBlendField = yhBlendEl ? yhBlendEl.closest('.yh-field') : null;
 const yhPeakField = yhPeakEl ? yhPeakEl.closest('.yh-field') : null;
+
+// how many players the visitor wants in their hall (the list length)
+function yhSetSizeLabel() {
+  if (!yhSizeEl) return;
+  yhSizeEl.value = YH.listN;
+  yhSizeVal.textContent = `Top ${YH.listN}`;
+}
+if (yhSizeEl) {
+  yhSizeEl.addEventListener('input', () => {
+    YH.listN = Number(yhSizeEl.value);
+    yhSizeVal.textContent = `Top ${YH.listN}`;
+    yhScheduleRecompute();
+  });
+  yhSizeEl.addEventListener('change', yhRecompute);
+}
 
 let yhRaf = 0;
 function yhScheduleRecompute() {
@@ -362,6 +379,8 @@ if (YH.hasPeak) {
 yhResetEl.addEventListener('click', () => {
   YH.weights = YH_CONFIG.defaultWeights.slice();
   yhSyncWeightLabels();
+  YH.listN = YH_CONFIG.listN;
+  yhSetSizeLabel();
   if (YH.hasPeak) {
     YH.peakN = YH_CONFIG.defaultPeakN;
     YH.blend = YH_CONFIG.defaultBlend;
@@ -388,6 +407,7 @@ function yhUpdateReadout() {
 // ================= go =================
 yhBuildWeightSliders();
 if (YH.hasPeak) yhSetBlendLabel();
+yhSetSizeLabel();
 yhRecompute();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(saaSizeScroll);
 window.addEventListener('resize', saaSizeScroll);

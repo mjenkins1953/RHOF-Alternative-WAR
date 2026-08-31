@@ -60,6 +60,11 @@
       <div class="yh-weights" id="yhWeights"></div>
       <p class="yh-total" id="yhTotal"></p>
       <div class="yh-panel__controls">
+        <label class="yh-field yh-field--size">
+          <span class="yh-field__label">Hall size</span>
+          <input type="range" id="yhSize" min="10" max="300" step="10" value="150" aria-label="How many players in your hall">
+          <span class="yh-field__val" id="yhSizeVal">Top 150</span>
+        </label>
         <button type="button" class="yh-reset" id="yhReset">Reset to SAA default</button>
       </div>
       <p class="yh-panel__readout" id="yhReadout"></p>
@@ -139,7 +144,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.040</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.041</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.30</span></p>
   </div>
 </dialog>
