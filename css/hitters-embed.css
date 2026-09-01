@@ -390,6 +390,9 @@
 
 /* ---------------- Expandable career card (click a row) ---------------- */
 .saa-embed .saa-row { cursor: pointer; }
+.saa-embed .saa-row.is-flat { cursor: default; }
+.saa-embed .saa-row.is-flat td.rank { padding-left: 1.15em; }
+.saa-embed .toggle:has(input:disabled) { opacity: 0.4; cursor: default; }
 .saa-embed .saa-row:focus-visible { outline: 2px solid var(--saa-accent); outline-offset: -2px; }
 .saa-embed .saa-row.is-open { background: var(--saa-card); }
 .saa-embed .saa-row.is-open td { border-bottom-color: transparent; }

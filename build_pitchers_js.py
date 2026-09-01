@@ -50,6 +50,34 @@ bubble = [{
     "nel": r["is_nel_ranked"] == "True",
 } for r in full[N:N + BUBBLE_N]]
 
+# ---- SAA_MISSING: HoF pitchers who qualified but rank outside the cut ----
+# (excludes anyone already on the hitters list, e.g. Babe Ruth)
+try:
+    hit_top_ids = {r["playerID"] for r in
+                   list(csv.DictReader(open(HERE / "saa_top_300_hitters.csv")))}
+except FileNotFoundError:
+    hit_top_ids = set()
+missing = []
+for r in full[N:]:
+    if r["hof"] != "True" or r["playerID"] in hit_top_ids:
+        continue
+    missing.append({
+        "rank": int(r["rank_saa"]),
+        "name": r["name"],
+        "ip": round(float(r["IP"])),
+        "seasons": int(round(float(r["qualifying_seasons"]))),
+        "saa": round(float(r["SAA_total"]), 2),
+        "rate": round(float(r["SAA_rate"]), 3),
+        "era": round(float(r["z_era"]), 2),
+        "whip": round(float(r["z_whip"]), 2),
+        "k9": round(float(r["z_k9"]), 2),
+        "wpct": round(float(r["z_wpct"]), 2),
+        "sv": round(float(r["z_sv"]), 2),
+        "hof": True,
+        "nel": r["is_nel_ranked"] == "True",
+        "role": r["role"],
+    })
+
 embed = HERE / "js/pitchers-embed.js"
 src = embed.read_text()
 line = "const SAA_DATA = " + json.dumps(data, separators=(",", ":")) + ";"
@@ -58,11 +86,15 @@ assert n == 1, "SAA_DATA line not found in pitchers-embed.js"
 bub_line = "const SAA_BUBBLE = " + json.dumps(bubble, separators=(",", ":")) + ";"
 src, n = re.subn(r"const SAA_BUBBLE = \[.*?\];", lambda _m: bub_line, src, count=1, flags=re.S)
 assert n == 1, "SAA_BUBBLE line not found in pitchers-embed.js"
+miss_line = "const SAA_MISSING = " + json.dumps(missing, separators=(",", ":")) + ";"
+src, n = re.subn(r"const SAA_MISSING = \[.*?\];", lambda _m: miss_line, src, count=1, flags=re.S)
+assert n == 1, "SAA_MISSING line not found in pitchers-embed.js"
 embed.write_text(src)
 print(f"js/pitchers-embed.js: SAA_DATA -> {len(data)} rows "
       f"({sum(d['hof'] for d in data)} HoF, {sum(d['nel'] for d in data)} NeL, "
       f"{sum(d['role'] == 'RP' for d in data)} relievers), "
-      f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']})")
+      f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']}), "
+      f"SAA_MISSING -> {len(missing)} HoF outside the top {N}")
 
 # ---- SAA_CAREER ----
 career = {}

@@ -70,6 +70,34 @@ bubble = [{
     "nel": r["is_nel_ranked"] == "True",
 } for r in full[N:N + BUBBLE_N]]
 
+# ---- SAA_MISSING: HoF hitters who qualified for the pool but rank outside the cut ----
+# (excludes anyone already honoured on the pitchers list, e.g. two-way players)
+try:
+    pit_top_ids = {r["playerID"] for r in
+                   list(csv.DictReader(open(HERE / "saa_top_150_pitchers.csv")))}
+except FileNotFoundError:
+    pit_top_ids = set()
+missing = []
+for r in full[N:]:
+    if r["playerID"] not in hof or r["playerID"] in pit_top_ids:
+        continue
+    missing.append({
+        "rank": int(r["rank_saa"]),
+        "name": r["name"],
+        "pa": int(round(float(r["career_PA"]))),
+        "seasons": int(round(float(r["qualifying_seasons"]))),
+        "saa": round(float(r["SAA_final"]), 2),
+        "total": round(float(r["SAA_total"]), 2),
+        "peak": round(float(r["SAA_peak"]), 2),
+        "avg": round(float(r["z_AVG_career"]), 2),
+        "iso": round(float(r["z_ISO_career"]), 2),
+        "bb": round(float(r["z_BB_career"]), 2),
+        "sb": round(float(r["z_SB_career"]), 2),
+        "def": round(float(r["z_DEF_career"]), 2),
+        "hof": True,
+        "nel": r["is_nel_ranked"] == "True",
+    })
+
 embed_path = HERE / "js/hitters-embed.js"
 src = embed_path.read_text()
 new_line = "const SAA_DATA = " + json.dumps(saa_data, separators=(",", ":")) + ";"
@@ -78,10 +106,14 @@ assert n == 1, "could not find SAA_DATA array in hitters-embed.js"
 bub_line = "const SAA_BUBBLE = " + json.dumps(bubble, separators=(",", ":")) + ";"
 src, n = re.subn(r"const SAA_BUBBLE = \[.*?\];", lambda _m: bub_line, src, count=1, flags=re.S)
 assert n == 1, "could not find SAA_BUBBLE array in hitters-embed.js"
+miss_line = "const SAA_MISSING = " + json.dumps(missing, separators=(",", ":")) + ";"
+src, n = re.subn(r"const SAA_MISSING = \[.*?\];", lambda _m: miss_line, src, count=1, flags=re.S)
+assert n == 1, "could not find SAA_MISSING array in hitters-embed.js"
 embed_path.write_text(src)
 print(f"js/hitters-embed.js: SAA_DATA -> {len(saa_data)} rows "
       f"({sum(d['hof'] for d in saa_data)} HoF, {sum(d['nel'] for d in saa_data)} NeL), "
-      f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']})")
+      f"SAA_BUBBLE -> {len(bubble)} (#{bubble[0]['rank']}-{bubble[-1]['rank']}), "
+      f"SAA_MISSING -> {len(missing)} HoF outside the top {N}")
 
 # ---- SAA_CAREER (career box-score line per rank, 1..N) ----
 top_df = pd.read_csv(HERE / f"saa_top_{N}_hitters.csv")
