@@ -27,6 +27,23 @@ order), not a clean measure of the player's own output -- exactly the
 problem this metric is trying to avoid by not borrowing external run
 values either.
 
+Position-relative baseline (POSREL_STRENGTH): the four offensive z's are
+not measured against every hitter, but against a blend pulled
+POSREL_STRENGTH of the way from the whole-league season baseline toward
+the player's own position-group baseline that season (SS / 2B / C / 3B /
+OF / 1B / DH). A good-hitting shortstop still looks average next to a
+league full of corner sluggers, which buried the up-the-middle greats
+(Jeter, Ripken, Trammell, Bench) hundreds of spots low; scoring the bat
+against other shortstops fixes that. Full strength over-corrects (it
+floats no-hit glovemen up), so this ships at 0.60.
+
+Decline-season weighting (DECLINE_SEASON_WEIGHT): a below-average season
+scores negative, so the average-baseline formula docks a great player for
+compiling past his prime. Negative single-season SAA is multiplied by
+0.40 before the career total is summed -- a past-prime year still costs
+something, but a mediocre tail no longer erases a genuinely great middle.
+The peak-N total is untouched (a decline season never makes the peak).
+
 Method for the league baseline (same as before):
   - League average per season = SUM(stat) / SUM(PA-or-games) across the
     qualifying hitter population, not a naive per-player average (which
@@ -63,6 +80,41 @@ CAREER_PA_FLOOR = 5000
 # Coleman) onto the list ahead of complete hitters, and neutralising it
 # pulled the list ~5 points closer to the actual Hall of Fame.
 SAA_WEIGHTS = {"z_AVG": 0.30, "z_ISO": 0.30, "z_BB": 0.10, "z_SB": 0.10, "z_DEF": 0.20}
+
+# --- Position-relative scoring ---------------------------------------
+# The four offensive z-scores (AVG/ISO/BB/SB) are measured against a blend
+# of the whole-league season baseline and the player's position-group
+# baseline that season (SS/2B/C/3B/OF/1B/DH). Scoring a shortstop's bat
+# against every hitter buried the up-the-middle greats (Jeter, Ripken,
+# Trammell, Bench) hundreds of spots below where every external system has
+# them -- a good-hitting SS still looks average next to a lineup full of
+# corner sluggers. Scoring him against other shortstops fixes that, but at
+# full strength it over-corrects: it tells the formula "a .240-hitting SS
+# is average" and floats no-hit glovemen (Campaneris, Maranville,
+# Concepción) into the top 300. POSREL_STRENGTH dials between the two:
+# 0.0 = pure league baseline (the old behaviour), 1.0 = pure position-
+# group baseline. 0.60 is the settled compromise -- it lands the
+# up-the-middle stars sensibly while keeping the no-hit glovemen out.
+POSREL_STRENGTH = 0.60
+POSGRP_SHRINK_K = 12  # a position-group/season mean regresses toward the
+                      # league mean by this many phantom league-average
+                      # players, so a thin group (early-years catchers)
+                      # doesn't take a wild baseline off a handful of bats
+
+# --- Decline-season weighting ---------------------------------------
+# SAA scores every season against league average, so a below-average
+# season subtracts from the career total -- the formula actively punishes
+# a great player for hanging on past his prime (Rose's age-41-45 years,
+# Jeter's last four, Mays as a Met, Yaz's DH tail). That over-corrects the
+# other way: a past-prime season is still a real season the player
+# showed up for, and a mediocre year shouldn't erase value already
+# banked. Negative single-season SAA is multiplied by this weight before
+# the career total is summed (positive seasons and the peak-N total are
+# untouched -- a decline season never makes the peak anyway). 1.0 = old
+# behaviour (full penalty); 0.0 = a decline season is free. 0.40 keeps a
+# real cost on bad years while not letting a compiler's tail wreck a
+# career that was genuinely great in the middle.
+DECLINE_SEASON_WEIGHT = 0.40
 
 # Peak: a player's best PEAK_N single seasons of SAA value. The ranking
 # metric is JAWS-style -- the average of career total and peak total -- so
@@ -191,6 +243,15 @@ def build_defense_season(hitters: set) -> pd.DataFrame:
         fielded_pos_adj=("pos_adj_runs", "sum"),
         fielded_games=("G", "sum"),
     ).reset_index()
+
+    # primary fielding position that season = the POS (C/1B/2B/3B/SS/OF)
+    # with the most games; ties break down the defensive spectrum
+    _spec = {"C": 0, "SS": 1, "2B": 2, "3B": 3, "OF": 4, "1B": 5}
+    fp = fld[fld["POS"].isin(_spec)].groupby(["playerID", "yearID", "POS"])["G"].sum().reset_index()
+    fp["pri"] = fp["POS"].map(_spec)
+    fp = fp.sort_values(["G", "pri"], ascending=[False, True]).groupby(["playerID", "yearID"]).head(1)
+    fielded = fielded.merge(fp[["playerID", "yearID", "POS"]].rename(columns={"POS": "fld_pos"}),
+                            on=["playerID", "yearID"], how="left")
     return fielded
 
 
@@ -209,6 +270,13 @@ def main():
     # DH time this season = games played minus games actually fielded anywhere.
     hseason["dh_games"] = (hseason["G"] - hseason["fielded_games"]).clip(lower=0)
     hseason["dh_pos_adj"] = POS_ADJ["DH"] * hseason["dh_games"] / 150
+
+    # position group that season, for the position-relative baseline: DH if
+    # unfielded games dominate, else the primary fielding position; unknown
+    # -> "OF" (a safe middle-of-the-road bat bar)
+    hseason["pos_grp"] = np.where(
+        hseason["dh_games"] > hseason["fielded_games"], "DH",
+        hseason["fld_pos"].fillna("OF"))
     hseason["fielding_runs"] = hseason["fielded_runs"] + hseason["fielded_pos_adj"] + hseason["dh_pos_adj"]
     hseason["def_rate"] = hseason["fielding_runs"] / hseason["G"].replace(0, np.nan)
 
@@ -250,10 +318,40 @@ def main():
             "sd_AVG", "sd_ISO", "sd_BB", "sd_SB", "sd_def"]],
         on="yearID", how="left")
 
-    hseason["z_AVG"] = (hseason["AVG"] - hseason["lg_AVG_mean"]) / hseason["sd_AVG"]
-    hseason["z_ISO"] = (hseason["ISO"] - hseason["lg_ISO_mean"]) / hseason["sd_ISO"]
-    hseason["z_BB"] = (hseason["BB_rate"] - hseason["lg_BB_rate_mean"]) / hseason["sd_BB"]
-    hseason["z_SB"] = (hseason["SB_rate"] - hseason["lg_SB_rate_mean"]) / hseason["sd_SB"]
+    # Reference means the four offensive z's are measured against: the
+    # whole-league season baseline by default, or (POSREL_STRENGTH > 0) a
+    # blend pulled POSREL_STRENGTH of the way toward the player's
+    # position-group baseline that season. See the POSREL_STRENGTH note up top.
+    m_AVG, m_ISO, m_BB, m_SB = (hseason["lg_AVG_mean"], hseason["lg_ISO_mean"],
+                                hseason["lg_BB_rate_mean"], hseason["lg_SB_rate_mean"])
+    if POSREL_STRENGTH:
+        q = hseason[hseason["PA"] >= SEASON_PA_FLOOR]
+        g = q.groupby(["pos_grp", "yearID"]).agg(
+            H=("H", "sum"), AB=("AB", "sum"), TB=("TB", "sum"),
+            BB=("BB", "sum"), SB=("SB", "sum"), PA=("PA", "sum"), n=("PA", "size"),
+        ).reset_index()
+        g["g_AVG"] = g["H"] / g["AB"]
+        g["g_ISO"] = g["TB"] / g["AB"] - g["g_AVG"]
+        g["g_BB"] = g["BB"] / g["PA"]
+        g["g_SB"] = g["SB"] / g["PA"]
+        g = g.merge(lg[["yearID", "lg_AVG_mean", "lg_ISO_mean", "lg_BB_rate_mean", "lg_SB_rate_mean"]], on="yearID")
+        K = POSGRP_SHRINK_K
+        for s, lgc in [("AVG", "lg_AVG_mean"), ("ISO", "lg_ISO_mean"),
+                       ("BB", "lg_BB_rate_mean"), ("SB", "lg_SB_rate_mean")]:
+            shrunk = (g["n"] * g[f"g_{s}"] + K * g[lgc]) / (g["n"] + K)
+            g[f"ref_{s}"] = g[lgc] + POSREL_STRENGTH * (shrunk - g[lgc])
+        hseason = hseason.merge(
+            g[["pos_grp", "yearID", "ref_AVG", "ref_ISO", "ref_BB", "ref_SB"]],
+            on=["pos_grp", "yearID"], how="left")
+        m_AVG = hseason["ref_AVG"].fillna(hseason["lg_AVG_mean"])
+        m_ISO = hseason["ref_ISO"].fillna(hseason["lg_ISO_mean"])
+        m_BB = hseason["ref_BB"].fillna(hseason["lg_BB_rate_mean"])
+        m_SB = hseason["ref_SB"].fillna(hseason["lg_SB_rate_mean"])
+
+    hseason["z_AVG"] = (hseason["AVG"] - m_AVG) / hseason["sd_AVG"]
+    hseason["z_ISO"] = (hseason["ISO"] - m_ISO) / hseason["sd_ISO"]
+    hseason["z_BB"] = (hseason["BB_rate"] - m_BB) / hseason["sd_BB"]
+    hseason["z_SB"] = (hseason["SB_rate"] - m_SB) / hseason["sd_SB"]
     hseason["z_DEF"] = (hseason["def_rate"] - hseason["lg_def_rate_mean"]) / hseason["sd_def"]
 
     # A season only counts toward the career average if it clears the
@@ -273,6 +371,15 @@ def main():
         / qseason[_zc].notna().mul(_w).sum(axis=1).replace(0, np.nan)
     )
     qseason["season_saa"] = qseason["z_composite"] * qseason["PA"] / 600.0
+    # Decline-season weighting: a below-average season subtracts less from
+    # the career total than it used to (see DECLINE_SEASON_WEIGHT up top).
+    # season_saa_ct is what the career TOTAL is summed from; the raw
+    # season_saa still drives the peak-N total (a decline season never
+    # makes the peak, so the two are identical there).
+    qseason["season_saa_ct"] = np.where(
+        qseason["season_saa"] < 0,
+        qseason["season_saa"] * DECLINE_SEASON_WEIGHT,
+        qseason["season_saa"])
 
     def wavg_skipna(vals, w):
         # A handful of 19th-century seasons have no defined league spread
@@ -288,7 +395,7 @@ def main():
     def weighted(d):
         w = d["PA"]
         s = d["season_saa"].dropna()
-        total = s.sum()                                   # career total (compiler-friendly)
+        total = d["season_saa_ct"].dropna().sum()         # career total (compiler-friendly; decline seasons dampened)
         peak = s.sort_values(ascending=False).head(PEAK_N).sum()   # best PEAK_N seasons
         return pd.Series({
             # SAA_final: the ranking metric. JAWS-style blend of the career

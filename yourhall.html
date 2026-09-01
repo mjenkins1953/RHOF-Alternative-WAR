@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Hall — Hitters | The TRUE Hall of Fame</title>
-<meta name="description" content="Build your own hall of fame: set the weights on the five SAA hitting categories and the list re-ranks the full pool live, every player still scored only against his own seasons' league averages.">
+<meta name="description" content="Build your own hall of fame: set the weights on the five SAA hitting categories and the list re-ranks the full pool live, every player still scored against his own seasons — league and position — with the SAA age-curve adjustment intact.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -49,11 +49,11 @@
       <div class="board__body" id="boardBody">
       <p class="dek">
         Set the weights and the list re-ranks the full <b>1,065-hitter pool</b> live. Every
-        player is still scored only against <b>the league average and spread of his own seasons</b>
-        — no cross-era skew, same as the main list — but with <b>your</b> emphasis on contact,
-        power, defense, patience and speed. The sliders start on the standard SAA formula.
-        The <b>Hall size</b> slider sets how many players make your hall — cut it to the top 100,
-        or open it up to 500.
+        player is still scored against <b>his own seasons</b> — league and position, no cross-era
+        skew, below-average years still dampened, same as the main list — but with <b>your</b>
+        emphasis on contact, power, defense, patience and speed. The sliders start on the standard
+        SAA formula. The <b>Hall size</b> slider sets how many players make your hall — cut it to the
+        top 100, or open it up to 500.
       </p>
       </div>
     </header>
@@ -135,10 +135,12 @@
 
     <footer>
       Every hitter in the 5,000+ career-PA pool (plus Negro Leagues players clearing 9 season-equivalents),
-      re-scored in your browser: five per-season z-scores against that season's league mean and spread among
-      200+ PA hitters — batting average, isolated power, walk rate, stolen-base rate, defensive value — blended
-      by your weights, each season scaled to 600 PA, then combined as your Career&nbsp;&harr;&nbsp;Peak setting
-      dictates (the SAA default is a 50/50 average of the career total and the best seven seasons). Source:
+      re-scored in your browser: five per-season z-scores against that season's mean and spread among
+      200+ PA hitters — batting average, isolated power, walk rate, stolen-base rate, defensive value, the bar
+      for the first four set 60% of the way toward the player's own position — blended by your weights, each
+      season scaled to 600 PA (below-average seasons at 40% weight in the career total), then combined as your
+      Career&nbsp;&harr;&nbsp;Peak setting dictates (the SAA default is a 50/50 average of the career total and
+      the best seven seasons). Source:
       Lahman database hitting/fielding (2025 release, including Negro Leagues statistics); Hall of Fame
       membership current through the 2026 induction class. Your weights, blend, hall size and search are
       remembered in this browser so your hall is still here next visit — never sent anywhere. It's your hall.
@@ -159,7 +161,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.047</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.048</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.31</span></p>
   </div>
 </dialog>

@@ -45,16 +45,16 @@
       <p class="dek">
         This isn't trying to reproduce who's actually in Cooperstown — it's this
         project's own answer to who belongs. No linear-weight run values, no replacement-level
-        constant: every player is scored only against <b>the actual league average and spread of
-        their own season</b>, using five genuinely separate things you can point to directly in a
-        box score — batting average, isolated power, walk rate, stolen-base rate, and defensive
-        value.
+        constant: every player is scored against <b>the league he actually played in</b>, season by
+        season and tilted toward his own position, using five genuinely separate things you can point
+        to directly in a box score — batting average, isolated power, walk rate, stolen-base rate, and
+        defensive value.
       </p>
       <div class="stat-row">
         <div class="stat"><span class="num">1,065</span><span class="lbl">qualifying pool</span></div>
         <div class="stat"><span class="num">300</span><span class="lbl">shown here</span></div>
         <div class="stat"><span class="num">5,000+</span><span class="lbl">career PA minimum</span></div>
-        <div class="stat"><span class="num">143 / 300</span><span class="lbl">also in Cooperstown</span></div>
+        <div class="stat"><span class="num">149 / 300</span><span class="lbl">also in Cooperstown</span></div>
       </div>
       <p class="explainer">
         <b>This is a living ranking, not a set of plaques.</b> It's rebuilt from scratch every year
@@ -64,22 +64,31 @@
         outside the cut are listed at the bottom.
       </p>
       <p class="explainer">
-        <b>What's a Stat Above Average?</b> Each player-season is compared only to that season's own
-        league average and spread — a 1927 season is judged against 1927, a 2024 season against
-        2024, nothing crosses eras. The five stats above are each converted to a z-score (standard
-        deviations above or below that year's league mean, computed from qualifying hitters only)
-        and blended into one number for the season: batting average and isolated power at
-        <b>30%</b> each, defense at <b>20%</b>, walk rate and stolen-base rate at <b>10%</b> each.
-        (Walks and steals are both dialed back — a walks-only bat or a pure basestealer could each
-        otherwise ride one category onto the list ahead of a complete hitter; leaning the score on
-        contact and power pulls the list closer to the actual Hall of Fame.)
+        <b>What's a Stat Above Average?</b> Each player-season is compared to its own season — a 1927
+        season is judged against 1927, a 2024 season against 2024, nothing crosses eras. The five stats
+        above are each converted to a z-score (standard deviations above or below the bar for that year,
+        computed from qualifying hitters only) and blended into one number for the season: batting
+        average and isolated power at <b>30%</b> each, defense at <b>20%</b>, walk rate and stolen-base
+        rate at <b>10%</b> each. (Walks and steals are both dialed back — a walks-only bat or a pure
+        basestealer could each otherwise ride one category onto the list ahead of a complete hitter;
+        leaning the score on contact and power pulls the list closer to the actual Hall of Fame.)
+      </p>
+      <p class="explainer">
+        <b>The bar leans toward your position.</b> A .290 shortstop and a .290 first baseman are not
+        the same player, but scored against the whole league they look identical — and that quietly
+        buried the great up-the-middle names (Ripken, Larkin, Bench) far below where they belong. So
+        the four bat-and-legs categories are measured against a bar set <b>60% of the way</b> from the
+        league average toward the average for the player's own position that season. Defense always
+        worked this way.
       </p>
       <p class="explainer">
         <b>The career number blends length and peak.</b> A player's season scores, each scaled to a
-        600-PA workload, are summed into a career total — but a great career cut short shouldn't be
-        buried under compilers, so the ranking metric is the <b>average of that career total and
-        the sum of the player's best seven seasons</b> (the same career-plus-peak shape JAWS uses).
-        Play a long time <i>and</i> at a high level and both halves are large.
+        600-PA workload, are summed into a career total — with below-average seasons counted at
+        <b>40% weight</b>, so a few years too long in the league dings a great career without erasing
+        it. A great career cut short shouldn't be buried under compilers either, so the ranking metric
+        is the <b>average of that career total and the sum of the player's best seven seasons</b> (the
+        same career-plus-peak shape JAWS uses). Play a long time <i>and</i> at a high level and both
+        halves are large.
       </p>
       <p class="explainer">
         <b>Negro Leagues players qualify on a separate standard,</b> not the 5,000 PA floor — their
@@ -222,9 +231,11 @@
     <footer>
       SAA = a weighted blend of five per-season z-scores &mdash; batting average [H/AB] and isolated
       power [SLG&minus;AVG] at 30% each, defensive value [range runs + positional credit] at 20%,
-      walk rate [BB/PA] and stolen-base rate [SB/PA] at 10% each &mdash; against that season's
-      league mean and spread among 200+ PA hitters, each season scaled to 600 PA. The ranking number
-      is the average of the career total and the sum of the player's best seven seasons. Pool:
+      walk rate [BB/PA] and stolen-base rate [SB/PA] at 10% each &mdash; against that season's mean
+      and spread among 200+ PA hitters, the bar for the four bat-and-legs stats set 60% of the way
+      toward the player's own position. Each season is scaled to 600 PA; below-average seasons are
+      counted at 40% weight in the career total. The ranking number is the average of the career
+      total and the sum of the player's best seven seasons. Pool:
       5,000+ career PA (or, for Negro Leagues players, 9+ seasons normalized to their own league's
       typical season size). Source: Lahman database hitting/fielding (2025 release, including Negro
       Leagues statistics); Hall of Fame membership current through the 2026 induction class.
@@ -245,7 +256,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.047</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.048</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.31</span></p>
   </div>
 </dialog>

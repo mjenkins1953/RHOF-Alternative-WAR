@@ -18,6 +18,7 @@ const YH = {
   listN: YH_CONFIG.listN,
   bubbleN: YH_CONFIG.bubbleN,
   norm: YH_CONFIG.workloadNorm,
+  declineWeight: YH_CONFIG.declineWeight == null ? 1 : YH_CONFIG.declineWeight,  // negative seasons dampened in the career total
 };
 const YH_NOUN = YH.mode === 'pitchers' ? 'pitchers' : 'players';
 
@@ -39,7 +40,7 @@ function yhScore() {
   const blend = atHundred ? YH.blend : (YH_CONFIG.defaultBlend == null ? 0.5 : YH_CONFIG.defaultBlend);
 
   const scored = YH_PLAYERS.map(p => {
-    let total = 0, wlSum = 0;
+    let total = 0, rawTotal = 0, wlSum = 0;
     const saas = [];
     for (let si = 0; si < p.s.length; si++) {
       const row = p.s[si];
@@ -51,7 +52,10 @@ function yhScore() {
       if (den > 0) {
         const seasonSaa = (num / den) * row[5] / YH.norm;
         saas.push(seasonSaa);
-        total += seasonSaa;
+        // a below-average season subtracts less from the career total
+        // (see DECLINE_SEASON_WEIGHT in build_saa.py); the peak is untouched
+        total += seasonSaa < 0 ? seasonSaa * YH.declineWeight : seasonSaa;
+        rawTotal += seasonSaa;
         wlSum += row[5];
       }
     }
@@ -62,7 +66,7 @@ function yhScore() {
       for (let i = 0; i < peakN && i < saas.length; i++) peak += saas[i];
       saa = (1 - blend) * total + blend * peak;
     }
-    const rate = wlSum > 0 ? total / (wlSum / YH.norm) : 0;
+    const rate = wlSum > 0 ? rawTotal / (wlSum / YH.norm) : 0;
     const d = {
       id: p.id, name: p.n, wl: p.wl, seasons: p.s.length,
       saa, total, peak, rate, hof: p.hof, nel: p.nel,

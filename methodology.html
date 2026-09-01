@@ -41,24 +41,26 @@
     <div class="formula-box">
       <p class="formula-desc formula-desc--lede">
         A hitter's <strong>Stat Above Average (SAA)</strong> is built one season at a time. Each season, five
-        rate stats are turned into z-scores — standard deviations above or below that season's league average,
+        rate stats are turned into z-scores — standard deviations above or below the bar for that season,
         measured against qualifying hitters only — then blended by weight, scaled to a 600&#8209;plate&#8209;appearance
-        workload, and summed across the whole career. The ranking number is a JAWS-style 50/50 average of that
-        career total and the sum of the player's seven best individual seasons, so a long steady career and a
-        short brilliant one can both build a real case.
+        workload, and summed across the career. The bar is mostly the league, but tilted toward the player's
+        own position; a below-average season is dampened before it's added in. Both adjustments are explained
+        under the formula. The ranking number is a JAWS-style 50/50 average of that career total and the sum of
+        the player's seven best individual seasons, so a long steady career and a short brilliant one can both
+        build a real case.
       </p>
       <div class="formula-row">
         <span class="formula-term">Hitters</span>
         <span class="formula-eq">=</span>
-        <span class="formula-term">30% AVG vs league</span>
+        <span class="formula-term">30% AVG vs league &amp; position</span>
         <span class="formula-plus">+</span>
-        <span class="formula-term">30% ISO vs league</span>
+        <span class="formula-term">30% ISO vs league &amp; position</span>
         <span class="formula-plus">+</span>
         <span class="formula-term">20% Defense vs position</span>
         <span class="formula-plus">+</span>
-        <span class="formula-term">10% Walk rate vs league</span>
+        <span class="formula-term">10% Walk rate vs league &amp; position</span>
         <span class="formula-plus">+</span>
-        <span class="formula-term">10% Steal rate vs league</span>
+        <span class="formula-term">10% Steal rate vs league &amp; position</span>
       </div>
       <hr class="formula-divider">
       <p class="formula-desc formula-desc--lede">
@@ -82,12 +84,29 @@
       </div>
     </div>
     <p class="standards__note">
-      Every comparison is to the player's <em>own</em> league in the <em>exact</em> seasons he played — a 1927
-      season is judged against 1927, a 2024 season against 2024. A career that spans eras gets a benchmark
+      Every comparison is to the player's <em>own</em> contemporaries in the <em>exact</em> seasons he played —
+      a 1927 season is judged against 1927, a 2024 season against 2024. A career that spans eras gets a benchmark
       blended across those years. Nothing is measured against a fixed all-time standard or a
       replacement&#8209;level constant. The weights are deliberately tilted toward contact, power, and run
       prevention: a walks-only bat or a pure basestealer could otherwise ride a single category past a
       complete player.
+    </p>
+    <p class="standards__note">
+      <b>The bar bends toward your position.</b> A good-hitting shortstop still looks ordinary next to a
+      league full of first basemen and corner outfielders, which for years buried the great up-the-middle
+      players — the Ripkens, the Larkins, the Benches — a hundred spots too low. So the four bat-and-legs
+      categories aren't scored against the whole league anymore. Each is measured against a bar set
+      <em>60% of the way</em> from the league average toward the average for the player's own position
+      (shortstop, second base, catcher, and so on) that season. Defense was always judged this way. Held
+      fully to position it would swing too far the other way — telling the formula a no-hit shortstop is
+      "average" and floating good gloves with empty bats up the list — so it lands at 60%.
+    </p>
+    <p class="standards__note">
+      <b>Hanging on doesn't erase what came before.</b> Because every season is scored against the league,
+      a below-average year comes out negative and eats into the career total — which quietly penalizes a
+      great player for sticking around a few years past his prime. Those sub-average seasons still count,
+      but at <em>40% weight</em> in the career total. The peak half of the formula — the seven best seasons —
+      never includes them anyway.
     </p>
   </div>
 </section>
@@ -175,6 +194,15 @@
       <dt>&ldquo;vs league&rdquo; / league&#8209;relative</dt>
       <dd>Every input is scored against the average of the same season, never a fixed all&#8209;time bar. This
         is the core difference from career&#8209;counting totals and from WAR's replacement level.</dd>
+      <dt>&ldquo;vs position&rdquo; / position&#8209;relative</dt>
+      <dd>The bar an input is scored against is nudged toward the average for the player's own fielding
+        position that season, so a shortstop's bat is measured mostly against other shortstops. Defense is
+        fully position&#8209;relative; batting average, isolated power, walk rate and steal rate are 60% of
+        the way there, 40% still whole&#8209;league.</dd>
+      <dt>Decline&#8209;season weighting</dt>
+      <dd>A qualifying season that grades out below average scores negative, which subtracts from the career
+        total. Those negative seasons are cut to 40% weight before they're added in, so a long tail of
+        past&#8209;prime years dings a great career without gutting it. The peak component is untouched.</dd>
       <dt>Qualifying season</dt>
       <dd>A season that counts toward SAA: 200+ plate appearances for a hitter, 40+ innings for a pitcher.
         Below the line, a season doesn't move the number.</dd>
@@ -228,7 +256,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.047</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.048</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.08.31</span></p>
   </div>
 </dialog>
