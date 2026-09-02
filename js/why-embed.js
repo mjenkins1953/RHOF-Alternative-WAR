@@ -1,4 +1,4 @@
-// WHY? — head-to-head decomposition of the SAA gap between two hitters.
+// Who's Better — head-to-head decomposition of the SAA gap between two hitters.
 // Reuses js/yourhall-hitters-data.js (YH_PLAYERS z-matrix + YH_CONFIG) and
 // scores everyone at the DEFAULT weights, so the numbers match the published
 // hitters list exactly. See build_saa.py / yourhall-embed.js yhScore().
