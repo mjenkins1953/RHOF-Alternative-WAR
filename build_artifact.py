@@ -62,9 +62,10 @@ subs = [
     # hitters.html is unreachable in the single file -> scroll to the spliced section
     ('<a href="hitters.html" class="site-menu__link">Hitters</a>',
      '<a href="#view-hitters" class="site-menu__link">Hitters</a>'),
-    # methodology.html is spliced in -> anchor to it
-    ('<a href="methodology.html" class="site-menu__link">Methodology</a>',
-     '<a href="#methodology" class="site-menu__link">Methodology</a>'),
+    # methodology.html is spliced in -> anchor to it (it carries the
+    # --right class that starts the right-aligned nav group; keep it)
+    ('<a href="methodology.html" class="site-menu__link site-menu__link--right">Methodology</a>',
+     '<a href="#methodology" class="site-menu__link site-menu__link--right">Methodology</a>'),
     # Validation is its own page, not in the single-file bundle -> neutralise
     ('<a href="validation.html" class="site-menu__link">Validation</a>',
      '<a href="#" class="site-menu__link" aria-disabled="true">Validation</a>'),
