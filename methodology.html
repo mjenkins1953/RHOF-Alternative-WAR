@@ -41,10 +41,10 @@
     <p class="section-lede">One formula, applied identically whether you struck people out or drove them in.</p>
     <div class="formula-box">
       <p class="formula-desc formula-desc--lede">
-        A hitter's <strong>Stat Above Average (SAA)</strong> is built one season at a time. Each season, five
-        rate stats are turned into z-scores — standard deviations above or below the bar for that season,
-        measured against qualifying hitters only — then blended by weight, scaled to a 600&#8209;plate&#8209;appearance
-        workload, and summed across the career. The bar is mostly the league, but tilted toward the player's
+        A hitter's <strong>Stat Above Average (SAA)</strong> is built one season at a time. Each season, four
+        rate stats and a fielding number are turned into z-scores — standard deviations above or below the bar
+        for that season, measured against qualifying hitters only — then blended by weight, scaled to a
+        600&#8209;plate&#8209;appearance workload, and summed across the career. The bar is mostly the league, but tilted toward the player's
         own position; a below-average season is dampened before it's added in. Both adjustments are explained
         under the formula. The ranking number is a JAWS-style 50/50 average of that career total and the sum of
         the player's seven best individual seasons, so a long steady career and a short brilliant one can both
@@ -124,10 +124,14 @@
       <dt>ISO &mdash; Isolated power</dt>
       <dd>Slugging percentage minus batting average: extra bases per at&#8209;bat, with singles stripped out.
         A hitter with nothing but singles has an ISO of .000; prime Babe Ruth sat around .350.</dd>
-      <dt>Defense (vs position)</dt>
-      <dd>Runs saved or cost relative to an average fielder at the same position in the same era, built from
-        putouts and assists against the positional rate and scaled by playing time. A shortstop is only ever
-        compared to other shortstops.</dd>
+      <dt>Defense (Fielding Runs)</dt>
+      <dd>Baseball&#8209;Reference's Fielding Runs for the season &mdash; range in the field, catcher defense
+        (throwing, framing, blocking), small good&#8209;play adjustments, and the positional adjustment that
+        values a shortstop's spot above a first baseman's and docks a designated hitter for not taking one.
+        Divided by games and scored against the league like the other four. This is the one SAA input that
+        isn't a plain rate stat: fielding has no clean box&#8209;score number, so SAA borrows a real one
+        rather than build a worse substitute. Earlier editions used a home&#8209;made putout&#8209;and&#8209;assist
+        range figure that couldn't see catcher defense at all.</dd>
       <dt>Walk rate (BB)</dt>
       <dd>Bases on balls as a share of plate appearances &mdash; how often a hitter reaches base without
         putting the ball in play.</dd>
@@ -193,13 +197,17 @@
         raw stats, so separating yourself in a tightly bunched category counts for more than in one where the
         league is spread all over.</dd>
       <dt>&ldquo;vs league&rdquo; / league&#8209;relative</dt>
-      <dd>Every input is scored against the average of the same season, never a fixed all&#8209;time bar. This
-        is the core difference from career&#8209;counting totals and from WAR's replacement level.</dd>
+      <dd>Every rate input is scored against the average of the same season, never a fixed all&#8209;time bar.
+        This is the core difference from career&#8209;counting totals and from WAR's replacement level. (The
+        defensive input starts from Baseball&#8209;Reference's Fielding Runs, then that too is scored against
+        the season's league.)</dd>
       <dt>&ldquo;vs position&rdquo; / position&#8209;relative</dt>
       <dd>The bar an input is scored against is nudged toward the average for the player's own fielding
-        position that season, so a shortstop's bat is measured mostly against other shortstops. Defense is
-        fully position&#8209;relative; batting average, isolated power, walk rate and steal rate are 60% of
-        the way there, 40% still whole&#8209;league.</dd>
+        position that season, so a shortstop's bat is measured mostly against other shortstops. Batting
+        average, isolated power, walk rate and steal rate are 60% of the way there, 40% still
+        whole&#8209;league. Defense is inherently position&#8209;relative &mdash; a shortstop's Fielding Runs
+        already compare him only to other shortstops, plus the positional adjustment for playing the harder
+        spot.</dd>
       <dt>Decline&#8209;season weighting</dt>
       <dd>A qualifying season that grades out below average scores negative, which subtracts from the career
         total. Those negative seasons are cut to 40% weight before they're added in, so a long tail of
@@ -238,9 +246,11 @@
     <p class="dossier__punch">Stat Above Average measures every player against their own competition
       instead — the actual league average, in the actual years and at the actual position they
       played, blended across whichever eras their career spans.</p>
-    <p>No replacement level. No runs-to-wins conversion borrowed from someone else's research.
-      Just each player's rate stats, held up against the players who were actually on the field
-      around them.</p>
+    <p>No replacement level. No runs-to-wins conversion. No linear-weight run values turning a double
+      into a decimal. Just each player's rate stats, held up against the players who were actually on the
+      field around them &mdash; with one exception: fielding has no clean rate stat, so the defensive
+      input starts from Baseball-Reference's Fielding Runs before being scored against the league like
+      everything else.</p>
     <p>Different question, different answer — but not a wildly different one. The
       <a href="validation.html">Validation</a> page lays SAA next to WAR, WAA, and JAWS across the whole
       pool: where they line up, where they part ways, and the reason behind every gap.</p>

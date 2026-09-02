@@ -47,9 +47,8 @@
         This isn't trying to reproduce who's actually in Cooperstown — it's this
         project's own answer to who belongs. No linear-weight run values, no replacement-level
         constant: every player is scored against <b>the league he actually played in</b>, season by
-        season and tilted toward his own position, using five genuinely separate things you can point
-        to directly in a box score — batting average, isolated power, walk rate, stolen-base rate, and
-        defensive value.
+        season and tilted toward his own position, using five genuinely separate skills — batting
+        average, isolated power, walk rate, stolen-base rate, and fielding.
       </p>
       <div class="stat-row">
         <div class="stat"><span class="num">1,065</span><span class="lbl">qualifying pool</span></div>
@@ -66,21 +65,23 @@
       </p>
       <p class="explainer">
         <b>What's a Stat Above Average?</b> Each player-season is compared to its own season — a 1927
-        season is judged against 1927, a 2024 season against 2024, nothing crosses eras. The five stats
+        season is judged against 1927, a 2024 season against 2024, nothing crosses eras. The five inputs
         above are each converted to a z-score (standard deviations above or below the bar for that year,
         computed from qualifying hitters only) and blended into one number for the season: batting
         average and isolated power at <b>30%</b> each, defense at <b>20%</b>, walk rate and stolen-base
         rate at <b>10%</b> each. (Walks and steals are both dialed back — a walks-only bat or a pure
         basestealer could each otherwise ride one category onto the list ahead of a complete hitter;
-        leaning the score on contact and power pulls the list closer to the actual Hall of Fame.)
+        leaning the score on contact and power pulls the list closer to the actual Hall of Fame.) The
+        defensive input is Baseball-Reference's Fielding Runs for the season — the one number here that
+        isn't a plain box-score rate, because fielding doesn't have one.
       </p>
       <p class="explainer">
         <b>The bar leans toward your position.</b> A .290 shortstop and a .290 first baseman are not
         the same player, but scored against the whole league they look identical — and that quietly
         buried the great up-the-middle names (Ripken, Larkin, Bench) far below where they belong. So
         the four bat-and-legs categories are measured against a bar set <b>60% of the way</b> from the
-        league average toward the average for the player's own position that season. Defense always
-        worked this way.
+        league average toward the average for the player's own position that season. Fielding Runs are
+        position-relative by nature — a shortstop's are already measured only against other shortstops.
       </p>
       <p class="explainer">
         <b>The career number blends length and peak.</b> A player's season scores, each scaled to a
@@ -156,76 +157,77 @@
       <p class="eyebrow">Where the list and your gut disagree</p>
       <h2 id="missing-h">Two it leaves out</h2>
       <p class="missing__lede">
-        Rick Monday and Bill Terry both land just outside the top 300, and the list leaves them out
-        for reasons that have nothing to do with each other. Terry is a Hall of Famer &mdash; a
-        lifetime .341, the last man to bat .400 in the National League &mdash; and the formula still
-        has him 304th, because the career was short and first base is a high bar. Monday isn't in
-        anyone's Hall of Fame and never asked to be, yet the same math puts him 301st, one name from
-        the cut, on a batting eye and a center fielder's pop that his .264 average always hid.
+        Max Carey and Don Mattingly sit side by side just outside the top 300, at 309th and 310th, and
+        the list leaves them out for opposite reasons. Carey is a Hall of Famer &mdash; twenty years in
+        center field, ten stolen-base titles &mdash; whose case is almost entirely legs: take the speed
+        away and there's a .285 hitter with no power. Mattingly isn't in Cooperstown and the vote keeps
+        moving on, yet the same math has him one spot behind Carey, on the best five-year peak of the
+        1980s cut short by his back.
       </p>
 
       <div class="missing__grid">
         <article class="miss-card">
           <div class="miss-card__head">
-            <span class="miss-card__rank">#301</span>
-            <span class="miss-card__name">Rick Monday</span>
-            <span class="miss-card__meta">CF &middot; 1966&ndash;1984 &middot; CHC</span>
+            <span class="miss-card__rank">#309</span>
+            <span class="miss-card__name">Max Carey</span>
+            <span class="miss-card__meta">CF &middot; 1910&ndash;1929 &middot; PIT</span>
           </div>
-          <p class="miss-card__hl"><b>.264</b> AVG &middot; <b>125</b> OPS+ &middot; <b>1,619</b> H &middot; <b>241</b> HR &middot; <b>98</b> SB &middot; <b>33.1</b> bWAR</p>
+          <p class="miss-card__hl"><b>.285</b> AVG &middot; <b>108</b> OPS+ &middot; <b>2,665</b> H &middot; <b>70</b> HR &middot; <b>738</b> SB &middot; <b>55.7</b> bWAR</p>
           <div class="miss-card__z">
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="right:50%;width:1.7%"></span></span><span class="saa-card__zval flat">-0.13</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:9.9%"></span></span><span class="saa-card__zval pos">+0.79</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:13.7%"></span></span><span class="saa-card__zval pos">+1.10</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:2.9%"></span></span><span class="saa-card__zval neg">-0.24</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:3.9%"></span></span><span class="saa-card__zval pos">+0.31</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="right:50%;width:1.9%"></span></span><span class="saa-card__zval flat">-0.15</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:2.8%"></span></span><span class="saa-card__zval neg">-0.22</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:4.9%"></span></span><span class="saa-card__zval pos">+0.39</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:28%"></span></span><span class="saa-card__zval pos">+2.24</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill flat" style="right:50%;width:0.6%"></span></span><span class="saa-card__zval flat">-0.05</span></div>
           </div>
           <p class="miss-card__diag">
-            A .264 average and 33 bWAR &mdash; on paper, nobody's idea of a top-300 hitter. But SAA
-            never treats batting average as the whole story, and it never counts RBI at all. What's
-            left is a real top-of-the-order on-base skill the .264 buried (<b>+1.10</b> walk rate,
-            among the best of his era), genuine power for a center fielder (<b>+0.79</b> ISO), and a
-            playable glove up the middle &mdash; a 125 OPS+ held for fifteen qualifying seasons. The
-            formula isn't leaving the first pick of the 1965 draft out because it thinks little of
-            him; it has him nearer Cooperstown than the room ever did, and one good year from anyone
-            below moves him in.
+            The steals are historic &mdash; <b>+2.24</b>, one of the highest marks on the board, 738 bags
+            at a great success rate for the era. But that's the whole case. The bat is a shade below
+            league on both contact (<b>&minus;0.15</b>) and power (<b>&minus;0.22</b>), and
+            Baseball-Reference's Fielding Runs put his defense right at average for a center fielder
+            (<b>&minus;0.05</b>) &mdash; good, not the all-time glove his reputation suggests. Steals are
+            weighted at a tenth of the score on purpose, so one spectacular category can't carry an
+            ordinary hitter. Eighteen qualifying years of roughly league-average bat, and the legs, land
+            him 309th.
           </p>
         </article>
 
         <article class="miss-card">
           <div class="miss-card__head">
-            <span class="miss-card__rank">#304</span>
-            <span class="miss-card__name">Bill Terry</span>
-            <span class="miss-card__meta">1B &middot; 1923&ndash;1936 &middot; NYG</span>
+            <span class="miss-card__rank">#310</span>
+            <span class="miss-card__name">Don Mattingly</span>
+            <span class="miss-card__meta">1B &middot; 1982&ndash;1995 &middot; NYY</span>
           </div>
-          <p class="miss-card__hl"><b>.341</b> AVG &middot; <b>136</b> OPS+ &middot; <b>2,193</b> H &middot; <b>154</b> HR &middot; <b>56</b> SB &middot; <b>56.5</b> bWAR</p>
+          <p class="miss-card__hl"><b>.307</b> AVG &middot; <b>127</b> OPS+ &middot; <b>2,153</b> H &middot; <b>222</b> HR &middot; <b>14</b> SB &middot; <b>42.4</b> bWAR</p>
           <div class="miss-card__z">
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:15.3%"></span></span><span class="saa-card__zval pos">+1.22</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:4.3%"></span></span><span class="saa-card__zval pos">+0.34</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:5.2%"></span></span><span class="saa-card__zval neg">-0.42</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:5.6%"></span></span><span class="saa-card__zval neg">-0.45</span></div>
-            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:3.5%"></span></span><span class="saa-card__zval neg">-0.28</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">AVG</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:15.1%"></span></span><span class="saa-card__zval pos">+1.21</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">ISO</span><span class="saa-card__ztrack"><span class="saa-card__zfill pos" style="left:50%;width:2.8%"></span></span><span class="saa-card__zval pos">+0.22</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">BB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:7.8%"></span></span><span class="saa-card__zval neg">-0.62</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">SB</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:7.6%"></span></span><span class="saa-card__zval neg">-0.61</span></div>
+            <div class="saa-card__zrow"><span class="saa-card__zlabel">DEF</span><span class="saa-card__ztrack"><span class="saa-card__zfill neg" style="right:50%;width:8%"></span></span><span class="saa-card__zval neg">-0.64</span></div>
           </div>
           <p class="miss-card__diag">
-            The bat is real: <b>+1.22</b> on contact, a genuine plus on power for the 1930s. Around it,
-            not much &mdash; a walk rate below his own league (<b>&minus;0.42</b>), no speed, and a
-            first baseman's glove that grades just under the bar (<b>&minus;0.28</b>). Against the
-            whole league his .341 was a monster; measured mostly against other first basemen, where
-            everyone hit, it's very good rather than historic. And the career is short: twelve
-            qualifying seasons, then he walked away early to manage the Giants. SAA rewards a clean
-            peak &mdash; his best-seven and career totals are almost identical, no padding &mdash;
-            but there just isn't enough of it. A great hitter, a high position, not quite enough
-            seasons: 304th.
+            <b>+1.21</b> on contact &mdash; a genuine batting-title bat &mdash; and a touch of power on
+            top. Around it, gaps: he didn't walk much (<b>&minus;0.62</b>), never ran, and the defense
+            grades negative (<b>&minus;0.64</b>) despite nine Gold Gloves, because first base carries a
+            steep positional discount &mdash; the glove saved runs, but the bar for the position is low.
+            And the peak, brilliant as it was from 1984 to 1989, is basically the career: a back injury
+            turned him ordinary at 29 and finished him at 34. Thirteen qualifying seasons, most of the
+            value in six of them: 310th, and the closest thing on this list to the Hall's own long
+            argument about him.
           </p>
         </article>
       </div>
 
       <p class="missing__close">
         At <b>149 of the 300</b>, this is the closest the list has come to Cooperstown. Scoring the
-        bat against the position closed most of the old gap at catcher and up the middle &mdash;
-        <b>Johnny Bench</b>, <b>Iv&aacute;n Rodr&iacute;guez</b>, <b>Ozzie Smith</b> and
-        <b>Luis Aparicio</b> all sit comfortably inside now. What it still won't do is bend for a
-        career built almost entirely on the glove &mdash; <b>Bill Mazeroski</b> (355th),
-        <b>Nellie Fox</b> (453rd), <b>Omar Vizquel</b> (577th). That's the point.
+        bat against the position &mdash; and, since the 2025 pass, taking defense straight from
+        Baseball-Reference's Fielding Runs &mdash; closed most of the old gap at catcher and up the
+        middle: <b>Johnny Bench</b> (40th), <b>Iv&aacute;n Rodr&iacute;guez</b> (68th),
+        <b>Alan Trammell</b> (71st), <b>Luis Aparicio</b> (170th) and <b>Ozzie Smith</b> (179th) all
+        sit inside now. What it still won't do is bend for a career built almost entirely on the glove
+        &mdash; <b>Bill Mazeroski</b> (722nd), <b>Omar Vizquel</b> (422nd),
+        <b>Rabbit Maranville</b> (436th). That's the point.
       </p>
     </section>
 
@@ -241,15 +243,16 @@
 
     <footer>
       SAA = a weighted blend of five per-season z-scores &mdash; batting average [H/AB] and isolated
-      power [SLG&minus;AVG] at 30% each, defensive value [range runs + positional credit] at 20%,
-      walk rate [BB/PA] and stolen-base rate [SB/PA] at 10% each &mdash; against that season's mean
-      and spread among 200+ PA hitters, the bar for the four bat-and-legs stats set 60% of the way
-      toward the player's own position. Each season is scaled to 600 PA; below-average seasons are
-      counted at 40% weight in the career total. The ranking number is the average of the career
-      total and the sum of the player's best seven seasons. Pool:
-      5,000+ career PA (or, for Negro Leagues players, 9+ seasons normalized to their own league's
-      typical season size). Source: Lahman database hitting/fielding (2025 release, including Negro
-      Leagues statistics); Hall of Fame membership current through the 2026 induction class.
+      power [SLG&minus;AVG] at 30% each, defense [Baseball-Reference Fielding Runs: range + catcher
+      defense + the positional adjustment] at 20%, walk rate [BB/PA] and stolen-base rate [SB/PA] at
+      10% each &mdash; against that season's mean and spread among 200+ PA hitters, the bar for the
+      four bat-and-legs stats set 60% of the way toward the player's own position. Each season is
+      scaled to 600 PA; below-average seasons are counted at 40% weight in the career total. The
+      ranking number is the average of the career total and the sum of the player's best seven
+      seasons. Pool: 5,000+ career PA (or, for Negro Leagues players, 9+ seasons normalized to their
+      own league's typical season size). Source: Lahman database hitting (2025 release, including
+      Negro Leagues statistics) and Baseball-Reference Fielding Runs; Hall of Fame membership current
+      through the 2026 induction class.
     </footer>
 
   </div>

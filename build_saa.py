@@ -4,8 +4,11 @@ Stat Above Average (SAA)
 An alternative to Bat & Glove WAR's linear-weights formula. Instead of
 converting box-score events into borrowed run-value constants (Palmer's
 linear weights), this scores each player-season directly against that
-season's actual league average and spread -- no external run-value table
-anywhere in the calculation.
+season's actual league average and spread. The four offensive inputs use
+no external run values at all -- just rate stats vs the league. Defense is
+the exception: fielding has no clean box-score rate, so SAA takes
+Baseball-Reference's Fielding Runs for that one input rather than invent a
+worse home-grown substitute.
 
 Five inputs, each turned into a z-score against that season's league
 distribution, then averaged. Each is a genuinely separate skill -- none
@@ -17,15 +20,29 @@ counted power and patience twice):
   - Isolated Power  (SLG - AVG) -- raw power, independent of average
   - Walk rate       (BB / PA)   -- plate discipline, independent of AVG
   - Stolen-base rate (SB / PA)
-  - Defense         (range runs + positional credit, same shape as Bat &
-                      Glove WAR's fielding component, but computed and
-                      z-scored per season rather than as a career total)
+  - Defense         (Baseball-Reference Fielding Runs -- range/fielding
+                      runs + catcher defense + good-play adjustments + the
+                      positional adjustment -- taken per season and
+                      z-scored against that season's league like the other
+                      four. This replaced a home-grown putout/assist range
+                      metric + a fixed POS_ADJ table: the old version was
+                      the one piece of SAA that leaned on hand-built run
+                      values and it couldn't see catcher defense at all.)
 
 Runs and RBI were deliberately left out: both are lineup-context stats
 (they depend on who's on base ahead of you and where you hit in the
 order), not a clean measure of the player's own output -- exactly the
 problem this metric is trying to avoid by not borrowing external run
 values either.
+
+Defense input (Baseball-Reference Fielding Runs): the fifth z-score is
+built from BBRef's per-season defensive runs -- runs_field (range) +
+runs_catcher + runs_good_plays + runs_position (the positional / DH
+adjustment) -- divided by games and z-scored against the league like the
+rest. Earlier builds used a putout+assist range factor with a hand-set
+POS_ADJ table; that was crude (no catcher defense, arbitrary constants)
+and it was the only place SAA relied on invented run values. runs_position
+carries the position and DH adjustments now, so POS_ADJ is gone.
 
 Position-relative baseline (POSREL_STRENGTH): the four offensive z's are
 not measured against every hitter, but against a blend pulled
@@ -123,10 +140,6 @@ DECLINE_SEASON_WEIGHT = 0.40
 # thin-but-long career (Tenace, Figgins) gets no rescue because its best
 # seven seasons ARE basically its whole career.
 PEAK_N = 7
-SHRINK_K_SEASON = 1200  # ~133 innings; regresses partial-season defensive
-                        # samples toward zero without crushing a full season
-                        # (Bat & Glove WAR uses 8000 for CAREER totals --
-                        # a season needs a much smaller constant)
 
 # Negro Leagues qualifying carve-out: the flat CAREER_PA_FLOOR assumes a
 # 150+ game MLB schedule every year. Negro Leagues teams played far fewer
@@ -141,9 +154,6 @@ SHRINK_K_SEASON = 1200  # ~133 innings; regresses partial-season defensive
 NEGRO_LEAGUE_CODES = {"NN2", "NNL", "NAL", "ECL", "EWL", "ANL", "NSL"}
 NEL_SEASON_EQUIV_FLOOR = 9.0  # Josh Gibson's own value (~9.03) -- the
                               # explicit case this carve-out exists for
-
-POS_ADJ = {"C": 12.5, "1B": -12.5, "2B": 2.5, "3B": 2.5, "SS": 7.5,
-           "LF": -7.5, "CF": 2.5, "RF": -7.5, "OF": -4.0, "DH": -17.5}
 
 
 def load_batting_season():
@@ -201,46 +211,18 @@ def classify_hitters():
     return cls
 
 
-def build_defense_season(hitters: set) -> pd.DataFrame:
+def build_fielding_position(hitters: set) -> pd.DataFrame:
+    """Primary fielding position + total games fielded, per player-season,
+    from Fielding.csv. Feeds the position-relative BATTING baseline and the
+    DH detection (batting games not spent in the field). The defensive RUN
+    value is a separate input now -- see bbref_defense_season()."""
     fld = pd.read_csv(HERE / "Fielding.csv", low_memory=False)
     fld = fld[fld["playerID"].isin(hitters)].copy()
     fld = fld[fld["POS"] != "P"].copy()
-    for c in ["G", "GS", "InnOuts", "PO", "A", "E", "DP"]:
-        fld[c] = pd.to_numeric(fld[c], errors="coerce")
+    fld["G"] = pd.to_numeric(fld["G"], errors="coerce").fillna(0)
     fld["yearID"] = pd.to_numeric(fld["yearID"], errors="coerce")
 
-    fld["InnOuts_est"] = fld["InnOuts"]
-    missing = fld["InnOuts_est"].isna()
-    fld.loc[missing, "InnOuts_est"] = fld.loc[missing, "G"].fillna(0) * 9 * 3
-    fld["G"] = fld["G"].fillna(0)
-    fld["PO"] = fld["PO"].fillna(0)
-    fld["A"] = fld["A"].fillna(0)
-
-    fld["chances"] = np.where(fld["POS"] == "1B", fld["A"], fld["PO"] + fld["A"])
-    fld.loc[fld["POS"] == "C", "chances"] = np.nan
-
-    lg = (
-        fld[fld["POS"] != "C"]
-        .groupby(["POS", "yearID"])
-        .agg(chances=("chances", "sum"), outs=("InnOuts_est", "sum"))
-        .reset_index()
-    )
-    lg["lg_rate"] = lg["chances"] / lg["outs"].replace(0, np.nan)
-    fld = fld.merge(lg[["POS", "yearID", "lg_rate"]], on=["POS", "yearID"], how="left")
-
-    RUNS_PER_PLAY = 0.50
-    fld["expected_chances"] = fld["lg_rate"] * fld["InnOuts_est"]
-    fld["raw_range_runs"] = (fld["chances"] - fld["expected_chances"]) * RUNS_PER_PLAY
-    fld["reliability"] = fld["InnOuts_est"] / (fld["InnOuts_est"] + SHRINK_K_SEASON)
-    fld["range_runs"] = fld["raw_range_runs"] * fld["reliability"]
-    fld.loc[fld["POS"] == "C", "range_runs"] = 0.0
-
-    fld["games_eq"] = fld["InnOuts_est"] / 3 / 9
-    fld["pos_adj_runs"] = fld["POS"].map(POS_ADJ).fillna(0) * fld["games_eq"] / 150
-
     fielded = fld.groupby(["playerID", "yearID"]).agg(
-        fielded_runs=("range_runs", "sum"),
-        fielded_pos_adj=("pos_adj_runs", "sum"),
         fielded_games=("G", "sum"),
     ).reset_index()
 
@@ -255,21 +237,46 @@ def build_defense_season(hitters: set) -> pd.DataFrame:
     return fielded
 
 
+def bbref_defense_season() -> pd.DataFrame:
+    """Per player-season defensive runs from Baseball-Reference's WAR data:
+    runs_field (range/fielding) + runs_catcher (catcher throwing, framing,
+    game-calling) + runs_good_plays + runs_position (the positional and DH
+    adjustment). This is the SAA defense input -- it replaced a home-grown
+    putout/assist range factor plus a fixed POS_ADJ table. war_daily_bat's
+    player_ID is treated as the Lahman playerID, matching classify_hitters;
+    seasons are summed over mid-year stints."""
+    w = pd.read_csv(HERE / "war_daily_bat.txt",
+                    usecols=["player_ID", "year_ID", "runs_field", "runs_catcher",
+                             "runs_good_plays", "runs_position"], low_memory=False)
+    for c in ["runs_field", "runs_catcher", "runs_good_plays", "runs_position"]:
+        w[c] = pd.to_numeric(w[c], errors="coerce").fillna(0.0)
+    w["yearID"] = pd.to_numeric(w["year_ID"], errors="coerce")
+    w = w.dropna(subset=["yearID"])
+    w["fielding_runs"] = (w["runs_field"] + w["runs_catcher"]
+                          + w["runs_good_plays"] + w["runs_position"])
+    out = (w.groupby(["player_ID", "yearID"], as_index=False)["fielding_runs"].sum()
+             .rename(columns={"player_ID": "playerID"}))
+    out["yearID"] = out["yearID"].astype(int)
+    return out
+
+
 def main():
     season, negro_leaguers = load_batting_season()
     cls = classify_hitters()
     hitters = set(cls.loc[cls["is_hitter"], "playerID"])
     hseason = season[season["playerID"].isin(hitters)].copy()
 
-    fielded = build_defense_season(hitters)
+    fielded = build_fielding_position(hitters)
     hseason = hseason.merge(fielded, on=["playerID", "yearID"], how="left")
-    hseason["fielded_runs"] = hseason["fielded_runs"].fillna(0)
-    hseason["fielded_pos_adj"] = hseason["fielded_pos_adj"].fillna(0)
     hseason["fielded_games"] = hseason["fielded_games"].fillna(0)
 
-    # DH time this season = games played minus games actually fielded anywhere.
+    hseason = hseason.merge(bbref_defense_season(), on=["playerID", "yearID"], how="left")
+    hseason["fielding_runs"] = hseason["fielding_runs"].fillna(0.0)
+
+    # DH time this season = batting games not spent anywhere in the field.
+    # Only used to route the season to the DH bat baseline -- the run cost
+    # of DHing is already inside runs_position.
     hseason["dh_games"] = (hseason["G"] - hseason["fielded_games"]).clip(lower=0)
-    hseason["dh_pos_adj"] = POS_ADJ["DH"] * hseason["dh_games"] / 150
 
     # position group that season, for the position-relative baseline: DH if
     # unfielded games dominate, else the primary fielding position; unknown
@@ -277,7 +284,6 @@ def main():
     hseason["pos_grp"] = np.where(
         hseason["dh_games"] > hseason["fielded_games"], "DH",
         hseason["fld_pos"].fillna("OF"))
-    hseason["fielding_runs"] = hseason["fielded_runs"] + hseason["fielded_pos_adj"] + hseason["dh_pos_adj"]
     hseason["def_rate"] = hseason["fielding_runs"] / hseason["G"].replace(0, np.nan)
 
     # League average per season, SUM-over-SUM (playing-time weighted)

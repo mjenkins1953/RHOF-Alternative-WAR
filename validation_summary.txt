@@ -4,34 +4,34 @@ SAA VALIDATION  vs Baseball-Reference WAR / WAA / JAWS
 1065 hitters in the SAA pool with a Baseball-Reference WAR record
 
 --- Spearman rank correlation (whole pool) ---
-  SAA_final vs bWAR  : 0.850
-  SAA_final vs bWAA  : 0.849
-  SAA_final vs JAWS  : 0.858
+  SAA_final vs bWAR  : 0.894
+  SAA_final vs bWAA  : 0.903
+  SAA_final vs JAWS  : 0.902
   (reference)  bWAR vs JAWS : 0.996
   (reference)  bWAR vs bWAA : 0.956
 
 --- Spearman among the 552 hitters with bWAR >= 30 ---
-  SAA_final vs bWAR  : 0.740
-  SAA_final vs bWAA  : 0.767
-  SAA_final vs JAWS  : 0.762
+  SAA_final vs bWAR  : 0.794
+  SAA_final vs bWAA  : 0.839
+  SAA_final vs JAWS  : 0.819
 
 --- Spearman among the 267 hitters with bWAR >= 45 ---
-  SAA_final vs bWAR  : 0.662
-  SAA_final vs bWAA  : 0.726
-  SAA_final vs JAWS  : 0.710
+  SAA_final vs bWAR  : 0.725
+  SAA_final vs bWAA  : 0.828
+  SAA_final vs JAWS  : 0.776
 
 --- Spearman among the 129 hitters with bWAR >= 60 ---
-  SAA_final vs bWAR  : 0.619
-  SAA_final vs bWAA  : 0.722
-  SAA_final vs JAWS  : 0.711
+  SAA_final vs bWAR  : 0.693
+  SAA_final vs bWAA  : 0.801
+  SAA_final vs JAWS  : 0.793
 
 --- Hall-of-Fame hit rate: how many of the top-N are BBWAA/Vet inductees ---
   (pool contains 183 inducted players out of 1065)
    cutoff |   by SAA |  by bWAR |  by bWAA |  by JAWS
-   top 50 |   38/50  |   44/50  |   43/50  |   44/50  |
+   top 50 |   43/50  |   44/50  |   43/50  |   44/50  |
   top 100 |   75/100 |   78/100 |   76/100 |   78/100 |
-  top 150 |  100/150 |  102/150 |  103/150 |  103/150 |
-  top 200 |  120/200 |  129/200 |  121/200 |  126/200 |
+  top 150 |  103/150 |  102/150 |  103/150 |  103/150 |
+  top 200 |  127/200 |  129/200 |  121/200 |  126/200 |
   top 300 |  149/300 |  155/300 |  152/300 |  158/300 |
 
 ------------------------------------------------------------------------
@@ -39,76 +39,76 @@ BIGGEST DISAGREEMENTS: bWAR rates them far above SAA
 career-value / longevity players SAA discounts (rate-vs-average + averaged composite)
 ------------------------------------------------------------------------
 name                  SAA#  bWAR#  bWAA#  JAWS#    AVG   ISO    BB    SB   DEF
-Mark Belanger          998    342    323    338  -0.95 -1.00  0.06  0.32  1.20
-Harry Hooper           792    182    374    231  -0.11 -0.03  0.86  0.22 -0.92
-Willie Keeler          764    165    237    166   1.34 -0.68 -0.78  0.20 -1.51
-Roger Peckinpaugh      797    262    413    312  -0.39 -0.33  0.57 -0.14  0.37
-Fielder Jones          816    306    382    351   0.00 -0.76  0.86  0.20  0.25
-Jim Sundberg           858    351    328    380  -0.39 -0.61  0.30 -0.46  0.93
-Fred Tenney            783    292    375    341   0.38 -0.72  0.92 -0.34 -0.22
-John Ward              599    114    300    122   0.24 -0.73 -0.62  1.45  0.33
-Brett Gardner          767    287    245    291  -0.14 -0.42  0.62  1.15 -0.17
-Joe Judge              673    221    404    306   0.04  0.04  0.76  0.20 -0.60
-Luis Gonzalez          623    192    282    213   0.24  0.43  0.47 -0.54 -1.21
-Jason Heyward          759    335    287    325  -0.10 -0.20  0.50 -0.06 -0.21
-Jose Cruz              566    172    199    177   0.49 -0.10  0.32  0.48 -0.65
-Jim Gilliam            658    274    432    311  -0.11 -0.81  0.96  1.40  0.00
-Brian Downing          570    193    254    258   0.10  0.37  1.11 -0.57 -0.40
-Sal Bando              455    118    117    110  -0.23  0.43  0.87 -0.32 -0.03
-Eddie Stanky           659    333    229    267  -0.09 -0.65  2.32 -0.19  0.66
-Carney Lansford        674    352    376    383   0.77 -0.34 -0.56  0.43 -0.70
-Rusty Staub            578    260    569    270   0.37  0.21  0.64 -0.66 -0.97
-Willie Randolph        412     94     86    126   0.34 -0.79  1.31  0.17  0.56
+Fielder Jones          929    306    382    351   0.00 -0.76  0.86  0.20 -0.05
+Roy Thomas             832    326    260    320   0.37 -1.24  2.69 -0.15 -0.30
+Clyde Milan            842    347    539    375   0.27 -0.77  0.00  1.13 -0.42
+John Ward              603    114    300    122   0.24 -0.73 -0.62  1.45  0.66
+Sam Rice               634    170    349    207   0.59 -0.44 -0.44  0.76 -0.27
+Harry Hooper           580    182    374    231  -0.11 -0.03  0.86  0.22 -0.31
+Brian Downing          582    193    254    258   0.10  0.37  1.11 -0.57 -0.52
+Rusty Staub            636    260    569    270   0.37  0.21  0.64 -0.66 -1.15
+Fred Tenney            662    292    375    341   0.38 -0.72  0.92 -0.34  0.20
+Joe Judge              590    221    404    306   0.04  0.04  0.76  0.20 -0.45
+Tony Phillips          531    199    243    219  -0.15 -0.38  1.60 -0.19  0.36
+Mark Belanger          672    342    323    338  -0.95 -1.00  0.06  0.32  2.65
+Earle Combs            571    271    247    251   0.57 -0.03  0.55 -0.16 -0.35
+Willie Keeler          437    165    237    166   1.34 -0.68 -0.78  0.20 -0.64
+Curt Flood             596    324    341    317   0.85 -0.90 -0.80 -0.08  0.95
+Brett Butler           479    211    262    217   0.72 -1.08  0.86  1.30 -0.30
+Jim Sundberg           606    351    328    380  -0.39 -0.61  0.30 -0.46  1.80
+Willie Randolph        338     94     86    126   0.34 -0.79  1.31  0.17  0.95
+Donie Bush             595    354    555    327  -0.44 -0.88  1.69  0.70  0.65
+Mark Grace             483    250    319    298   0.96 -0.48  0.44 -0.36 -0.23
 
 ------------------------------------------------------------------------
 BIGGEST DISAGREEMENTS: SAA rates them far above bWAR
 peak-rate players bWAR discounts (short careers, or value concentrated in a dominant peak)
 ------------------------------------------------------------------------
 name                  SAA#  bWAR#  bWAA#  JAWS#    AVG   ISO    BB    SB   DEF
-Josh Gibson            102    343    113    367   2.41  3.61  1.06  0.32  0.34
-Troy Tulowitzki         40    275    161    218   0.81  1.18  0.51 -0.47  2.52
-Pete Browning          125    353    168    352   1.80  0.64  0.39 -0.02 -0.10
-Albert Belle           146    358    335    299   0.64  1.70  0.21 -0.53 -0.66
-Hardy Richardson       132    341    250    368   0.83  1.10 -0.06  0.07  0.58
-Oscar Charleston        38    244    103    248   1.50  1.88  0.95  2.16 -0.09
-Harry Stovey            65    269    171    301   0.44  1.89  0.75  1.60 -0.35
-Amos Otis              103    305    378    309   0.31  0.28  0.06  1.09  1.54
-Harlond Clift          135    334    298    303  -0.27  0.81  1.81 -0.19  1.13
-Cy Seymour             139    337    414    310   0.97  0.68 -0.54 -0.01  0.91
-Ken Williams           114    308    252    268   0.46  1.50  0.61  0.32  0.39
-Roy Campanella         152    331    265    292   0.41  1.40  0.27 -0.14  0.71
-Nomar Garciaparra      131    286    208    199   1.45  0.83 -0.59 -0.10  0.23
-Trea Turner            180    328    222    319   1.33  0.30 -0.44  2.20  0.03
-Bobby Doerr             50    196    173    197   0.50  1.03  0.06 -0.47  1.69
-King Kelly             116    257    207    294   1.02  0.93  0.67  1.51 -0.32
-Earl Averill            54    194    187    180   0.61  1.34  0.64 -0.33  0.92
-Wally Berger           177    317    216    279   0.11  1.42 -0.28 -0.58  1.05
-Hugh Duffy             164    302    320    326   0.83  0.51 -0.17  0.59 -0.04
-Chuck Klein            120    252    225    215   0.68  1.42 -0.08 -0.21 -0.47
+Josh Gibson            102    343    113    367   2.41  3.61  1.06  0.32  0.32
+Trea Turner            109    328    222    319   1.33  0.30 -0.44  2.20  0.76
+Roy Campanella         113    331    265    292   0.41  1.40  0.27 -0.14  1.15
+Nomar Garciaparra       76    286    208    199   1.45  0.83 -0.59 -0.10  0.90
+Harry Stovey            63    269    171    301   0.44  1.89  0.75  1.60 -0.39
+Troy Tulowitzki         72    275    161    218   0.81  1.18  0.51 -0.47  1.74
+Oscar Charleston        41    244    103    248   1.50  1.88  0.95  2.16  0.03
+Hardy Richardson       150    341    250    368   0.83  1.10 -0.06  0.07  0.16
+Pete Browning          169    353    168    352   1.80  0.64  0.39 -0.02 -0.85
+Albert Belle           176    358    335    299   0.64  1.70  0.21 -0.53 -1.15
+King Kelly             110    257    207    294   1.02  0.93  0.67  1.51 -0.25
+Ken Williams           161    308    252    268   0.46  1.50  0.61  0.32 -0.42
+Mike Tiernan           199    336    304    324   0.57  1.25  0.59  0.09 -0.81
+Matt Holliday          146    282    279    273   1.03  0.83  0.45 -0.32 -0.57
+Buck Ewing              99    230    156    274   0.76  1.32 -0.13  1.12  0.79
+Ryan Braun             111    237    198    208   1.05  1.25 -0.19  0.54 -0.56
+Dave Parker            230    356    599    286   0.69  0.71 -0.68 -0.34 -0.85
+Vern Stephens          128    253    197    254   0.46  1.07 -0.13 -0.70  0.89
+Hank Greenberg          39    163    101    129   0.77  2.66  1.23 -0.15 -0.57
+Darryl Strawberry      201    319    258    289  -0.22  1.91  1.15  0.43 -0.56
 
 ------------------------------------------------------------------------
 BIGGEST DISAGREEMENTS: bWAA (wins above AVERAGE) rates them far above SAA
 the fairest external comparison - where SAA still diverges from an above-average yardstick
 ------------------------------------------------------------------------
 name                  SAA#  bWAR#  bWAA#  JAWS#    AVG   ISO    BB    SB   DEF
-Mark Belanger          998    342    323    338  -0.95 -1.00  0.06  0.32  1.20
-Jim Sundberg           858    351    328    380  -0.39 -0.61  0.30 -0.46  0.93
-Willie Keeler          764    165    237    166   1.34 -0.68 -0.78  0.20 -1.51
-Brett Gardner          767    287    245    291  -0.14 -0.42  0.62  1.15 -0.17
-Jason Heyward          759    335    287    325  -0.10 -0.20  0.50 -0.06 -0.21
-Fielder Jones          816    306    382    351   0.00 -0.76  0.86  0.20  0.25
-Eddie Stanky           659    333    229    267  -0.09 -0.65  2.32 -0.19  0.66
-Harry Hooper           792    182    374    231  -0.11 -0.03  0.86  0.22 -0.92
-Fred Tenney            783    292    375    341   0.38 -0.72  0.92 -0.34 -0.22
-Roger Peckinpaugh      797    262    413    312  -0.39 -0.33  0.57 -0.14  0.37
-Jose Cruz              566    172    199    177   0.49 -0.10  0.32  0.48 -0.65
-Gene Tenace            500    242    157    243  -0.81  0.99  2.39 -0.30  0.07
-Art Fletcher           517    254    175    240   0.36  0.11 -1.45 -0.35  1.45
-Luis Gonzalez          623    192    282    213   0.24  0.43  0.47 -0.54 -1.21
-Gil McDougald          548    345    209    333   0.18 -0.08  0.19 -0.07  0.70
-Sal Bando              455    118    117    110  -0.23  0.43  0.87 -0.32 -0.03
-Lonny Frey             561    283    227    264  -0.29 -0.17  0.71  0.38  0.78
-Willie Randolph        412     94     86    126   0.34 -0.79  1.31  0.17  0.56
-Brian Downing          570    193    254    258   0.10  0.37  1.11 -0.57 -0.40
-John Ward              599    114    300    122   0.24 -0.73 -0.62  1.45  0.33
+Roy Thomas             832    326    260    320   0.37 -1.24  2.69 -0.15 -0.30
+Fielder Jones          929    306    382    351   0.00 -0.76  0.86  0.20 -0.05
+Mark Belanger          672    342    323    338  -0.95 -1.00  0.06  0.32  2.65
+Brian Downing          582    193    254    258   0.10  0.37  1.11 -0.57 -0.52
+Earle Combs            571    271    247    251   0.57 -0.03  0.55 -0.16 -0.35
+Gene Tenace            474    242    157    243  -0.81  0.99  2.39 -0.30  0.14
+Clyde Milan            842    347    539    375   0.27 -0.77  0.00  1.13 -0.42
+John Ward              603    114    300    122   0.24 -0.73 -0.62  1.45  0.66
+Tony Phillips          531    199    243    219  -0.15 -0.38  1.60 -0.19  0.36
+Fred Tenney            662    292    375    341   0.38 -0.72  0.92 -0.34  0.20
+Sam Rice               634    170    349    207   0.59 -0.44 -0.44  0.76 -0.27
+Jim Sundberg           606    351    328    380  -0.39 -0.61  0.30 -0.46  1.80
+Mike Griffin           533    344    261    377   0.18  0.15  0.80  0.18 -0.21
+Brett Gardner          510    287    245    291  -0.14 -0.42  0.62  1.15  0.76
+Curt Flood             596    324    341    317   0.85 -0.90 -0.80 -0.08  0.95
+Willie Randolph        338     94     86    126   0.34 -0.79  1.31  0.17  0.95
+Eddie Stanky           466    333    229    267  -0.09 -0.65  2.32 -0.19  1.15
+Brett Butler           479    211    262    217   0.72 -1.08  0.86  1.30 -0.30
+Sal Bando              326    118    117    110  -0.23  0.43  0.87 -0.32  0.43
+Harry Hooper           580    182    374    231  -0.11 -0.03  0.86  0.22 -0.31
 
