@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Validation | The TRUE Hall of Fame</title>
+<meta name="description" content="How the True Hall of Fame's Stat Above Average holds up against Baseball-Reference WAR, WAA, and JAWS — rank correlations, Hall-of-Fame hit rates, and every disagreement explained.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/validation.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a href="index.html" class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE <span class="mark__real">TRUE</span> HALL OF FAME</span>
+    </a>
+    <p class="site-head__tag">Real stats. One formula. No ballots. No committees.</p>
+  </div>
+</header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <a href="hitters.html" class="site-menu__link">Hitters</a>
+    <a href="pitchers.html" class="site-menu__link">Pitchers</a>
+    <a href="yourhall.html" class="site-menu__link">Your Hall</a>
+    <a href="stats.html" class="site-menu__link">Stats</a>
+    <a href="methodology.html" class="site-menu__link">Methodology</a>
+    <a href="validation.html" class="site-menu__link is-active">Validation</a>
+    <a href="index.html#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="standards val-section">
+  <div class="wrap">
+    <h2 class="section-title">How credible is this?</h2>
+    <p class="section-lede">Stat Above Average is an alternative to WAR — so the fair test is how it stacks up against WAR, and where it doesn't, whether the reason holds up.</p>
+    <div class="val-lede-box">
+      <p>
+        SAA and Baseball-Reference's <strong>WAR</strong> are answering slightly different questions.
+        WAR measures every player against a <strong>replacement-level</strong> floor and adds up the wins.
+        SAA measures every player against the <strong>league average</strong> of the seasons he actually
+        played, and blends a career total with a seven-year peak. The closest thing WAR has to SAA's
+        question is <strong>WAA</strong> — Wins Above <em>Average</em> — so that comparison matters most.
+      </p>
+      <p>
+        Across the <span data-v="pool_n">1,040</span> ranked hitters with a comparable Baseball-Reference
+        record, SAA lands within a point or two of what WAR and JAWS say about who belongs. It diverges
+        most on a specific, predictable kind of player — and every one of those disagreements is spelled
+        out below, with the reason.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="val-section">
+  <div class="wrap">
+    <h2 class="section-title">SAA vs. the establishment</h2>
+    <p class="section-lede">Spearman rank correlation — 1.00 is a perfect match, 0.00 is no relationship. Read down as the pool narrows from every ranked hitter to inner-circle careers.</p>
+    <div class="corr-ladder" id="corrLadder"></div>
+    <p class="val-note">
+      Broad agreement, loosening as you climb. That's expected: among role players the systems agree on
+      almost everything, but among genuine stars the philosophy starts to bite — a peak-and-rate metric
+      and a career-counting one will rank the same twenty players in a different order.
+      <strong>SAA tracks WAA more closely than WAR at every level</strong>, which is the metric behaving
+      as designed — it was built to measure above <em>average</em>, not above replacement.
+    </p>
+  </div>
+</section>
+
+<section class="val-section">
+  <div class="wrap">
+    <h2 class="section-title">Picking the Hall</h2>
+    <p class="section-lede">Of each system's top N hitters, how many are already in Cooperstown. This pool holds <span data-v="hof_n">172</span> inducted players.</p>
+    <table class="hitrate" id="hitRate"></table>
+    <p class="val-note">
+      This is the headline result. <strong>SAA identifies the Hall of Fame about as accurately as WAR
+      and JAWS do</strong> — within two or three names at every cutoff. Whatever the disagreements in
+      ordering, SAA is not picking a different set of great players; it's ranking the same ones
+      differently.
+    </p>
+  </div>
+</section>
+
+<section class="val-section">
+  <div class="wrap">
+    <h2 class="section-title">Every hitter, both rankings</h2>
+    <p class="section-lede">The <span data-v="scatter_n">683</span> hitters with a career bWAR of <span data-v="scatter_floor">25</span> or better, ranked within that group by each system. On the dashed line, the two systems agree exactly. Hover any point for the name.</p>
+    <div class="scatter-wrap">
+      <div class="scatter-legend">
+        <span><span class="swatch swatch--hof"></span><b>In Cooperstown</b></span>
+        <span><span class="swatch swatch--field"></span>Not in Cooperstown</span>
+        <span>— — —&nbsp;&nbsp;the two systems agree</span>
+      </div>
+      <svg id="scatterSvg" role="img" aria-label="Scatter plot of each hitter's SAA rank against their bWAR rank"></svg>
+    </div>
+    <p class="val-note">
+      The cloud hugs the diagonal — the two systems mostly agree. The players well below it are the ones
+      SAA ranks lower than WAR does (long careers, defense-and-longevity value); the players well above
+      it are the ones SAA ranks higher (short careers, a dominant peak, an elite rate). Those two groups
+      are the whole story of the disagreement, and they're broken out next.
+    </p>
+  </div>
+</section>
+
+<section class="val-section">
+  <div class="wrap">
+    <h2 class="section-title">Where they disagree — and why</h2>
+    <p class="section-lede">The twelve biggest gaps in each direction, among hitters with 40+ career bWAR. ★ marks a Hall of Famer.</p>
+    <div class="disagree-grid">
+      <div class="disagree-col">
+        <h3>bWAR rates them far above SAA</h3>
+        <p class="disagree-col__sub">career-value and glove-first players</p>
+        <div id="disagreeWar"></div>
+      </div>
+      <div class="disagree-col">
+        <h3>SAA rates them far above bWAR</h3>
+        <p class="disagree-col__sub">peak-and-rate players, and short careers</p>
+        <div id="disagreeSaa"></div>
+      </div>
+    </div>
+    <p class="val-note">
+      Two structural causes run through the left column. One is the thesis working as intended: a long
+      career of solid, a-little-above-average seasons banks a lot of WAR but very little SAA, because SAA
+      is measuring the rate, not the accumulation. The other is a genuine limitation —
+      <strong>SAA averages five z-scores into one number</strong>, so a player who is historic in a
+      single category (Ozzie's glove, Mark Belanger's) has that peak pulled back toward the middle by his
+      ordinary categories, where WAR would just add the fielding runs up.
+    </p>
+  </div>
+</section>
+
+<section class="val-section">
+  <div class="wrap">
+    <h2 class="section-title">The one everybody asks about</h2>
+    <p class="section-lede">Derek Jeter ranks 238th by SAA, behind Alan Trammell and Lou Whitaker. Here is that group by every system.</p>
+    <div class="spotlight">
+      <table id="spotlightTable"></table>
+    </div>
+    <p class="val-note">
+      Baseball-Reference's own above-average metric, <strong>WAA, also ranks Jeter behind all three</strong> —
+      #132 to their #50–58 — for the same reason SAA does: he was a below-average defensive shortstop by
+      every advanced system, and once his bat is measured against other shortstops rather than the whole
+      league, a .310 hitter with modest power is very good rather than historic. Where SAA overstates the
+      case is the <em>size</em> of the gap: the homemade defensive input is the crudest part of the
+      formula, it carries 20% of the weight, and for Jeter alone it moves him about a hundred spots. The
+      ordering is mainstream; the distance is SAA's own.
+    </p>
+  </div>
+</section>
+
+<section class="dossier val-section">
+  <div class="wrap dossier__inner">
+    <h2 class="section-title">What SAA still can't see</h2>
+    <p>No park adjustment. A hitter's home ballpark is not neutralized — Coors Field and the Astrodome
+      count the same as league-average.</p>
+    <p>Defense is built from putouts and assists against the positional rate, scaled by playing time. It
+      captures range at the traditional positions in broad strokes; it does not know about shifts,
+      positioning, or arm strength, and it credits catchers only for their bat and the position they play.</p>
+    <p class="dossier__punch">SAA is one lens, applied straight and shown in full — not the last word.
+      Where it disagrees with WAR, the reason is on this page, and you can decide which question you'd
+      rather ask.</p>
+    <p>The comparison figures here are rebuilt from the same annual data the rankings are.
+      Wins Above Replacement, Wins Above Average, and JAWS are from Baseball-Reference. Negro Leagues
+      players are held out of every figure on this page: their WAR is built on a far shorter official
+      league schedule, so ranking it against SAA's season-length-normalized carve-out would flatter the
+      formula for the wrong reason.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Player and season statistics from the Lahman Baseball Database, with biographical data from the Chadwick Baseball Bureau. The information used here was obtained free of charge from and is copyrighted by SABR and Retrosheet. Interested parties may contact Retrosheet at <a href="https://www.retrosheet.org" target="_blank" rel="noopener">www.retrosheet.org</a> and SABR at <a href="https://sabr.org/lahman-database" target="_blank" rel="noopener">sabr.org/lahman-database</a>. Wins Above Replacement, Wins Above Average, JAWS, OPS+, and ERA+ are from <a href="https://www.baseball-reference.com" target="_blank" rel="noopener">Baseball-Reference.com</a>.</p>
+  </div>
+</footer>
+
+<dialog class="about-modal" id="aboutModal">
+  <div class="about-modal__inner">
+    <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
+    <p class="about-modal__eyebrow">The True Hall of Fame</p>
+    <h2 class="about-modal__title">About</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.051</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.09.01</span></p>
+  </div>
+</dialog>
+
+<script src="js/prefs.js"></script>
+<script src="js/validation-data.js"></script>
+<script src="js/validation-embed.js"></script>
+<script src="js/about.js"></script>
+</body>
+</html>

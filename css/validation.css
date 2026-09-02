@@ -1,0 +1,274 @@
+/* ============================================================
+   Validation page — "How credible is SAA?"
+   Reuses the site tokens from style.css (dugout green / cream / brass).
+   ============================================================ */
+
+.val-lede-box {
+  background: rgba(239, 230, 208, 0.06);
+  border: 1px solid var(--green-line);
+  border-radius: 4px;
+  padding: 22px 24px;
+  margin-top: 20px;
+}
+.val-lede-box p {
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: none;
+  margin: 0 0 12px;
+}
+.val-lede-box p:last-child { margin-bottom: 0; }
+.val-lede-box strong { color: var(--brass-lt); font-weight: 600; }
+
+/* ---- generic section rhythm on this page ---- */
+.val-section { padding: 48px 0; border-top: 1px solid var(--green-line); }
+.val-section:first-of-type { border-top: 0; }
+.val-note {
+  color: var(--paper-dim);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: none;
+  margin: 18px 0 0;
+}
+.val-note strong { color: var(--brass-lt); font-weight: 600; }
+
+/* ---- correlation ladder ---- */
+.corr-ladder { display: grid; gap: 10px; margin-top: 24px; }
+.corr-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(64px, 0.5fr));
+  gap: 12px;
+  align-items: center;
+  background: rgba(239, 230, 208, 0.05);
+  border: 1px solid var(--green-line);
+  border-radius: 3px;
+  padding: 12px 16px;
+}
+.corr-row--head {
+  background: none;
+  border: 0;
+  padding: 0 16px;
+}
+.corr-row--head span {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.corr-row__label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--paper);
+}
+.corr-row__label small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--paper-dim);
+  opacity: 0.7;
+}
+.corr-cell {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--paper);
+  text-align: right;
+  position: relative;
+  padding: 6px 8px 6px 0;
+}
+.corr-cell::before {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  height: 3px;
+  width: var(--w, 0%);
+  background: var(--brass);
+  border-radius: 2px;
+  opacity: 0.55;
+}
+.corr-cell--waa { color: var(--brass-lt); }
+.corr-cell--waa::before { background: var(--brass-lt); opacity: 0.8; }
+
+/* ---- hit-rate table ---- */
+.hitrate {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.hitrate th, .hitrate td {
+  padding: 10px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--green-line);
+}
+.hitrate th:first-child, .hitrate td:first-child { text-align: left; }
+.hitrate thead th {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border-bottom-color: var(--brass-dk);
+}
+.hitrate tbody td { color: var(--paper-dim); }
+.hitrate tbody td.hitrate__saa { color: var(--brass-lt); font-weight: 600; }
+.hitrate tbody tr:last-child td { border-bottom: 0; }
+
+/* ---- scatter ---- */
+.scatter-wrap {
+  margin-top: 24px;
+  background: rgba(239, 230, 208, 0.05);
+  border: 1px solid var(--green-line);
+  border-radius: 4px;
+  padding: 18px 18px 10px;
+}
+.scatter-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--paper-dim);
+  margin-bottom: 10px;
+}
+.scatter-legend b { color: var(--paper); font-weight: 600; }
+.scatter-legend .swatch {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  vertical-align: -1px;
+  margin-right: 6px;
+}
+.scatter-legend .swatch--hof { background: var(--brass-lt); }
+.scatter-legend .swatch--field {
+  background: transparent;
+  border: 1.5px solid var(--green-line);
+}
+#scatterSvg {
+  width: 100%;
+  aspect-ratio: 720 / 560;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+#scatterSvg .axis-line { stroke: var(--green-line); stroke-width: 1; }
+#scatterSvg .agree-line { stroke: var(--brass); stroke-width: 1.5; stroke-dasharray: 5 4; opacity: 0.6; }
+#scatterSvg .axis-label {
+  fill: var(--brass);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+#scatterSvg .tick-label {
+  fill: var(--paper-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  opacity: 0.7;
+}
+#scatterSvg .band-label {
+  fill: var(--paper-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  opacity: 0.55;
+  font-style: italic;
+}
+#scatterSvg .dot-field { fill: var(--paper-dim); opacity: 0.28; }
+#scatterSvg .dot-hof { fill: var(--brass-lt); opacity: 0.9; }
+#scatterSvg .dot-hit { fill: none; stroke: var(--paper); stroke-width: 1.5; opacity: 0; cursor: pointer; }
+#scatterSvg .dot-hit:hover { opacity: 1; }
+
+.scatter-tip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--bg-deep);
+  border: 1px solid var(--brass-dk);
+  border-radius: 3px;
+  padding: 7px 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--paper);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.1s;
+  z-index: 5;
+}
+.scatter-tip b { color: var(--brass-lt); }
+.scatter-tip span { color: var(--paper-dim); display: block; margin-top: 2px; }
+
+/* ---- disagreement columns ---- */
+.disagree-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+.disagree-col h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--paper);
+  margin: 0 0 4px;
+}
+.disagree-col p.disagree-col__sub {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--brass);
+  letter-spacing: 0.04em;
+  margin: 0 0 14px;
+}
+.disagree-item {
+  border-top: 1px solid var(--green-line);
+  padding: 12px 0;
+}
+.disagree-item__top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.disagree-item__name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--paper);
+}
+.disagree-item__name .hof-star { color: var(--brass-lt); font-size: 12px; }
+.disagree-item__ranks {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--paper-dim);
+}
+.disagree-item__ranks b { color: var(--brass-lt); }
+.disagree-item__why {
+  font-size: 13.5px;
+  color: var(--paper-dim);
+  line-height: 1.5;
+  margin: 6px 0 0;
+  max-width: none;
+}
+
+/* ---- spotlight (Jeter et al.) ---- */
+.spotlight {
+  margin-top: 24px;
+  border: 1px solid var(--brass-dk);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.spotlight table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; }
+.spotlight th, .spotlight td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--green-line); }
+.spotlight th:first-child, .spotlight td:first-child { text-align: left; }
+.spotlight thead th {
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--brass); background: rgba(239, 230, 208, 0.05);
+}
+.spotlight tbody tr:last-child td { border-bottom: 0; }
+.spotlight td.spot-name { font-family: var(--font-display); font-size: 15px; color: var(--paper); }
+.spotlight td.spot-saa { color: var(--brass-lt); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .corr-row { grid-template-columns: 1fr repeat(3, 1fr); gap: 8px; padding: 10px 12px; }
+  .corr-row__label { grid-column: 1 / -1; }
+  .disagree-grid { grid-template-columns: 1fr; }
+  .hitrate, .spotlight table { font-size: 12px; }
+  .hitrate th, .hitrate td, .spotlight th, .spotlight td { padding: 8px 8px; }
+}

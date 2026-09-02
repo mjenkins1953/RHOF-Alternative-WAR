@@ -65,6 +65,9 @@ subs = [
     # methodology.html is spliced in -> anchor to it
     ('<a href="methodology.html" class="site-menu__link">Methodology</a>',
      '<a href="#methodology" class="site-menu__link">Methodology</a>'),
+    # Validation is its own page, not in the single-file bundle -> neutralise
+    ('<a href="validation.html" class="site-menu__link">Validation</a>',
+     '<a href="#" class="site-menu__link" aria-disabled="true">Validation</a>'),
     # pitchers list isn't in the bundle -> neutralise the link
     ('<a href="pitchers.html" class="site-menu__link">Pitchers</a>',
      '<a href="#" class="site-menu__link" aria-disabled="true">Pitchers</a>'),
