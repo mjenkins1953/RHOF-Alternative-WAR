@@ -116,6 +116,7 @@
 
 /* ---- scatter ---- */
 .scatter-wrap {
+  position: relative;
   margin-top: 24px;
   background: rgba(239, 230, 208, 0.05);
   border: 1px solid var(--green-line);

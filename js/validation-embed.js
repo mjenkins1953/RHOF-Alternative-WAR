@@ -118,22 +118,31 @@
       .textContent = 'bWAR rates them higher';
 
     // dots — field first (context), Hall of Famers on top (highlight)
+    const wrap = svg.closest('.scatter-wrap') || svg.parentElement;
+    const show = (d, cx, cy) => {
+      if (!tip) return;
+      tip.innerHTML = `<b>${esc(d.nm)}</b>${d.h ? ' ★' : ''}`
+        + `<span>SAA #${d.y} · bWAR #${d.x} of ${N}</span>`;
+      // position within .scatter-wrap, from the SVG's rendered box
+      const sb = svg.getBoundingClientRect();
+      const wb = wrap.getBoundingClientRect();
+      const px = (sb.left - wb.left) + (cx / W) * sb.width;
+      const py = (sb.top - wb.top) + (cy / H) * sb.height;
+      const flip = px > wb.width * 0.6;          // near the right edge → tip to the left
+      tip.style.left = flip ? 'auto' : `${px + 12}px`;
+      tip.style.right = flip ? `${wb.width - px + 12}px` : 'auto';
+      tip.style.top = `${Math.max(0, py - 34)}px`;
+      tip.style.opacity = '1';
+    };
+    const hide = () => { if (tip) tip.style.opacity = '0'; };
+
     const rows = V.scatter.slice().sort((a, b) => (a.h === b.h ? 0 : a.h ? 1 : -1));
     rows.forEach((d) => {
       const cx = sx(d.x), cy = sy(d.y);
       mk('circle', { class: d.h ? 'dot-hof' : 'dot-field', cx, cy, r: d.h ? 3.4 : 2.6 });
       const hit = mk('circle', { class: 'dot-hit', cx, cy, r: 7 });
-      hit.addEventListener('mouseenter', () => {
-        tip.innerHTML = `<b>${esc(d.nm)}</b>${d.h ? ' ★' : ''}`
-          + `<span>SAA #${d.y}  ·  bWAR #${d.x}  (of ${N})</span>`;
-        tip.style.opacity = '1';
-        const box = svg.getBoundingClientRect();
-        const px = box.left + window.scrollX + (cx / W) * box.width;
-        const py = box.top + window.scrollY + (cy / H) * box.height;
-        tip.style.left = `${px + 12}px`;
-        tip.style.top = `${py - 10}px`;
-      });
-      hit.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+      hit.addEventListener('mouseenter', () => show(d, cx, cy));
+      hit.addEventListener('mouseleave', hide);
     });
   }
 })();
