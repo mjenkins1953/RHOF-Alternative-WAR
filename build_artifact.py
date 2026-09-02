@@ -68,6 +68,9 @@ subs = [
     # Validation is its own page, not in the single-file bundle -> neutralise
     ('<a href="validation.html" class="site-menu__link">Validation</a>',
      '<a href="#" class="site-menu__link" aria-disabled="true">Validation</a>'),
+    # WHY? is its own page too -> neutralise
+    ('<a href="why.html" class="site-menu__link">WHY?</a>',
+     '<a href="#" class="site-menu__link" aria-disabled="true">WHY?</a>'),
     # pitchers list isn't in the bundle -> neutralise the link
     ('<a href="pitchers.html" class="site-menu__link">Pitchers</a>',
      '<a href="#" class="site-menu__link" aria-disabled="true">Pitchers</a>'),

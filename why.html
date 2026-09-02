@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHY? | The TRUE Hall of Fame</title>
+<meta name="description" content="Pick two hitters and see exactly why one ranks higher by Stat Above Average — the gap broken down by category, career length, and peak.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/why.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a href="index.html" class="mark">
+      <span class="mark__stitch">⚾</span>
+      <span class="mark__text">THE <span class="mark__real">TRUE</span> HALL OF FAME</span>
+    </a>
+    <p class="site-head__tag">Real stats. One formula. No ballots. No committees.</p>
+  </div>
+</header>
+
+<nav class="site-menu" aria-label="Site sections">
+  <div class="wrap site-menu__inner">
+    <a href="hitters.html" class="site-menu__link">Hitters</a>
+    <a href="pitchers.html" class="site-menu__link">Pitchers</a>
+    <a href="yourhall.html" class="site-menu__link">Your Hall</a>
+    <a href="stats.html" class="site-menu__link">Stats</a>
+    <a href="methodology.html" class="site-menu__link">Methodology</a>
+    <a href="validation.html" class="site-menu__link">Validation</a>
+    <a href="why.html" class="site-menu__link is-active">WHY?</a>
+    <a href="index.html#about" class="site-menu__link site-menu__link--right">About</a>
+  </div>
+</nav>
+
+<main>
+<section class="standards" style="padding:48px 0;">
+  <div class="wrap">
+    <h2 class="section-title">WHY?</h2>
+    <p class="section-lede">Two hitters. One ranks higher. Here's exactly where the gap comes from.</p>
+    <p class="why-intro">
+      Stat Above Average is one number built from five things — batting average, power, plate discipline,
+      base-stealing, and defense — scaled to a full season, dampened for years past a player's prime, and
+      blended half career total, half best-seven peak. That means any two players' ranking gap can be taken
+      apart and handed back to you: this much is defense, this much is the extra seasons, this much is one
+      player's bat. Pick two.
+    </p>
+
+    <div class="why-pick">
+      <div class="why-pick__field">
+        <label for="whyA">Player one</label>
+        <input id="whyA" list="whyPlayers" type="text" placeholder="Start typing a name…" autocomplete="off" spellcheck="false">
+      </div>
+      <span class="why-pick__vs">vs</span>
+      <div class="why-pick__field">
+        <label for="whyB">Player two</label>
+        <input id="whyB" list="whyPlayers" type="text" placeholder="Start typing a name…" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+    <datalist id="whyPlayers"></datalist>
+
+    <div id="whyOut" hidden></div>
+  </div>
+</section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__inner">
+    <p>Player and season statistics from the Lahman Baseball Database, with biographical data from the Chadwick Baseball Bureau. The information used here was obtained free of charge from and is copyrighted by SABR and Retrosheet. Interested parties may contact Retrosheet at <a href="https://www.retrosheet.org" target="_blank" rel="noopener">www.retrosheet.org</a> and SABR at <a href="https://sabr.org/lahman-database" target="_blank" rel="noopener">sabr.org/lahman-database</a>. Wins Above Replacement, OPS+, ERA+, and Fielding Runs are from <a href="https://www.baseball-reference.com" target="_blank" rel="noopener">Baseball-Reference.com</a>.</p>
+  </div>
+</footer>
+
+<dialog class="about-modal" id="aboutModal">
+  <div class="about-modal__inner">
+    <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
+    <p class="about-modal__eyebrow">The True Hall of Fame</p>
+    <h2 class="about-modal__title">About</h2>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.055</span></p>
+    <p class="about-modal__line"><span id="aboutBuild">2026.09.02</span></p>
+  </div>
+</dialog>
+
+<script src="js/prefs.js"></script>
+<script src="js/yourhall-hitters-data.js"></script>
+<script src="js/why-embed.js"></script>
+<script src="js/about.js"></script>
+</body>
+</html>
