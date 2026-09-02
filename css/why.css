@@ -47,6 +47,36 @@
   letter-spacing: 0.08em;
 }
 
+/* career-stat row, below the two inputs, inside the picker box */
+.why-pick__stats {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--green-line);
+}
+.why-pick__stats[hidden] { display: none; }
+.why-stat:first-child { grid-column: 1; }
+.why-stat:last-child { grid-column: 3; }       /* skip the middle (vs) slot */
+.why-stat__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 3px;
+}
+.why-stat__line {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--paper-dim);
+  line-height: 1.7;
+}
+.why-stat__line b { color: var(--paper); font-weight: 600; }
+
 /* ---- results ---- */
 #whyOut { margin-top: 28px; }
 #whyOut[hidden] { display: none; }
@@ -186,5 +216,8 @@
 @media (max-width: 620px) {
   .why-pick { grid-template-columns: 1fr; }
   .why-pick__vs { display: none; }
+  .why-pick__stats { grid-template-columns: 1fr; gap: 12px; }
+  .why-pick__stats .why-stat:first-child,
+  .why-pick__stats .why-stat:last-child { grid-column: 1; }
   .why-verdict__saa { display: block; white-space: normal; }
 }

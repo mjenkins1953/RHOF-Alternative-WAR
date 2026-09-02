@@ -83,9 +83,37 @@
             NAME_TO_ID.get(inB.value.trim().toLowerCase())];
   }
 
+  // ---- career-stat row inside the picker box ----
+  const PICK = $('whyPickStats');
+  const rate = (x) => (x == null ? '—' : x.toFixed(3).replace(/^0(?=\.)/, ''));
+  const cnt = (x) => (x == null ? '—' : Math.round(x).toLocaleString('en-US'));
+  function statBlock(id) {
+    const nm = BY_ID.has(id) ? BY_ID.get(id).p.n : '';
+    const c = (typeof YH_CARDS !== 'undefined' && YH_CARDS[id]) || null;
+    if (!c) {
+      return `<div class="why-stat"><span class="why-stat__meta">${esc(nm)}</span>`
+        + '<span class="why-stat__line">career line unavailable</span></div>';
+    }
+    const meta = [nm, c.pos, c.yrs].filter(Boolean).join(' · ');
+    const l1 = `<b>${rate(c.avg)}</b>/<b>${rate(c.obp)}</b>/<b>${rate(c.slg)}</b>`
+      + ` &middot; <b>${c.opsPlus == null ? '—' : c.opsPlus}</b> OPS+`;
+    const l2 = `<b>${cnt(c.h)}</b> H &middot; <b>${cnt(c.hr)}</b> HR`
+      + ` &middot; <b>${cnt(c.sb)}</b> SB &middot; <b>${cnt(c.bb)}</b> BB`
+      + ` &middot; <b>${c.war == null ? '—' : c.war.toFixed(1)}</b> bWAR`;
+    return `<div class="why-stat"><span class="why-stat__meta">${esc(meta)}</span>`
+      + `<span class="why-stat__line">${l1}<br>${l2}</span></div>`;
+  }
+  function fillPickStats(ia, ib) {
+    if (!PICK) return;
+    if (!(BY_ID.has(ia) && BY_ID.has(ib))) { PICK.hidden = true; PICK.innerHTML = ''; return; }
+    PICK.innerHTML = statBlock(ia) + statBlock(ib);
+    PICK.hidden = false;
+  }
+
   function run() {
     const [ia, ib] = currentIds();
     const out = $('whyOut');
+    fillPickStats(ia, ib);
     if (!ia || !ib) { out.hidden = true; return; }
     if (ia === ib) {
       out.hidden = false;
