@@ -11,7 +11,7 @@
   const PEAK_N = YH_CONFIG.defaultPeakN || 7;
   const BLEND = YH_CONFIG.defaultBlend == null ? 0.5 : YH_CONFIG.defaultBlend;    // .5
   const CATS = YH_CONFIG.catLabels;                   // ["AVG","ISO","BB","SB","DEF"]
-  const LONG = { AVG: 'batting average', ISO: 'power', BB: 'plate discipline',
+  const LONG = { AVG: 'batting average', ISO: 'power', BB: 'walk rate',
                  SB: 'base-stealing', DEF: 'defense' };
 
   const $ = (id) => document.getElementById(id);
