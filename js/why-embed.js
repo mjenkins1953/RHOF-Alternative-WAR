@@ -77,11 +77,22 @@
   NAMES.forEach(({ n }) => { const o = document.createElement('option'); o.value = n; dl.appendChild(o); });
   const NAME_TO_ID = new Map(NAMES.map(({ id, n }) => [n.toLowerCase(), id]));
   const inA = $('whyA'), inB = $('whyB');
+  const badgeA = $('saaA'), badgeB = $('saaB');
 
   function currentIds() {
     return [NAME_TO_ID.get(inA.value.trim().toLowerCase()),
             NAME_TO_ID.get(inB.value.trim().toLowerCase())];
   }
+
+  // the SAA value + rank shown beside each picker, live as you type
+  function updateBadge(input, badge) {
+    const id = NAME_TO_ID.get(input.value.trim().toLowerCase());
+    if (!id || !BY_ID.has(id)) { badge.hidden = true; return; }
+    const d = BY_ID.get(id).d;
+    badge.innerHTML = `<b>${d.SAA_final.toFixed(2)}</b><small>SAA &middot; #${RANK.get(id)}</small>`;
+    badge.hidden = false;
+  }
+  function updateBadges() { updateBadge(inA, badgeA); updateBadge(inB, badgeB); }
 
   // ---- career-stat row inside the picker box ----
   const PICK = $('whyPickStats');
@@ -113,6 +124,7 @@
   function run() {
     const [ia, ib] = currentIds();
     const out = $('whyOut');
+    updateBadges();
     fillPickStats(ia, ib);
     if (!ia || !ib) { out.hidden = true; return; }
     if (ia === ib) {
@@ -265,8 +277,8 @@
   // ---- wire up ----
   inA.addEventListener('change', run);
   inB.addEventListener('change', run);
-  inA.addEventListener('input', () => { if (NAME_TO_ID.has(inA.value.trim().toLowerCase())) run(); });
-  inB.addEventListener('input', () => { if (NAME_TO_ID.has(inB.value.trim().toLowerCase())) run(); });
+  inA.addEventListener('input', () => { updateBadge(inA, badgeA); if (NAME_TO_ID.has(inA.value.trim().toLowerCase())) run(); });
+  inB.addEventListener('input', () => { updateBadge(inB, badgeB); if (NAME_TO_ID.has(inB.value.trim().toLowerCase())) run(); });
 
   // ---- initial state: URL params, else saved, else a default matchup ----
   const nameOf = (id) => (BY_ID.has(id) ? BY_ID.get(id).p.n : '');

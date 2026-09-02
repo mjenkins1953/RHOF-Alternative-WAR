@@ -51,12 +51,18 @@
     <div class="why-pick">
       <div class="why-pick__field">
         <label for="whyA">Player one</label>
-        <input id="whyA" list="whyPlayers" type="text" placeholder="Start typing a name…" autocomplete="off" spellcheck="false">
+        <div class="why-pick__row">
+          <input id="whyA" list="whyPlayers" type="text" placeholder="Start typing a name…" autocomplete="off" spellcheck="false">
+          <span class="why-pick__saa" id="saaA" hidden></span>
+        </div>
       </div>
       <span class="why-pick__vs">vs</span>
       <div class="why-pick__field">
         <label for="whyB">Player two</label>
-        <input id="whyB" list="whyPlayers" type="text" placeholder="Start typing a name…" autocomplete="off" spellcheck="false">
+        <div class="why-pick__row">
+          <input id="whyB" list="whyPlayers" type="text" placeholder="Start typing a name…" autocomplete="off" spellcheck="false">
+          <span class="why-pick__saa" id="saaB" hidden></span>
+        </div>
       </div>
       <div class="why-pick__stats" id="whyPickStats" hidden></div>
     </div>
@@ -78,7 +84,7 @@
     <button type="button" class="about-modal__close" aria-label="Close">&times;</button>
     <p class="about-modal__eyebrow">The True Hall of Fame</p>
     <h2 class="about-modal__title">About</h2>
-    <p class="about-modal__line">Version <span id="aboutVersion">1.059</span></p>
+    <p class="about-modal__line">Version <span id="aboutVersion">1.060</span></p>
     <p class="about-modal__line"><span id="aboutBuild">2026.09.02</span></p>
   </div>
 </dialog>
