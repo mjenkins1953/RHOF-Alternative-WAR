@@ -338,7 +338,11 @@
   }
 
   function sentence(hi, lo, ord, dTotal, dPeak, gap, spots, hasPeak, played) {
-    const wins = ord.filter((r) => r.d > 0.03).slice(0, 2);
+    // pitcher SAA is innings-weighted with no peak, so category contributions
+    // run larger and tiny ones (a starter's stray save value) are just noise --
+    // hold the "lead" / "pushback" bar higher than on the hitters side.
+    const EDGE = hasPeak ? 0.03 : 0.6;
+    const wins = ord.filter((r) => r.d > EDGE).slice(0, 2);
     const loss = ord[ord.length - 1];
     const hiL = esc(hi.name.split(' ').slice(-1)[0]);
     const loL = esc(lo.name.split(' ').slice(-1)[0]);
@@ -347,11 +351,12 @@
       s = `${esc(hi.name)} comes out ahead on the blend of small edges, none decisive.`;
     } else {
       const wtxt = wins.map((r) => `${LONG[MODE][r.cat]} (+${Math.abs(r.d).toFixed(1)})`).join(' and ');
-      s = loss.d < -0.03
+      s = loss.d < -EDGE
         ? `${esc(hi.name)}'s ${wtxt} ${wins.length > 1 ? 'more than cover' : 'covers'} ${loL}'s edge in ${LONG[MODE][loss.cat]} (+${Math.abs(loss.d).toFixed(1)}).`
         : `${esc(hi.name)} leads on ${wtxt}, with little pushback anywhere else.`;
     }
-    if (gap < 0.4 || spots < 12) s = 'A near-tie. ' + s;
+    const nearTie = hasPeak ? (gap < 0.4 || spots < 12) : gap < 1.0;
+    if (nearTie) s = 'A near-tie. ' + s;
     const moreSeasons = hi.seasons - lo.seasons;
     if (hasPeak) {
       if (dTotal > 1.6 * Math.abs(dPeak) && moreSeasons >= 3)
