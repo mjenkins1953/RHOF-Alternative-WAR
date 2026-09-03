@@ -15,11 +15,9 @@ const ST = {
 };
 const ST_NCOLS = ST.cols.length;
 
-// "#" — a fixed 1-based row identifier. ST.rows arrives from the build already
-// in the default order (most games / most IP first), so the identifier is just
-// the row's position in that list. It's stored by row identity, so it rides
-// along unchanged through every sort and filter the visitor applies.
-const ST_RANK = new Map(ST.rows.map((r, i) => [r, i + 1]));
+// "#" — a plain 1-based position counter for the list as it's shown right now.
+// The first visible row is always #1, the second #2, and so on; it renumbers
+// on every sort and filter (see stRenderMore, which passes the position in).
 // trailing flag on each row: 1 if the player logged a Negro Major League season
 const ST_NEL_IDX = ST_NCOLS + 1;
 
@@ -207,9 +205,9 @@ function stApply() {
   stRenderMore();
 }
 
-function stRowHtml(r) {
+function stRowHtml(r, pos) {
   const nel = r[ST_NEL_IDX] ? ' <span class="nel-tag">NeL</span>' : '';
-  let tds = `<td class="strank">${ST_RANK.get(r).toLocaleString('en-US')}</td>`;
+  let tds = `<td class="strank">${pos.toLocaleString('en-US')}</td>`;
   tds += `<td class="name">${r[1]}${nel}</td>`;
   for (let c = 1; c < ST.cols.length; c++) {
     const k = ST.cols[c][0];
@@ -223,7 +221,7 @@ function stRenderMore() {
   if (stRendered >= rows.length) return;
   const end = Math.min(stRendered + ST_CHUNK, rows.length);
   let html = '';
-  for (let i = stRendered; i < end; i++) html += stRowHtml(rows[i]);
+  for (let i = stRendered; i < end; i++) html += stRowHtml(rows[i], i + 1);
   stTbody.insertAdjacentHTML('beforeend', html);
   stRendered = end;
 }

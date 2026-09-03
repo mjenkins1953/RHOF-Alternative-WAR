@@ -106,8 +106,7 @@ def main():
         ])
 
     # default view: most games first (real careers on top, cups of coffee at
-    # the bottom), then the search box finds anyone. The page's "#" column is
-    # this row's 1-based position and rides along through every re-sort.
+    # the bottom), then the search box finds anyone
     rows.sort(key=lambda r: r[3], reverse=True)
 
     bio = player_bio({r[0] for r in rows})

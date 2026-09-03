@@ -104,9 +104,7 @@ def main():
             outs, a["H"], a["ER"], a["HR"], a["BB"], a["SO"],
             1 if p in nel_ids else 0,          # trailing NeL flag
         ])
-    # most career outs first; the page's "#" column is this row's 1-based
-    # position and rides along through every re-sort
-    rows.sort(key=lambda r: r[12], reverse=True)
+    rows.sort(key=lambda r: r[12], reverse=True)          # most career outs first
 
     bio = player_bio({r[0] for r in rows})
 
