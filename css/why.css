@@ -10,6 +10,31 @@
   margin: 0 0 26px;
 }
 
+/* ---- hitters / pitchers toggle ---- */
+.why-mode {
+  display: inline-flex;
+  border: 1px solid var(--brass-dk);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 0 20px;
+}
+.why-mode__btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  background: var(--bg-deep);
+  color: var(--paper-dim);
+  border: 0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.why-mode__btn + .why-mode__btn { border-left: 1px solid var(--brass-dk); }
+.why-mode__btn:hover { color: var(--brass-lt); }
+.why-mode__btn.is-active { background: var(--brass-dk); color: var(--paper); }
+
 /* ---- pickers ---- */
 .why-pick {
   display: grid;

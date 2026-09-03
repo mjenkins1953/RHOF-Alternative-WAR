@@ -1,18 +1,12 @@
-// Who's Better — head-to-head decomposition of the SAA gap between two hitters.
-// Reuses js/yourhall-hitters-data.js (YH_PLAYERS z-matrix + YH_CONFIG) and
-// scores everyone at the DEFAULT weights, so the numbers match the published
-// hitters list exactly. See build_saa.py / yourhall-embed.js yhScore().
+// Who's Better — head-to-head decomposition of the SAA gap between two players.
+// Works for hitters OR pitchers: window.WHY_DATA.<side> = { config, players, cards }
+// (built by build_yourhall_js.py). Each side is scored at its DEFAULT weights, so
+// the numbers match the published Hitters / Pitchers lists exactly.
+//   hitters  — 5 z's, decline damping 0.40, career total blended 50/50 with best-7 peak
+//   pitchers — 5 z's, no damping, no peak: SAA is the career total only
 (function () {
-  if (typeof YH_PLAYERS === 'undefined' || typeof YH_CONFIG === 'undefined') return;
-
-  const W = YH_CONFIG.defaultWeights;                 // [.3 .3 .1 .1 .2]
-  const NORM = YH_CONFIG.workloadNorm;                // 600
-  const DECLINE = YH_CONFIG.declineWeight == null ? 1 : YH_CONFIG.declineWeight;  // .4
-  const PEAK_N = YH_CONFIG.defaultPeakN || 7;
-  const BLEND = YH_CONFIG.defaultBlend == null ? 0.5 : YH_CONFIG.defaultBlend;    // .5
-  const CATS = YH_CONFIG.catLabels;                   // ["AVG","ISO","BB","SB","DEF"]
-  const LONG = { AVG: 'batting average', ISO: 'power', BB: 'walk rate',
-                 SB: 'base-stealing', DEF: 'defense' };
+  const DATA = window.WHY_DATA;
+  if (!DATA || !DATA.hitters || !DATA.pitchers) return;
 
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => (
@@ -26,8 +20,52 @@
     return e;
   };
 
+  // per-mode copy
+  const LONG = {
+    hitters: { AVG: 'batting average', ISO: 'power', BB: 'walk rate',
+               SB: 'base-stealing', DEF: 'defense' },
+    pitchers: { ERA: 'ERA', WHIP: 'WHIP', 'K/9': 'strikeout rate',
+                'WIN%': 'win percentage', SV: 'saves' },
+  };
+  const INTRO = {
+    hitters: 'Stat Above Average is one number built from five things — batting average, '
+      + 'power, walk rate, base-stealing, and defense — scaled to a full season, dampened for '
+      + "years past a player's prime, and blended half career total, half best-seven peak. That "
+      + "means any two players' ranking gap can be taken apart and handed back to you: this much "
+      + "is defense, this much is the extra seasons, this much is one player's bat. Pick two.",
+    pitchers: 'Stat Above Average is one number built from five things — ERA, WHIP, strikeout '
+      + 'rate, win percentage, and saves — each measured against the league that season, scaled '
+      + 'by innings pitched, and summed across the whole career (no peak weighting for pitchers). '
+      + "That means any two pitchers' ranking gap can be taken apart and handed back to you: this "
+      + 'much is run prevention, this much is the strikeouts, this much is the extra innings. Pick two.',
+  };
+  const LEDE = {
+    hitters: 'Two hitters, side by side. See which one Stat Above Average ranks higher — and exactly where the gap comes from.',
+    pitchers: 'Two pitchers, side by side. See which one Stat Above Average ranks higher — and exactly where the gap comes from.',
+  };
+  const FOOT = {
+    hitters: 'Scored at the default SAA weights — AVG 30% · ISO 30% · Defense 20% · Walks 10% · '
+      + "Steals 10%, the bar 60% toward the player's position, career total blended 50/50 with the "
+      + 'best seven seasons. <a href="yourhall.html">Your Hall</a> re-scores the same data under weights you choose.',
+    pitchers: 'Scored at the default pitcher SAA weights — ERA 25% · WHIP 25% · K/9 20% · Win% 20% · '
+      + 'Saves 10%, each season measured against the league and scaled by innings, then summed across '
+      + 'the career. <a href="yourhall-pitchers.html">Your Hall</a> re-scores the same data under weights you choose.',
+  };
+  const DEFAULTS = { hitters: ['jeterde01', 'trammal01'], pitchers: ['maddugr01', 'glavito02'] };
+
+  // ---- mode-scoped state (rebuilt by buildMode) ----
+  let MODE = 'hitters';
+  let CFG, BY_ID, RANK, NAMES, NAME_TO_ID, CARDS;
+
   // ---- decomposition: one player -> per-category total / peak / final ----
   function decompose(p) {
+    const W = CFG.defaultWeights;
+    const NORM = CFG.workloadNorm;
+    const DECLINE = CFG.declineWeight == null ? 1 : CFG.declineWeight;
+    const HAS_PEAK = !!CFG.hasPeak;
+    const PEAK_N = CFG.defaultPeakN || 7;
+    const BLEND = CFG.defaultBlend == null ? 0.5 : CFG.defaultBlend;
+
     const contrib = [];        // per season: [c0..c4] contribution to season_saa
     const seasonSaa = [];
     for (const row of p.s) {
@@ -45,39 +83,63 @@
       const f = seasonSaa[i] < 0 ? DECLINE : 1;
       for (let k = 0; k < 5; k++) totalCat[k] += c[k] * f;
     });
-    const order = seasonSaa.map((v, i) => i).sort((a, b) => seasonSaa[b] - seasonSaa[a]);
-    for (let i = 0; i < PEAK_N && i < order.length; i++)
-      for (let k = 0; k < 5; k++) peakCat[k] += contrib[order[i]][k];
-    const finalCat = totalCat.map((t, k) => (1 - BLEND) * t + BLEND * peakCat[k]);
+    let peakSet = new Set();
+    if (HAS_PEAK) {
+      const order = seasonSaa.map((v, i) => i).sort((a, b) => seasonSaa[b] - seasonSaa[a]);
+      for (let i = 0; i < PEAK_N && i < order.length; i++)
+        for (let k = 0; k < 5; k++) peakCat[k] += contrib[order[i]][k];
+      peakSet = new Set(order.slice(0, PEAK_N));
+    }
+    const finalCat = HAS_PEAK
+      ? totalCat.map((t, k) => (1 - BLEND) * t + BLEND * peakCat[k])
+      : totalCat.slice();
     const SAA_total = totalCat.reduce((a, b) => a + b, 0);
     const SAA_peak = peakCat.reduce((a, b) => a + b, 0);
     return {
       id: p.id, name: p.n, hof: p.hof, seasons: p.s.length,
-      totalCat, peakCat, finalCat, SAA_total, SAA_peak,
-      SAA_final: SAA_total * (1 - BLEND) + SAA_peak * BLEND,
-      seasonSaa, peakSet: new Set(order.slice(0, PEAK_N)),
+      hasPeak: HAS_PEAK, totalCat, peakCat, finalCat, SAA_total, SAA_peak,
+      SAA_final: HAS_PEAK ? SAA_total * (1 - BLEND) + SAA_peak * BLEND : SAA_total,
+      seasonSaa, peakSet,
     };
   }
 
-  // ---- score & rank the whole pool once (default weights) ----
-  const BY_ID = new Map();
-  const NAMES = [];
-  const ranked = YH_PLAYERS.map((p) => {
-    const d = decompose(p);
-    BY_ID.set(p.id, { p, d });
-    NAMES.push({ id: p.id, n: p.n });
-    return d;
-  }).sort((a, b) => b.SAA_final - a.SAA_final);
-  ranked.forEach((d, i) => { d.rank = i + 1; });
-  const RANK = new Map(ranked.map((d) => [d.id, d.rank]));
-  NAMES.sort((a, b) => a.n.localeCompare(b.n));
-
-  // ---- pickers ----
-  const dl = $('whyPlayers');
-  NAMES.forEach(({ n }) => { const o = document.createElement('option'); o.value = n; dl.appendChild(o); });
-  const NAME_TO_ID = new Map(NAMES.map(({ id, n }) => [n.toLowerCase(), id]));
+  // ---- (re)build one mode: score the pool, rank it, fill the datalist ----
   const inA = $('whyA'), inB = $('whyB');
   const badgeA = $('saaA'), badgeB = $('saaB');
+
+  function buildMode(mode) {
+    MODE = mode;
+    const bundle = DATA[mode];
+    CFG = bundle.config;
+    CARDS = bundle.cards || {};
+
+    BY_ID = new Map();
+    NAMES = [];
+    const ranked = bundle.players.map((p) => {
+      const d = decompose(p);
+      BY_ID.set(p.id, { p, d });
+      NAMES.push({ id: p.id, n: p.n });
+      return d;
+    }).sort((a, b) => b.SAA_final - a.SAA_final);
+    ranked.forEach((d, i) => { d.rank = i + 1; });
+    RANK = new Map(ranked.map((d) => [d.id, d.rank]));
+    NAMES.sort((a, b) => a.n.localeCompare(b.n));
+    NAME_TO_ID = new Map(NAMES.map(({ id, n }) => [n.toLowerCase(), id]));
+
+    const dl = $('whyPlayers');
+    dl.textContent = '';
+    NAMES.forEach(({ n }) => { const o = document.createElement('option'); o.value = n; dl.appendChild(o); });
+
+    const introEl = $('whyIntro'); if (introEl) introEl.textContent = INTRO[mode];
+    const ledeEl = $('whyLede'); if (ledeEl) ledeEl.textContent = LEDE[mode];
+    const ph = mode === 'pitchers' ? 'Start typing a pitcher…' : 'Start typing a hitter…';
+    inA.placeholder = ph; inB.placeholder = ph;
+
+    document.querySelectorAll('.why-mode__btn').forEach((b) => {
+      b.classList.toggle('is-active', b.dataset.mode === mode);
+      b.setAttribute('aria-pressed', b.dataset.mode === mode ? 'true' : 'false');
+    });
+  }
 
   function currentIds() {
     return [NAME_TO_ID.get(inA.value.trim().toLowerCase()),
@@ -98,19 +160,32 @@
   const PICK = $('whyPickStats');
   const rate = (x) => (x == null ? '—' : x.toFixed(3).replace(/^0(?=\.)/, ''));
   const cnt = (x) => (x == null ? '—' : Math.round(x).toLocaleString('en-US'));
+
   function statBlock(id) {
     const nm = BY_ID.has(id) ? BY_ID.get(id).p.n : '';
-    const c = (typeof YH_CARDS !== 'undefined' && YH_CARDS[id]) || null;
+    const c = CARDS[id] || null;
     if (!c) {
       return `<div class="why-stat"><span class="why-stat__meta">${esc(nm)}</span>`
         + '<span class="why-stat__line">career line unavailable</span></div>';
     }
-    const meta = [nm, c.pos, c.yrs].filter(Boolean).join(' · ');
-    const l1 = `<b>${rate(c.avg)}</b>/<b>${rate(c.obp)}</b>/<b>${rate(c.slg)}</b>`
-      + ` &middot; <b>${c.opsPlus == null ? '—' : c.opsPlus}</b> OPS+`;
-    const l2 = `<b>${cnt(c.h)}</b> H &middot; <b>${cnt(c.hr)}</b> HR`
-      + ` &middot; <b>${cnt(c.sb)}</b> SB &middot; <b>${cnt(c.bb)}</b> BB`
-      + ` &middot; <b>${c.war == null ? '—' : c.war.toFixed(1)}</b> bWAR`;
+    let l1, l2, meta;
+    if (MODE === 'pitchers') {
+      meta = [nm, c.role, c.yrs].filter(Boolean).join(' · ');
+      l1 = `<b>${cnt(c.w)}</b>–<b>${cnt(c.l)}</b>`
+        + ` &middot; <b>${c.era == null ? '—' : c.era.toFixed(2)}</b> ERA`
+        + ` &middot; <b>${c.whip == null ? '—' : c.whip.toFixed(2)}</b> WHIP`
+        + ` &middot; <b>${c.eraPlus == null ? '—' : c.eraPlus}</b> ERA+`;
+      l2 = `<b>${cnt(c.so)}</b> K &middot; <b>${cnt(c.sv)}</b> SV`
+        + ` &middot; <b>${cnt(c.ip)}</b> IP`
+        + ` &middot; <b>${c.war == null ? '—' : c.war.toFixed(1)}</b> bWAR`;
+    } else {
+      meta = [nm, c.pos, c.yrs].filter(Boolean).join(' · ');
+      l1 = `<b>${rate(c.avg)}</b>/<b>${rate(c.obp)}</b>/<b>${rate(c.slg)}</b>`
+        + ` &middot; <b>${c.opsPlus == null ? '—' : c.opsPlus}</b> OPS+`;
+      l2 = `<b>${cnt(c.h)}</b> H &middot; <b>${cnt(c.hr)}</b> HR`
+        + ` &middot; <b>${cnt(c.sb)}</b> SB &middot; <b>${cnt(c.bb)}</b> BB`
+        + ` &middot; <b>${c.war == null ? '—' : c.war.toFixed(1)}</b> bWAR`;
+    }
     return `<div class="why-stat"><span class="why-stat__meta">${esc(meta)}</span>`
       + `<span class="why-stat__line">${l1}<br>${l2}</span></div>`;
   }
@@ -119,6 +194,18 @@
     if (!(BY_ID.has(ia) && BY_ID.has(ib))) { PICK.hidden = true; PICK.innerHTML = ''; return; }
     PICK.innerHTML = statBlock(ia) + statBlock(ib);
     PICK.hidden = false;
+  }
+
+  function persist(ia, ib) {
+    try {
+      const u = new URL(location);
+      u.searchParams.set('mode', MODE);
+      u.searchParams.set('a', ia); u.searchParams.set('b', ib);
+      history.replaceState(null, '', u);
+    } catch (e) { /* ignore */ }
+    try {
+      if (window.THOF) { THOF.set('why', { mode: MODE, a: ia, b: ib }); }
+    } catch (e) { /* ignore */ }
   }
 
   function run() {
@@ -132,15 +219,7 @@
       out.innerHTML = '<p class="why-note">Pick two different players.</p>';
       return;
     }
-    try {
-      const u = new URL(location);
-      u.searchParams.set('a', ia); u.searchParams.set('b', ib);
-      history.replaceState(null, '', u);
-    } catch (e) { /* ignore */ }
-    try {
-      if (window.THOF) { THOF.set('why', { a: ia, b: ib }); }
-    } catch (e) { /* ignore */ }
-
+    persist(ia, ib);
     render(ia, ib, out);
   }
 
@@ -151,15 +230,33 @@
     const rHi = RANK.get(hi.id), rLo = RANK.get(lo.id);
     const gap = hi.SAA_final - lo.SAA_final;
     const spots = rLo - rHi;
-    const dTotal = (hi.SAA_total - lo.SAA_total) / 2;   // contribution to SAA_final
-    const dPeak = (hi.SAA_peak - lo.SAA_peak) / 2;
+    const hasPeak = hi.hasPeak;
+    const dTotal = hasPeak ? (hi.SAA_total - lo.SAA_total) / 2 : hi.SAA_total - lo.SAA_total;
+    const dPeak = hasPeak ? (hi.SAA_peak - lo.SAA_peak) / 2 : 0;
+    const noun = MODE === 'pitchers' ? 'seasons' : 'seasons';
+    const played = MODE === 'pitchers' ? 'threw' : 'played';
 
-    // per-category delta (hi minus lo), contribution to the final gap
+    const CATS = CFG.catLabels;
     const rows = CATS.map((c, k) => ({
       cat: c, d: hi.finalCat[k] - lo.finalCat[k], hi: hi.finalCat[k], lo: lo.finalCat[k],
     }));
     const maxAbs = Math.max(0.001, ...rows.map((r) => Math.abs(r.d)));
     const ord = rows.slice().sort((a, b) => b.d - a.d);
+
+    const splitBlock = hasPeak ? `
+      <div class="why-split">
+        <span>of the <b>${gap.toFixed(2)}</b>-SAA gap:</span>
+        <span class="why-split__part">career total <b>${sign(dTotal)}</b></span>
+        <span class="why-split__part">peak <b>${sign(dPeak)}</b></span>
+      </div>` : `
+      <div class="why-split">
+        <span>the gap is <b>${gap.toFixed(2)}</b> SAA — pitcher SAA is career total only, no peak weighting.</span>
+      </div>`;
+
+    const sparkCap = hasPeak
+      ? "Each player's SAA in every qualifying season — the shape of the career. "
+        + 'Filled marks are the seven that make the peak half of the formula.'
+      : "Each pitcher's SAA in every qualifying season (40+ IP) — the shape of the career.";
 
     out.hidden = false;
     out.innerHTML = `
@@ -167,13 +264,9 @@
         <b>${esc(hi.name)}</b> ranks <b>${spots}</b> spot${spots === 1 ? '' : 's'} higher than
         ${esc(lo.name)} <span class="why-verdict__saa">(${hi.SAA_final.toFixed(2)} vs ${lo.SAA_final.toFixed(2)} SAA)</span>
       </p>
-      <p class="why-sentence">${sentence(hi, lo, ord, dTotal, dPeak, gap, spots)}</p>
+      <p class="why-sentence">${sentence(hi, lo, ord, dTotal, dPeak, gap, spots, hasPeak, played)}</p>
 
-      <div class="why-split">
-        <span>of the <b>${gap.toFixed(2)}</b>-SAA gap:</span>
-        <span class="why-split__part">career total <b>${sign(dTotal)}</b></span>
-        <span class="why-split__part">peak <b>${sign(dPeak)}</b></span>
-      </div>
+      ${splitBlock}
 
       <h3 class="why-h3">Where the gap comes from</h3>
       <p class="why-cap">Each bar is that category's share of the ${gap.toFixed(2)}-SAA gap.
@@ -182,18 +275,13 @@
       <div id="whyBars" class="why-bars"></div>
 
       <h3 class="why-h3">Season by season</h3>
-      <p class="why-cap">Each hitter's SAA in every qualifying season — the shape of the career.
-        Filled marks are the seven that make the peak half of the formula.</p>
+      <p class="why-cap">${sparkCap}</p>
       <div class="why-sparks">
         <div class="why-spark"><span class="why-spark__name">${esc(hi.name)}</span><div id="sparkHi"></div></div>
         <div class="why-spark"><span class="why-spark__name">${esc(lo.name)}</span><div id="sparkLo"></div></div>
       </div>
 
-      <p class="why-foot">
-        Scored at the default SAA weights — AVG 30% · ISO 30% · Defense 20% · Walks 10% · Steals 10%,
-        the bar 60% toward the player's position, career total blended 50/50 with the best seven seasons.
-        <a href="yourhall.html">Your Hall</a> re-scores the same data under weights you choose.
-      </p>`;
+      <p class="why-foot">${FOOT[MODE]}</p>`;
 
     drawBars($('whyBars'), ord, maxAbs, hi, lo);
     drawSpark($('sparkHi'), hi);
@@ -213,7 +301,7 @@
       const w = Math.max(1, (Math.abs(r.d) / maxAbs) * barMax);
       const toHi = r.d >= 0;
       mk('text', { x: labelR, y: y + 4, class: 'why-bars__lbl', 'text-anchor': 'end' }, svg)
-        .textContent = LONG[r.cat];
+        .textContent = LONG[MODE][r.cat];
       mk('rect', {
         x: toHi ? mid : mid - w, y: y - 9, width: w, height: 18, rx: 3,
         class: toHi ? 'why-bars__fill why-bars__fill--hi' : 'why-bars__fill why-bars__fill--lo',
@@ -249,7 +337,7 @@
     });
   }
 
-  function sentence(hi, lo, ord, dTotal, dPeak, gap, spots) {
+  function sentence(hi, lo, ord, dTotal, dPeak, gap, spots, hasPeak, played) {
     const wins = ord.filter((r) => r.d > 0.03).slice(0, 2);
     const loss = ord[ord.length - 1];
     const hiL = esc(hi.name.split(' ').slice(-1)[0]);
@@ -258,19 +346,26 @@
     if (!wins.length) {
       s = `${esc(hi.name)} comes out ahead on the blend of small edges, none decisive.`;
     } else {
-      const wtxt = wins.map((r) => `${LONG[r.cat]} (+${Math.abs(r.d).toFixed(1)})`).join(' and ');
+      const wtxt = wins.map((r) => `${LONG[MODE][r.cat]} (+${Math.abs(r.d).toFixed(1)})`).join(' and ');
       s = loss.d < -0.03
-        ? `${esc(hi.name)}'s ${wtxt} ${wins.length > 1 ? 'more than cover' : 'covers'} ${loL}'s edge in ${LONG[loss.cat]} (+${Math.abs(loss.d).toFixed(1)}).`
+        ? `${esc(hi.name)}'s ${wtxt} ${wins.length > 1 ? 'more than cover' : 'covers'} ${loL}'s edge in ${LONG[MODE][loss.cat]} (+${Math.abs(loss.d).toFixed(1)}).`
         : `${esc(hi.name)} leads on ${wtxt}, with little pushback anywhere else.`;
     }
     if (gap < 0.4 || spots < 12) s = 'A near-tie. ' + s;
     const moreSeasons = hi.seasons - lo.seasons;
-    if (dTotal > 1.6 * Math.abs(dPeak) && moreSeasons >= 3)
-      s += ` And ${hiL} stayed at that level for ${moreSeasons} more seasons — most of the margin is career length.`;
-    else if (dTotal > 1.6 * Math.abs(dPeak) && moreSeasons <= -3)
-      s += ` The gap is all in the rate: ${loL} played ${-moreSeasons} more seasons, but ${hiL}'s were worth more.`;
-    else if (dPeak > 1.6 * Math.abs(dTotal))
-      s += ` It's a peak gap more than a longevity one — ${loL}'s best years are close, ${hiL} just reached higher.`;
+    if (hasPeak) {
+      if (dTotal > 1.6 * Math.abs(dPeak) && moreSeasons >= 3)
+        s += ` And ${hiL} stayed at that level for ${moreSeasons} more seasons — most of the margin is career length.`;
+      else if (dTotal > 1.6 * Math.abs(dPeak) && moreSeasons <= -3)
+        s += ` The gap is all in the rate: ${loL} played ${-moreSeasons} more seasons, but ${hiL}'s were worth more.`;
+      else if (dPeak > 1.6 * Math.abs(dTotal))
+        s += ` It's a peak gap more than a longevity one — ${loL}'s best years are close, ${hiL} just reached higher.`;
+    } else {
+      if (moreSeasons >= 3)
+        s += ` ${hiL} also ${played} ${moreSeasons} more qualifying seasons, and every one adds to the total.`;
+      else if (moreSeasons <= -3)
+        s += ` ${loL} ${played} ${-moreSeasons} more qualifying seasons, so the edge is entirely in the rate.`;
+    }
     return s;
   }
 
@@ -280,21 +375,42 @@
   inA.addEventListener('input', () => { updateBadge(inA, badgeA); if (NAME_TO_ID.has(inA.value.trim().toLowerCase())) run(); });
   inB.addEventListener('input', () => { updateBadge(inB, badgeB); if (NAME_TO_ID.has(inB.value.trim().toLowerCase())) run(); });
 
-  // ---- initial state: URL params, else saved, else a default matchup ----
   const nameOf = (id) => (BY_ID.has(id) ? BY_ID.get(id).p.n : '');
-  let a0, b0;
+
+  function switchMode(mode, a, b) {
+    if (mode !== 'hitters' && mode !== 'pitchers') return;
+    buildMode(mode);
+    let a0 = a, b0 = b;
+    if (!(BY_ID.has(a0) && BY_ID.has(b0))) { [a0, b0] = DEFAULTS[mode]; }
+    inA.value = BY_ID.has(a0) ? nameOf(a0) : '';
+    inB.value = BY_ID.has(b0) ? nameOf(b0) : '';
+    run();
+  }
+
+  document.querySelectorAll('.why-mode__btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.mode === MODE) return;
+      switchMode(btn.dataset.mode);
+    });
+  });
+
+  // ---- initial state: URL params, else saved, else the default matchup ----
+  let mode0 = 'hitters', a0, b0;
   try {
     const q = new URL(location).searchParams;
+    if (q.get('mode') === 'pitchers' || q.get('mode') === 'hitters') mode0 = q.get('mode');
     a0 = q.get('a'); b0 = q.get('b');
   } catch (e) { /* ignore */ }
-  if (!(BY_ID.has(a0) && BY_ID.has(b0))) {
+  if (!a0 || !b0) {
     try {
       const saved = window.THOF && THOF.get('why');
-      if (saved && BY_ID.has(saved.a) && BY_ID.has(saved.b)) { a0 = saved.a; b0 = saved.b; }
+      if (saved && saved.a && saved.b) {
+        a0 = a0 || saved.a; b0 = b0 || saved.b;
+        if (!new URL(location).searchParams.get('mode') && (saved.mode === 'pitchers' || saved.mode === 'hitters')) {
+          mode0 = saved.mode;
+        }
+      }
     } catch (e) { /* ignore */ }
   }
-  if (!(BY_ID.has(a0) && BY_ID.has(b0))) { a0 = 'jeterde01'; b0 = 'trammal01'; }
-  if (BY_ID.has(a0)) inA.value = nameOf(a0);
-  if (BY_ID.has(b0)) inB.value = nameOf(b0);
-  run();
+  switchMode(mode0, a0, b0);
 })();

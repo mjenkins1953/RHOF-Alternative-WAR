@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Who's Better | The TRUE Hall of Fame</title>
-<meta name="description" content="Pick two hitters and see which one Stat Above Average ranks higher — and exactly why: the gap broken down by category, career length, and peak.">
+<meta name="description" content="Pick two hitters — or two pitchers — and see which one Stat Above Average ranks higher, and exactly why: the gap broken down by category, career length, and peak.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -41,14 +41,19 @@
 <section class="standards" style="padding:48px 0;">
   <div class="wrap">
     <h2 class="section-title">Who's better?</h2>
-    <p class="section-lede">Two hitters, side by side. See which one Stat Above Average ranks higher — and exactly where the gap comes from.</p>
-    <p class="why-intro">
+    <p class="section-lede" id="whyLede">Two hitters, side by side. See which one Stat Above Average ranks higher — and exactly where the gap comes from.</p>
+    <p class="why-intro" id="whyIntro">
       Stat Above Average is one number built from five things — batting average, power, walk rate,
       base-stealing, and defense — scaled to a full season, dampened for years past a player's prime, and
       blended half career total, half best-seven peak. That means any two players' ranking gap can be taken
       apart and handed back to you: this much is defense, this much is the extra seasons, this much is one
       player's bat. Pick two.
     </p>
+
+    <div class="why-mode" role="group" aria-label="Compare hitters or pitchers">
+      <button type="button" class="why-mode__btn is-active" data-mode="hitters" aria-pressed="true">Hitters</button>
+      <button type="button" class="why-mode__btn" data-mode="pitchers" aria-pressed="false">Pitchers</button>
+    </div>
 
     <div class="why-pick">
       <div class="why-pick__field">
@@ -93,8 +98,8 @@
 </dialog>
 
 <script src="js/prefs.js"></script>
-<script src="js/yourhall-hitters-data.js"></script>
-<script src="js/yourhall-hitters-cards.js"></script>
+<script src="js/why-hitters.js"></script>
+<script src="js/why-pitchers.js"></script>
 <script src="js/why-embed.js"></script>
 <script src="js/about.js"></script>
 </body>
