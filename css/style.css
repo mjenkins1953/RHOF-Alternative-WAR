@@ -61,15 +61,22 @@ a { color: var(--brass-lt); }
 }
 .site-head__inner {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 12px;
 }
 .mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: clamp(14px, 3vw, 24px);
+}
+.mark__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 .mark,
 .mark:hover,
@@ -121,9 +128,10 @@ a { color: var(--brass-lt); }
   margin-left: 2px;
 }
 .mark__logo {
-  height: clamp(42px, 8vw, 62px);
+  height: clamp(58px, 12vw, 86px);
   width: auto;
   display: block;
+  flex: none;
 }
 .mark__text {
   font-family: var(--font-display);
