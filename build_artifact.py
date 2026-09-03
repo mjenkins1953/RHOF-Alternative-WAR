@@ -45,6 +45,9 @@ assert 'id="methodology"' in method_inner, "methodology.html #methodology sectio
 img_data_uri = "data:image/png;base64," + base64.b64encode(
     (root / "img/hero-hall.png").read_bytes()).decode()
 
+logo_data_uri = "data:image/png;base64," + base64.b64encode(
+    (root / "img/logo.png").read_bytes()).decode()
+
 subs = [
     ('<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n',
      '<meta charset="utf-8">\n'),
@@ -53,6 +56,7 @@ subs = [
      f"<style>\n{style_css}\n</style>\n<style>\n{embed_css}\n</style>\n"),
     ('\n</body>\n</html>\n', '\n'),
     ('<img src="img/hero-hall.png"', f'<img src="{img_data_uri}"'),
+    ('<img class="mark__logo" src="img/logo.png"', f'<img class="mark__logo" src="{logo_data_uri}"'),
     # "Resume where you left off" is a multi-page idea -- drop it from the bundle
     ('      <p class="hero__resume" hidden><a href="#"></a></p>\n', ''),
     # splice the hitters list + the methodology sections in ahead of the

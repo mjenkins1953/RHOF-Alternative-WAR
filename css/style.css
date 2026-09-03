@@ -120,9 +120,10 @@ a { color: var(--brass-lt); }
   letter-spacing: 0.06em;
   margin-left: 2px;
 }
-.mark__stitch {
-  font-size: clamp(32px, 5.5vw, 46px);
-  filter: sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.9);
+.mark__logo {
+  height: clamp(42px, 8vw, 62px);
+  width: auto;
+  display: block;
 }
 .mark__text {
   font-family: var(--font-display);
