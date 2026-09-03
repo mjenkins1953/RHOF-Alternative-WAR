@@ -15,6 +15,14 @@ const ST = {
 };
 const ST_NCOLS = ST.cols.length;
 
+// "#" — a fixed 1-based row identifier. ST.rows arrives from the build already
+// in the default order (most games / most IP first), so the identifier is just
+// the row's position in that list. It's stored by row identity, so it rides
+// along unchanged through every sort and filter the visitor applies.
+const ST_RANK = new Map(ST.rows.map((r, i) => [r, i + 1]));
+// trailing flag on each row: 1 if the player logged a Negro Major League season
+const ST_NEL_IDX = ST_NCOLS + 1;
+
 const ST_TYPE = {};
 const ST_IDX = {};
 ST.cols.forEach(([k, , t], i) => { ST_TYPE[k] = t; ST_IDX[k] = i + 1; });
@@ -200,12 +208,14 @@ function stApply() {
 }
 
 function stRowHtml(r) {
-  let tds = `<td class="name">${r[1]}</td>`;
+  const nel = r[ST_NEL_IDX] ? ' <span class="nel-tag">NeL</span>' : '';
+  let tds = `<td class="strank">${ST_RANK.get(r).toLocaleString('en-US')}</td>`;
+  tds += `<td class="name">${r[1]}${nel}</td>`;
   for (let c = 1; c < ST.cols.length; c++) {
     const k = ST.cols[c][0];
     tds += `<td>${stCell(k, r[ST_IDX[k]])}</td>`;
   }
-  return `<tr class="stats-row" data-id="${r[0]}" tabindex="0" role="button" aria-label="${r[1]} — season stats">${tds}</tr>`;
+  return `<tr class="stats-row" data-id="${r[0]}" data-name="${r[1]}" tabindex="0" role="button" aria-label="${r[1]} — season stats">${tds}</tr>`;
 }
 
 function stRenderMore() {
@@ -227,7 +237,7 @@ if (stShell) {
 // ---------------- season card popup ----------------
 function stOpenCard(tr) {
   if (!stModal) return;
-  stModalBody.innerHTML = stCard(tr.dataset.id, tr.querySelector('.name').textContent);
+  stModalBody.innerHTML = stCard(tr.dataset.id, tr.dataset.name || tr.querySelector('.name').textContent);
   stModalBody.scrollTop = 0;
   if (typeof stModal.showModal === 'function') stModal.showModal();
   else stModal.setAttribute('open', '');

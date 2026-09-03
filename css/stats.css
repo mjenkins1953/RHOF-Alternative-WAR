@@ -17,6 +17,25 @@
 #view-stats .table-shell td.name,
 #view-stats-pitchers .table-shell td.name { min-width: 9.5em; }
 
+/* fixed "#" row-identifier column — first column, never sorts */
+#view-stats .table-shell th.strank-col,
+#view-stats-pitchers .table-shell th.strank-col {
+  text-align: right;
+  cursor: default;
+  color: var(--saa-ink-dim);
+}
+#view-stats .table-shell th.strank-col:hover,
+#view-stats-pitchers .table-shell th.strank-col:hover { color: var(--saa-ink-dim); }
+#view-stats .table-shell td.strank,
+#view-stats-pitchers .table-shell td.strank {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--saa-ink-dim);
+  text-align: right;
+  width: 3.2em;
+  white-space: nowrap;
+}
+
 .saa-embed .stats-row { cursor: pointer; }
 .saa-embed .stats-row:hover td { background: var(--saa-surface-2); }
 .saa-embed .stats-row:hover td.name { color: var(--saa-accent); }
