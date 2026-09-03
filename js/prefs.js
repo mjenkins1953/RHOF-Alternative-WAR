@@ -41,7 +41,7 @@
     'stats-pitchers.html': 'Stats — Pitchers',
     'methodology.html': 'Methodology',
     'why.html': "Who's Better",
-    'validation.html': 'Validation'
+    'validation.html': 'Credibility'
   };
   var file = (location.pathname.split('/').pop() || '').toLowerCase();
   if (PAGE_LABELS[file]) {

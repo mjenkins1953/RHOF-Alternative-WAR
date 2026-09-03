@@ -70,9 +70,9 @@ subs = [
     # --right class that starts the right-aligned nav group; keep it)
     ('<a href="methodology.html" class="site-menu__link site-menu__link--right">Methodology</a>',
      '<a href="#methodology" class="site-menu__link site-menu__link--right">Methodology</a>'),
-    # Validation is its own page, not in the single-file bundle -> neutralise
-    ('<a href="validation.html" class="site-menu__link">Validation</a>',
-     '<a href="#" class="site-menu__link" aria-disabled="true">Validation</a>'),
+    # Credibility (validation.html) is its own page, not in the bundle -> neutralise
+    ('<a href="validation.html" class="site-menu__link">Credibility</a>',
+     '<a href="#" class="site-menu__link" aria-disabled="true">Credibility</a>'),
     # Who's Better is its own page too -> neutralise
     ('<a href="why.html" class="site-menu__link">WHO\'S BETTER</a>',
      '<a href="#" class="site-menu__link" aria-disabled="true">WHO\'S BETTER</a>'),
