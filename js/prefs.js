@@ -39,7 +39,9 @@
     'yourhall-pitchers.html': 'Your Hall — Pitchers',
     'stats.html': 'Stats — Hitters',
     'stats-pitchers.html': 'Stats — Pitchers',
-    'methodology.html': 'Methodology'
+    'methodology.html': 'Methodology',
+    'why.html': "Who's Better",
+    'validation.html': 'Validation'
   };
   var file = (location.pathname.split('/').pop() || '').toLowerCase();
   if (PAGE_LABELS[file]) {

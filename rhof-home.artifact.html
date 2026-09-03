@@ -2002,7 +2002,9 @@ a { color: var(--brass-lt); }
     'yourhall-pitchers.html': 'Your Hall — Pitchers',
     'stats.html': 'Stats — Hitters',
     'stats-pitchers.html': 'Stats — Pitchers',
-    'methodology.html': 'Methodology'
+    'methodology.html': 'Methodology',
+    'why.html': "Who's Better",
+    'validation.html': 'Validation'
   };
   var file = (location.pathname.split('/').pop() || '').toLowerCase();
   if (PAGE_LABELS[file]) {
@@ -2345,8 +2347,8 @@ window.addEventListener('resize', saaSizeScroll);
 // The dialog shows only the date portion of RHOF_BUILD; the trailing
 // counter stays in the constant as the monotonic build number.
 
-const RHOF_VERSION = '1.062';
-const RHOF_BUILD = '2026.09.02.062';
+const RHOF_VERSION = '1.063';
+const RHOF_BUILD = '2026.09.02.063';
 
 (function () {
   const modal = document.getElementById('aboutModal');
