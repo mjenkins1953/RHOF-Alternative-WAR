@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 200" role="img" aria-label="The True Hall of Fame">
+  <defs>
+    <linearGradient id="thof-brass-l" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e6c184"/>
+      <stop offset="0.5" stop-color="#b8873b"/>
+      <stop offset="1" stop-color="#7c5620"/>
+    </linearGradient>
+  </defs>
+
+  <!-- mark -->
+  <g transform="translate(20 20) scale(0.667)">
+    <circle cx="120" cy="120" r="118" fill="#10241c"/>
+    <circle cx="120" cy="120" r="115" fill="none" stroke="url(#thof-brass-l)" stroke-width="7"/>
+    <circle cx="120" cy="120" r="88" fill="#efe6d0" stroke="#8c6423" stroke-width="3"/>
+    <g fill="none" stroke="#9b3a2e" stroke-linecap="round">
+      <path d="M 73,50 C 53,85 53,155 73,190" stroke-width="3.5"/>
+      <path d="M 167,50 C 187,85 187,155 167,190" stroke-width="3.5"/>
+      <path d="M 73,50 C 53,85 53,155 73,190" stroke-width="10" stroke-dasharray="0.8 11"/>
+      <path d="M 167,50 C 187,85 187,155 167,190" stroke-width="10" stroke-dasharray="0.8 11"/>
+    </g>
+    <text x="120" y="122" text-anchor="middle" dominant-baseline="central"
+          font-family="Oswald, 'Arial Narrow', sans-serif" font-weight="700"
+          font-size="118" fill="#10241c">T</text>
+  </g>
+
+  <!-- wordmark -->
+  <g font-family="Oswald, 'Arial Narrow', sans-serif" font-weight="700" letter-spacing="6">
+    <text x="210" y="92" font-size="46" fill="#d8a85c">THE <tspan fill="#efe6d0">TRUE</tspan></text>
+    <text x="210" y="146" font-size="46" fill="#d8a85c">HALL OF FAME</text>
+  </g>
+  <text x="212" y="176" font-family="'IBM Plex Mono', ui-monospace, monospace"
+        font-size="13" letter-spacing="3" fill="#b8873b">STAT ABOVE AVERAGE</text>
+</svg>
