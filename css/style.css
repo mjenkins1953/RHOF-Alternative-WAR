@@ -246,20 +246,23 @@ a { color: var(--brass-lt); }
 .hero__copy p:last-child { margin-bottom: 0; }
 .hero__copy strong { color: #a8660a; font-weight: 600; }
 
-/* "Resume where you left off" — shown by js/resume.js only for returning visitors */
+/* "Resume where you left off" — shown by js/resume.js only for returning
+   visitors. Sits just outside the welcome box, tucked under its lower-right
+   corner. */
 .hero__resume[hidden] { display: none; }
 .hero__resume {
-  margin: 0 0 1.1rem;
+  margin: 0.6rem 0 0;
+  text-align: right;
   font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
   font-size: 0.8rem;
 }
 .hero__resume a {
-  color: #a8660a;
+  color: var(--brass-lt);
   text-decoration: none;
-  border-bottom: 1px solid rgba(168, 102, 10, 0.35);
+  border-bottom: 1px solid rgba(216, 168, 92, 0.4);
   padding-bottom: 1px;
 }
-.hero__resume a:hover { border-bottom-color: #a8660a; }
+.hero__resume a:hover { border-bottom-color: var(--brass-lt); }
 .hero__resume a::after { content: " \2192"; }
 
 /* ---------------- Controls ---------------- */

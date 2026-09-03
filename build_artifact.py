@@ -58,7 +58,7 @@ subs = [
     ('<img src="img/hero-hall.png"', f'<img src="{img_data_uri}"'),
     ('<img class="mark__logo" src="img/logo.png"', f'<img class="mark__logo" src="{logo_data_uri}"'),
     # "Resume where you left off" is a multi-page idea -- drop it from the bundle
-    ('      <p class="hero__resume" hidden><a href="#"></a></p>\n', ''),
+    ('    <p class="hero__resume" hidden><a href="#"></a></p>\n', ''),
     # splice the hitters list + the methodology sections in ahead of the
     # footer, wrapped in one <main>
     ('<footer class="site-foot">',
