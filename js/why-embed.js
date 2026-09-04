@@ -12,6 +12,27 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const sign = (x, d = 2) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(d);
+  // Round `parts` to `digits` decimals so they sum EXACTLY to `target` rounded
+  // the same way -- largest-remainder apportionment. `parts` mathematically
+  // already sum to `target` before rounding (e.g. total-half + peak-half =
+  // the full gap), but rounding each part independently can make the printed
+  // numbers fail to add up to the printed total (0.45 + 0.00 next to a
+  // 0.46 gap). This fixes the display without changing any underlying math.
+  const splitRound = (target, parts, digits = 2) => {
+    const scale = 10 ** digits;
+    const want = Math.round(target * scale);
+    const raw = parts.map((v) => v * scale);
+    const rounded = raw.map((v) => Math.round(v));
+    let diff = want - rounded.reduce((a, b) => a + b, 0);
+    if (diff !== 0) {
+      const order = raw.map((v, i) => ({ i, err: v - rounded[i] }))
+        .sort((a, b) => (diff > 0 ? b.err - a.err : a.err - b.err));
+      for (let k = 0; k < Math.abs(diff); k++) {
+        rounded[order[k % order.length].i] += diff > 0 ? 1 : -1;
+      }
+    }
+    return rounded.map((v) => v / scale);
+  };
   const NS = 'http://www.w3.org/2000/svg';
   const mk = (name, attrs, parent) => {
     const e = document.createElementNS(NS, name);
@@ -240,14 +261,24 @@
     const rows = CATS.map((c, k) => ({
       cat: c, d: hi.finalCat[k] - lo.finalCat[k], hi: hi.finalCat[k], lo: lo.finalCat[k],
     }));
+    // the 5 category deltas sum to `gap` exactly pre-rounding (finalCat sums
+    // to SAA_final for each player); reconcile their rounded display values
+    // the same way the total/peak split is, so the bars' printed numbers
+    // always add up to the gap the caption says they're a share of.
+    splitRound(gap, rows.map((r) => r.d)).forEach((v, k) => { rows[k].dDisp = v; });
     const maxAbs = Math.max(0.001, ...rows.map((r) => Math.abs(r.d)));
     const ord = rows.slice().sort((a, b) => b.d - a.d);
 
+    // dTotal + dPeak already equal gap exactly in the underlying math (each
+    // is half the total/peak difference by construction); reconcile the
+    // ROUNDED display values the same way so "0.45 + 0.00" next to a "0.46"
+    // gap can't happen.
+    const [dTotalDisp, dPeakDisp] = hasPeak ? splitRound(gap, [dTotal, dPeak]) : [dTotal, dPeak];
     const splitBlock = hasPeak ? `
       <div class="why-split">
         <span>of the <b>${gap.toFixed(2)}</b>-SAA gap:</span>
-        <span class="why-split__part">career total <b>${sign(dTotal)}</b></span>
-        <span class="why-split__part">peak <b>${sign(dPeak)}</b></span>
+        <span class="why-split__part">career total <b>${sign(dTotalDisp)}</b></span>
+        <span class="why-split__part">peak <b>${sign(dPeakDisp)}</b></span>
       </div>` : `
       <div class="why-split">
         <span>the gap is <b>${gap.toFixed(2)}</b> SAA — pitcher SAA is career total only, no peak weighting.</span>
@@ -309,7 +340,7 @@
       mk('text', {
         x: toHi ? mid + w + 6 : mid - w - 6, y: y + 4,
         'text-anchor': toHi ? 'start' : 'end', class: 'why-bars__val',
-      }, svg).textContent = Math.abs(r.d).toFixed(2);
+      }, svg).textContent = Math.abs(r.dDisp).toFixed(2);
     });
     const last = (nm) => nm.split(' ').slice(-1)[0];
     mk('text', { x: mid + 6, y: H - 4, 'text-anchor': 'start', class: 'why-bars__end' }, svg)
