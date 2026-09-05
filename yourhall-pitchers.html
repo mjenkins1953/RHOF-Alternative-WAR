@@ -27,6 +27,11 @@
 
 <nav class="site-menu" aria-label="Site sections">
   <div class="wrap site-menu__inner">
+    <button type="button" class="site-menu__toggle" aria-expanded="false" aria-controls="siteMenuLinks">
+      <span class="site-menu__toggle-label">Menu</span>
+      <span class="site-menu__toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <div class="site-menu__links" id="siteMenuLinks">
     <a href="hitters.html" class="site-menu__link">Hitters</a>
     <a href="pitchers.html" class="site-menu__link">Pitchers</a>
     <a href="yourhall.html" class="site-menu__link is-active">Your Hall</a>
@@ -35,6 +40,7 @@
     <a href="methodology.html" class="site-menu__link site-menu__link--right">Methodology</a>
     <a href="validation.html" class="site-menu__link">Credibility</a>
     <a href="index.html#about" class="site-menu__link">About</a>
+    </div>
   </div>
 </nav>
 
@@ -163,5 +169,6 @@
 <script src="js/yourhall-embed.js"></script>
 <script src="js/board-collapse.js"></script>
 <script src="js/about.js"></script>
+<script src="js/nav-toggle.js"></script>
 </body>
 </html>

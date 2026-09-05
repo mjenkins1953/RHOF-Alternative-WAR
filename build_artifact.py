@@ -33,6 +33,7 @@ board_js = (root / "js/board-collapse.js").read_text()
 # about.js carries RHOF_VERSION / RHOF_BUILD verbatim -- the single source
 # of truth, hand-bumped by .001 on every commit + push.
 about_js = (root / "js/about.js").read_text()
+nav_toggle_js = (root / "js/nav-toggle.js").read_text()
 
 # pull the inside of <main>…</main> out of each source page, to be merged
 # into ONE <main> in the bundle
@@ -89,12 +90,14 @@ subs = [
     ('<a href="index.html" class="mark">', '<a href="#" class="mark">'),
     ('<script src="js/prefs.js"></script>\n'
      '<script src="js/resume.js"></script>\n'
-     '<script src="js/about.js"></script>\n',
+     '<script src="js/about.js"></script>\n'
+     '<script src="js/nav-toggle.js"></script>\n',
      f"<script>\n{prefs_js}\n</script>\n"
      f"<script>\n{career_js}\n</script>\n"
      f"<script>\n{embed_js}\n</script>\n"
      f"<script>\n{board_js}\n</script>\n"
-     f"<script>\n{about_js}\n</script>\n"),
+     f"<script>\n{about_js}\n</script>\n"
+     f"<script>\n{nav_toggle_js}\n</script>\n"),
 ]
 for old, new in subs:
     assert old in html, f"expected snippet not found in index.html:\n{old[:120]}"
