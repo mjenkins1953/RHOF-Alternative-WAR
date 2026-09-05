@@ -32,16 +32,22 @@
     ladder.innerHTML = h;
   }
 
-  // ---- Hall-of-Fame hit-rate table ----
-  const hr = $('hitRate');
-  if (hr) {
+  // ---- Hall-of-Fame hit-rate table(s) ----
+  function renderHitRate(elId, rows) {
+    const el = $(elId);
+    if (!el || !rows) return;
     let h = '<thead><tr><th>Top N by…</th><th>SAA</th><th>bWAR</th><th>bWAA</th><th>JAWS</th></tr></thead><tbody>';
-    V.hof.forEach((r) => {
+    rows.forEach((r) => {
       h += `<tr><td>top ${r.n}</td>`
         + `<td class="hitrate__saa">${r.saa}</td><td>${r.war}</td><td>${r.waa}</td><td>${r.jaws}</td></tr>`;
     });
     h += '</tbody>';
-    hr.innerHTML = h;
+    el.innerHTML = h;
+  }
+  renderHitRate('hitRate', V.hof);
+  if (typeof VALIDATION_PITCHERS !== 'undefined') {
+    document.querySelectorAll('[data-v="hof_n_p"]').forEach((e) => { e.textContent = VALIDATION_PITCHERS.hof_n; });
+    renderHitRate('hitRatePitchers', VALIDATION_PITCHERS.hof);
   }
 
   // ---- spotlight table ----

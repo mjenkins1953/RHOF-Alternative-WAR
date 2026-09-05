@@ -113,6 +113,11 @@
 .hitrate tbody td { color: var(--paper-dim); }
 .hitrate tbody td.hitrate__saa { color: var(--brass-lt); font-weight: 600; }
 .hitrate tbody tr:last-child td { border-bottom: 0; }
+.hitrate-group__lede {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px dashed var(--green-line);
+}
 
 /* ---- scatter ---- */
 .scatter-wrap {

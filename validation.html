@@ -85,13 +85,18 @@
 <section class="val-section">
   <div class="wrap">
     <h2 class="section-title">Picking the Hall</h2>
-    <p class="section-lede">Of each system's top N hitters, how many are already in Cooperstown. This pool holds <span data-v="hof_n">172</span> inducted players.</p>
+    <p class="section-lede">Of each system's top N hitters, how many are already in Cooperstown. The hitter pool holds <span data-v="hof_n">172</span> inducted players.</p>
     <table class="hitrate" id="hitRate"></table>
+    <p class="section-lede hitrate-group__lede">And the same test on the mound — of each system's top N pitchers, how many are in Cooperstown. The pitcher pool holds <span data-v="hof_n_p">78</span> inducted pitchers.</p>
+    <table class="hitrate" id="hitRatePitchers"></table>
     <p class="val-note">
       This is the headline result. <strong>SAA identifies the Hall of Fame about as accurately as WAR
       and JAWS do</strong> — level with them through the top 150, a handful behind by the top 300, where
       the last names in are the most arguable anyway. Whatever the disagreements in ordering, SAA is not
       picking a different set of great players; it's ranking the same ones differently.
+      On pitchers the result is even cleaner: <strong>SAA matches or leads bWAR, bWAA, and JAWS at every
+      cutoff</strong> — the mound version of the formula picks Cooperstown's pitchers at least as well as
+      the established metrics do.
     </p>
   </div>
 </section>
@@ -208,6 +213,7 @@
 
 <script src="js/prefs.js"></script>
 <script src="js/validation-data.js"></script>
+<script src="js/validation-pitchers-data.js"></script>
 <script src="js/validation-embed.js"></script>
 <script src="js/about.js"></script>
 <script src="js/nav-toggle.js"></script>
